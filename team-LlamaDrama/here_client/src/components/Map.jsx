@@ -150,7 +150,7 @@ const MapWithShapefiles = () => {
 
   // Constants for shapefile processing
   const BATCH_SIZE = 50; // Reduced batch size
-  const MAX_FEATURES = 1000; // Reduced max features
+  const MAX_FEATURES = 3000; // Reduced max features
   const MAX_FILE_SIZE = 200 * 1024 * 1024; // Reduced to 50MB
 
   // Handle map instance
@@ -263,7 +263,15 @@ const MapWithShapefiles = () => {
       setShapefileData(null);
     } finally {
       setLoading(false);
-      setLoadingProgress(0);
+      const response = await axios.post(`${import.meta.env.VITE_FLASK_URL}/analyze-poi`);
+      console.log("Analysis response:", response.data);
+      
+      if (response.data.error) {
+        setError(response.data.error);
+      } else {
+        // You can use response data to update UI or show results
+        console.log(`Analysis complete. Found ${response.data.incorrect_pois} incorrect POIs`);
+      }
     }
   };
 
