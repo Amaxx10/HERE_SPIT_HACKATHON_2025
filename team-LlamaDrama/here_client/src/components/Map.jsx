@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import * as shp from "shpjs";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMap, Rectangle } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import axios from "axios";
 
 // Update map container styles
 const mapContainerStyle = {
@@ -29,6 +30,97 @@ const SUPPORTED_FORMATS = {
   xml: "Metadata",
 };
 
+const sendFeatureData = async (features) => {
+  try {
+    const transformedFeatures = features.map(f => ({
+      objectId: f.properties.OBJECTID || '',
+      customerId: f.properties.CUSTOMER_I || '',
+      postalArea: f.properties.POSTAL_ARE || '',
+      fullPostal: f.properties.FULL_POSTA || '',
+      recType: f.properties.REC_TYPE || '',
+      geoLevel: f.properties.GEO_LEVEL || '',
+      ntCity: f.properties.NT_CITY || '',
+      county: f.properties.COUNTY || '',
+      state: f.properties.STATE || '',
+      display: {
+        lineId: f.properties.DISPLAY_LI || '',
+        latitude: f.properties.DISPLAY_LA || '',
+        longitude: f.properties.DISPLAY_LO || ''
+      },
+      routing: {
+        lineId: f.properties.ROUTING_LI || '',
+        latitude: f.properties.ROUTING_LA || '',
+        longitude: f.properties.ROUTING_LO || ''
+      },
+      address: {
+        houseNumber: f.properties.HOUSE_NUMB || '',
+        buildingName: f.properties.BUILDING_N || '',
+        streetName: f.properties.STREET_NAM || '',
+        tmoStreet: f.properties.TMO_STREET || ''
+      },
+      hdb: f.properties.HDB || '',
+      nearest: {
+        fid: f.properties.NEAR_FID || '',
+        distance: f.properties.NEAR_DIST || '',
+        coordinates: {
+          x: f.properties.NEAR_X || '',
+          y: f.properties.NEAR_Y || ''
+        }
+      }
+    }));
+
+    const response = await axios.post(
+      'http://localhost:5000/api/mapview/store',
+      transformedFeatures,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000, // 10 second timeout
+      }
+    );
+    console.log("Features sent successfully:", response.data);
+    return response.data;
+  } catch (error) {
+    if (error.code === 'ECONNABORTED') {
+      console.error('Request timeout:', error);
+    } else if (error.response) {
+      console.error('Server error:', error.response.data);
+    } else if (error.request) {
+      console.error('Network error:', error.message);
+    } else {
+      console.error('Error:', error.message);
+    }
+    throw error;
+  }
+}
+
+const fetchFeaturesInBounds = async (bounds) => {
+  try {
+    const response = await axios.get('http://localhost:5000/api/mapview/features/bounds', {
+      params: {
+        north: bounds.getNorth(),
+        south: bounds.getSouth(),
+        east: bounds.getEast(),
+        west: bounds.getWest()
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching features:', error);
+    throw error;
+  }
+};
+
+// Add this helper function before the MapWithShapefiles component
+const formatValue = (value) => {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'object') {
+    return JSON.stringify(value, null, 2);
+  }
+  return String(value);
+};
+
 const MapWithShapefiles = () => {
   // Map references and state
   const mapRef = useRef(null);
@@ -49,9 +141,16 @@ const MapWithShapefiles = () => {
   // Add ref for file input to clear it
   const fileInputRef = useRef(null);
 
+  // Selection state
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [selectionBounds, setSelectionBounds] = useState(null);
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const [startPoint, setStartPoint] = useState(null);
+  const [showMetadata, setShowMetadata] = useState(false);
+
   // Constants for shapefile processing
   const BATCH_SIZE = 50; // Reduced batch size
-  const MAX_FEATURES = 100000; // Reduced max features
+  const MAX_FEATURES = 1000; // Reduced max features
   const MAX_FILE_SIZE = 200 * 1024 * 1024; // Reduced to 50MB
 
   // Handle map instance
@@ -220,6 +319,9 @@ const MapWithShapefiles = () => {
   if (!mounted || renderingCancelled) return;
 
   const batch = features.slice(startIndex, startIndex + BATCH_SIZE);
+
+  // Send the batch to the backend
+  await sendFeatureData(batch);
 
   requestAnimationFrame(() => {
     if (!mounted || renderingCancelled) return;
@@ -410,6 +512,79 @@ const MapWithShapefiles = () => {
     }
   };
 
+  // Mouse event handlers for rectangle selection
+  useEffect(() => {
+    if (!mapInstance || !isSelecting) return;
+
+    const handleMouseDown = (e) => {
+      setStartPoint(e.latlng);
+      setSelectionBounds(null);
+    };
+
+    const handleMouseMove = (e) => {
+      if (!startPoint) return;
+      
+      const bounds = L.latLngBounds(startPoint, e.latlng);
+      setSelectionBounds(bounds);
+    };
+
+    const handleMouseUp = async (e) => {
+      if (!startPoint || !shapefileGroup) return;
+
+      const bounds = L.latLngBounds(startPoint, e.latlng);
+      
+      try {
+        // Fetch features from database based on bounds
+        const dbFeatures = await fetchFeaturesInBounds(bounds);
+        
+        // Transform database features to match the expected format
+        const features = dbFeatures.map(feature => ({
+          type: feature.type,
+          properties: {
+            ...feature,
+            OBJECTID: feature.objectId,
+            CUSTOMER_I: feature.customerId,
+            // Add other property mappings as needed
+          },
+          geometry: feature.geometry
+        }));
+
+        setSelectedFeatures(features);
+        setIsSelecting(false);
+        setStartPoint(null);
+        setSelectionBounds(null);
+      } catch (error) {
+        console.error('Error selecting features:', error);
+        setError('Failed to fetch features in selection');
+      }
+    };
+
+    mapInstance.on('mousedown', handleMouseDown);
+    mapInstance.on('mousemove', handleMouseMove);
+    mapInstance.on('mouseup', handleMouseUp);
+
+    // Disable map drag when selecting
+    mapInstance.dragging.disable();
+    
+    return () => {
+      mapInstance.off('mousedown', handleMouseDown);
+      mapInstance.off('mousemove', handleMouseMove);
+      mapInstance.off('mouseup', handleMouseUp);
+      mapInstance.dragging.enable();
+    };
+  }, [mapInstance, isSelecting, startPoint, shapefileGroup]);
+
+  // Start rectangle selection
+  const handleCaptureClick = () => {
+    setIsSelecting(true);
+    setSelectedFeatures([]);
+  };
+
+  // Add this function to handle viewing metadata
+  const handleViewMetadata = () => {
+    setShowMetadata(true);
+  };
+
   return (
     <div className="relative w-full h-full">
       <MapContainer
@@ -431,6 +606,14 @@ const MapWithShapefiles = () => {
               : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           }
         />
+
+        {/* Rectangle selection for capturing features */}
+        {selectionBounds && (
+          <Rectangle
+            bounds={selectionBounds}
+            pathOptions={{ color: '#0066ff', weight: 1, fillOpacity: 0.2 }}
+          />
+        )}
       </MapContainer>
 
       {/* Loading Overlay with blur background */}
@@ -643,6 +826,95 @@ const MapWithShapefiles = () => {
             </svg>
             Reset View
           </button>
+
+          {/* Capture Region Button */}
+          <button
+            onClick={handleCaptureClick}
+            className={`w-full px-3 py-2 text-sm mb-2 rounded transition-colors ${
+              isSelecting
+                ? "bg-blue-600 text-white"
+                : "border border-slate-300 hover:bg-slate-50"
+            }`}
+          >
+            {isSelecting ? "Selecting..." : "Capture Region"}
+          </button>
+
+          {/* Selected features info */}
+          {selectedFeatures.length > 0 && (
+            <div className="mt-2 p-2 bg-gray-50 rounded text-sm">
+              <div className="font-medium">Selected Features: {selectedFeatures.length}</div>
+              <div className="mt-1 text-xs text-gray-600">
+                {Object.entries(
+                  selectedFeatures.reduce((acc, f) => ({
+                    ...acc,
+                    [f.type]: (acc[f.type] || 0) + 1
+                  }), {})
+                ).map(([type, count]) => (
+                  <div key={type} className="flex justify-between">
+                    <span>{type}:</span>
+                    <span>{count}</span>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={handleViewMetadata}
+                className="mt-2 w-full px-3 py-1 text-xs bg-blue-50 text-blue-600 rounded hover:bg-blue-100"
+              >
+                View Metadata
+              </button>
+            </div>
+          )}
+
+          {/* Metadata Dialog */}
+          {showMetadata && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden">
+                <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                  <h3 className="text-lg font-medium">Selected Features Metadata</h3>
+                  <button
+                    onClick={() => setShowMetadata(false)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div className="p-4 overflow-auto max-h-[calc(80vh-8rem)]">
+                  {selectedFeatures.map((feature, index) => (
+                    <div key={index} className="mb-4 last:mb-0">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded text-sm">
+                          {feature.type || 'Unknown Type'}
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          Feature #{index + 1}
+                        </span>
+                      </div>
+                      <div className="bg-gray-50 rounded p-3">
+                        <table className="w-full text-sm">
+                          <tbody>
+                            {Object.entries(feature.properties || {}).map(([key, value]) => (
+                              <tr key={key} className="border-b last:border-0">
+                                <td className="py-1 px-2 text-gray-600 font-medium align-top">{key}</td>
+                                <td className="py-1 px-2 text-gray-800 whitespace-pre-wrap">{formatValue(value)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-4 border-t border-gray-200">
+                  <button
+                    onClick={() => setShowMetadata(false)}
+                    className="w-full px-4 py-2 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
