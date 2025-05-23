@@ -19,6 +19,16 @@ function MapController({ onMapReady }) {
   return null;
 }
 
+const SUPPORTED_FORMATS = {
+  cpg: "Character encoding file",
+  dbf: "Attribute data",
+  prj: "Projection information",
+  sbx: "Spatial index",
+  shp: "Shape format",
+  shx: "Shape index format",
+  xml: "Metadata",
+};
+
 const MapWithShapefiles = () => {
   // Map references and state
   const mapRef = useRef(null);
@@ -34,13 +44,14 @@ const MapWithShapefiles = () => {
   const [error, setError] = useState(null);
   const [shapefileGroup, setShapefileGroup] = useState(null);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [fileData, setFileData] = useState({});
 
   // Add ref for file input to clear it
   const fileInputRef = useRef(null);
 
   // Constants for shapefile processing
   const BATCH_SIZE = 50; // Reduced batch size
-  const MAX_FEATURES = 10000; // Reduced max features
+  const MAX_FEATURES = 100000; // Reduced max features
   const MAX_FILE_SIZE = 200 * 1024 * 1024; // Reduced to 50MB
 
   // Handle map instance
@@ -68,6 +79,15 @@ const MapWithShapefiles = () => {
     });
   };
 
+  const readTextFile = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsText(file);
+    });
+  };
+
   // Handle shapefile upload
   const handleFileUpload = async (event) => {
     setLoading(true);
@@ -84,31 +104,47 @@ const MapWithShapefiles = () => {
         throw new Error("Total file size exceeds 200MB limit");
       }
 
-      setFileNames(files.map((file) => file.name));
+      // Categorize files by extension
+      const filesByType = {};
+      const newFileData = {};
 
-      // Find required files
-      const shpFile = files.find((file) => file.name.endsWith(".shp"));
-      const dbfFile = files.find((file) => file.name.endsWith(".dbf"));
+      for (const file of files) {
+        const ext = file.name.split(".").pop().toLowerCase();
+        if (SUPPORTED_FORMATS[ext]) {
+          filesByType[ext] = file;
 
-      if (!shpFile || !dbfFile) {
+          // Read file content based on type
+          if (["cpg", "prj", "xml"].includes(ext)) {
+            const content = await readTextFile(file);
+            newFileData[ext] = content;
+          } else if (["shp", "dbf", "shx", "sbx"].includes(ext)) {
+            const buffer = await readFileAsArrayBuffer(file);
+            newFileData[ext] = buffer;
+          }
+        }
+      }
+
+      // Validate required files
+      if (!filesByType.shp || !filesByType.dbf) {
         throw new Error("Both .shp and .dbf files are required");
       }
 
-      setLoadingProgress(20);
-
-      // Read files
-      const [shpBuffer, dbfBuffer] = await Promise.all([
-        readFileAsArrayBuffer(shpFile),
-        readFileAsArrayBuffer(dbfFile),
-      ]);
-
+      setFileNames(
+        Object.entries(filesByType).map(([ext, file]) => file.name)
+      );
+      setFileData(newFileData);
       setLoadingProgress(50);
 
-      // Parse shapefile
+      // Parse shapefile with additional data
       const geoJsonData = await shp.combine([
-        shp.parseShp(shpBuffer),
-        shp.parseDbf(dbfBuffer),
+        shp.parseShp(newFileData.shp),
+        shp.parseDbf(newFileData.dbf),
       ]);
+
+      // Add projection if available
+      if (newFileData.prj) {
+        geoJsonData.projection = newFileData.prj;
+      }
 
       setLoadingProgress(70);
 
@@ -123,7 +159,7 @@ const MapWithShapefiles = () => {
       setLoadingProgress(80);
       setShapefileData(geoJsonData);
     } catch (err) {
-      console.error("Shapefile processing error:", err);
+      console.error("File processing error:", err);
       setError(`Error: ${err.message}`);
       setShapefileData(null);
     } finally {
@@ -153,114 +189,169 @@ const MapWithShapefiles = () => {
     let renderingCancelled = false;
     const featureGroup = L.featureGroup().addTo(mapInstance);
 
+    const createPopupContent = (properties) => {
+  if (!properties) return 'No data available';
+
+  return `
+    <div style="max-height: 300px; overflow-y: auto; min-width: 200px;">
+      <table style="border-collapse: collapse; width: 100%;">
+        <thead>
+          <tr>
+            <th style="padding: 8px; border-bottom: 2px solid #ddd; text-align: left; background-color: #f8f9fa;">Property</th>
+            <th style="padding: 8px; border-bottom: 2px solid #ddd; text-align: left; background-color: #f8f9fa;">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${Object.entries(properties)
+            .map(([key, value]) => `
+              <tr>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">${key}</td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">${value}</td>
+              </tr>
+            `)
+            .join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+};
+
     const renderBatch = async (features, startIndex) => {
-      if (!mounted || renderingCancelled) return;
+  if (!mounted || renderingCancelled) return;
 
-      const batch = features.slice(startIndex, startIndex + BATCH_SIZE);
+  const batch = features.slice(startIndex, startIndex + BATCH_SIZE);
 
-      // Use requestAnimationFrame for better performance
-      requestAnimationFrame(() => {
-        if (!mounted || renderingCancelled) return;
+  requestAnimationFrame(() => {
+    if (!mounted || renderingCancelled) return;
 
-        batch.forEach((feature) => {
-          try {
-            if (
-              feature.geometry.type === "Polygon" ||
-              feature.geometry.type === "MultiPolygon"
-            ) {
-              const coordinates =
-                feature.geometry.type === "Polygon"
-                  ? [feature.geometry.coordinates[0]] // Only use outer ring
-                  : feature.geometry.coordinates.map((poly) => poly[0]);
+    batch.forEach((feature) => {
+      try {
+        // Create popup content for the feature
+        const popupContent = createPopupContent(feature.properties);
+        
+        if (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon") {
+          const coordinates = feature.geometry.type === "Polygon" 
+            ? [feature.geometry.coordinates[0]] 
+            : feature.geometry.coordinates.map(poly => poly[0]);
 
-              coordinates.forEach((coords) => {
-                // More aggressive simplification for polygons
-                const simplified = coords.filter((_, index) => index % 5 === 0);
+          coordinates.forEach((coords) => {
+            const simplified = coords.filter((_, index) => index % 5 === 0);
 
-                if (simplified.length > 3) {
-                  // Ensure minimum points for polygon
-                  const polygon = L.polygon(simplified, {
-                    fillColor: "rgba(0, 128, 255, 0.3)",
-                    color: "rgba(0, 0, 255, 0.6)",
-                    weight: 1,
-                  });
-                  featureGroup.addLayer(polygon);
-                }
-              });
-            } else if (
-              feature.geometry.type === "LineString" ||
-              feature.geometry.type === "MultiLineString"
-            ) {
-              const coordinates =
-                feature.geometry.type === "LineString"
-                  ? feature.geometry.coordinates
-                  : feature.geometry.coordinates.flat();
+            if (simplified.length > 3) {
+              const polygon = L.polygon(simplified, {
+                fillColor: "rgba(0, 128, 255, 0.3)",
+                color: "rgba(0, 0, 255, 0.6)",
+                weight: 1
+              }).bindPopup(popupContent);
 
-              // More aggressive simplification for lines
-              const simplified = coordinates.filter(
-                (_, index) => index % 3 === 0
-              );
-
-              if (simplified.length > 1) {
-                // Ensure minimum points for line
-                const polyline = L.polyline(simplified, {
-                  color: "rgba(255, 0, 0, 0.6)",
-                  weight: 2,
+              // Add hover effects
+              polygon.on('mouseover', function(e) {
+                this.setStyle({
+                  fillColor: 'rgba(255, 128, 0, 0.5)',
+                  color: 'rgba(255, 128, 0, 0.8)',
+                  weight: 2
                 });
-                featureGroup.addLayer(polyline);
-              }
-            } else if (feature.geometry.type === "Point") {
-              const marker = L.circleMarker(
-                [feature.geometry.coordinates[1], feature.geometry.coordinates[0]],
-                {
-                  radius: 5,
-                  fillColor: "rgba(255, 0, 0, 0.8)",
-                  color: "white",
-                  weight: 1,
-                  fillOpacity: 0.8,
-                }
-              );
-              featureGroup.addLayer(marker);
+              });
+
+              polygon.on('mouseout', function(e) {
+                this.setStyle({
+                  fillColor: 'rgba(0, 128, 255, 0.3)',
+                  color: 'rgba(0, 0, 255, 0.6)',
+                  weight: 1
+                });
+              });
+
+              featureGroup.addLayer(polygon);
             }
-          } catch (e) {
-            console.warn("Failed to render feature:", e);
+          });
+        } else if (feature.geometry.type === "LineString" || feature.geometry.type === "MultiLineString") {
+          const coordinates = feature.geometry.type === "LineString"
+            ? feature.geometry.coordinates
+            : feature.geometry.coordinates.flat();
+
+          const simplified = coordinates.filter((_, index) => index % 3 === 0);
+
+          if (simplified.length > 1) {
+            const polyline = L.polyline(simplified, {
+              color: "rgba(255, 0, 0, 0.6)",
+              weight: 2
+            }).bindPopup(popupContent);
+
+            // Add hover effects
+            polyline.on('mouseover', function(e) {
+              this.setStyle({
+                color: 'rgba(255, 128, 0, 0.8)',
+                weight: 3
+              });
+            });
+
+            polyline.on('mouseout', function(e) {
+              this.setStyle({
+                color: 'rgba(255, 0, 0, 0.6)',
+                weight: 2
+              });
+            });
+
+            featureGroup.addLayer(polyline);
           }
-        });
+        } else if (feature.geometry.type === "Point") {
+          const marker = L.circleMarker(
+            [feature.geometry.coordinates[1], feature.geometry.coordinates[0]],
+            {
+              radius: 5,
+              fillColor: "rgba(255, 0, 0, 0.8)",
+              color: "white",
+              weight: 1,
+              fillOpacity: 0.8
+            }
+          ).bindPopup(popupContent);
 
-        if (startIndex === 0) {
-          // Add group to map on first batch
-          setShapefileGroup(featureGroup);
+          // Add hover effects
+          marker.on('mouseover', function(e) {
+            this.setStyle({
+              radius: 7,
+              fillColor: 'rgba(255, 128, 0, 0.8)',
+              weight: 2
+            });
+          });
+
+          marker.on('mouseout', function(e) {
+            this.setStyle({
+              radius: 5,
+              fillColor: 'rgba(255, 0, 0, 0.8)',
+              weight: 1
+            });
+          });
+
+          featureGroup.addLayer(marker);
         }
+      } catch (e) {
+        console.warn("Failed to render feature:", e);
+      }
+    });
 
-        // Update loading progress
-        const progress = Math.min(
-          100,
-          ((startIndex + batch.length) / features.length) * 100
-        );
-        setLoadingProgress(80 + progress * 0.2); // 80-100% for rendering
+    if (startIndex === 0) {
+      setShapefileGroup(featureGroup);
+    }
 
-        // Render next batch with longer delay to prevent hanging
-        if (
-          mounted &&
-          !renderingCancelled &&
-          startIndex + BATCH_SIZE < features.length
-        ) {
-          setTimeout(() => {
-            renderBatch(features, startIndex + BATCH_SIZE);
-          }, 100); // Increased delay to prevent hanging
-        } else if (mounted && !renderingCancelled) {
-          // Final batch completed
-          setLoadingProgress(100);
-          setTimeout(() => setLoadingProgress(0), 1000);
+    const progress = Math.min(100, ((startIndex + batch.length) / features.length) * 100);
+    setLoadingProgress(80 + progress * 0.2);
 
-          // Fit bounds
-          const bounds = featureGroup.getBounds();
-          if (bounds.isValid()) {
-            mapInstance.fitBounds(bounds);
-          }
-        }
-      });
-    };
+    if (mounted && !renderingCancelled && startIndex + BATCH_SIZE < features.length) {
+      setTimeout(() => {
+        renderBatch(features, startIndex + BATCH_SIZE);
+      }, 100);
+    } else if (mounted && !renderingCancelled) {
+      setLoadingProgress(100);
+      setTimeout(() => setLoadingProgress(0), 1000);
+
+      const bounds = featureGroup.getBounds();
+      if (bounds.isValid()) {
+        mapInstance.fitBounds(bounds);
+      }
+    }
+  });
+};
 
     // Clear previous features
     if (shapefileGroup) {
@@ -411,12 +502,31 @@ const MapWithShapefiles = () => {
           {/* Shapefile Upload Section */}
           <div className="space-y-2">
             <label className="text-sm text-gray-600">Upload Shapefile</label>
+            <div className="text-xs text-gray-500 mb-2">
+              Supported formats:
+              {Object.entries(SUPPORTED_FORMATS).map(([ext, desc]) => (
+                <span
+                  key={ext}
+                  className="inline-flex items-center m-1 px-2 py-1 bg-gray-100 rounded"
+                >
+                  .{ext}
+                  <span
+                    className="ml-1 text-gray-400"
+                    title={desc}
+                  >
+                    ℹ️
+                  </span>
+                </span>
+              ))}
+            </div>
             <input
               ref={fileInputRef}
               type="file"
               multiple
               onChange={handleFileUpload}
-              accept=".shp,.dbf,.prj,.shx,.sbn,.sbx,.xml"
+              accept={Object.keys(SUPPORTED_FORMATS)
+                .map((ext) => `.${ext}`)
+                .join(",")}
               className="w-full text-sm border border-gray-300 rounded p-1 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               disabled={loading}
             />
