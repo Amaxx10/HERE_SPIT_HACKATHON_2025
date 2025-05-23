@@ -1,3 +1,4 @@
+import 'leaflet/dist/leaflet.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Map from './components/Map';
 import Dashboard from './pages/Dashboard';

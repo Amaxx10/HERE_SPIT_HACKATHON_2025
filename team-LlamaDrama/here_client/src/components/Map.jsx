@@ -1,5 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import * as shp from "shpjs";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Update map container styles
+const mapContainerStyle = {
+  width: "100%",
+  height: "100%",
+};
+
+// MapController component for map instance access
+function MapController({ onMapReady }) {
+  const map = useMap();
+  useEffect(() => {
+    onMapReady(map);
+  }, [map, onMapReady]);
+  return null;
+}
 
 const MapWithShapefiles = () => {
   // Map references and state
@@ -25,41 +43,17 @@ const MapWithShapefiles = () => {
   const MAX_FEATURES = 10000; // Reduced max features
   const MAX_FILE_SIZE = 200 * 1024 * 1024; // Reduced to 50MB
 
-  // Initialize HERE Map
-  useEffect(() => {
-    const platform = new H.service.Platform({
-      apikey: import.meta.env.VITE_HERE_API_KEY,
-    });
-
-    const defaultLayers = platform.createDefaultLayers();
-    const map = new H.Map(mapRef.current, defaultLayers.vector.normal.map, {
-      zoom: 12,
-      center: { lat: 1.35, lng: 103.81 },
-      pixelRatio: window.devicePixelRatio || 1,
-    });
-
-    // Add map behavior and UI
-    new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-    H.ui.UI.createDefault(map, defaultLayers);
-
-    // Initialize traffic layer
-    const traffic = new H.map.layer.TileLayer(
-      new H.map.provider.ImageTileProvider({
-        label: "Traffic",
-        min: 8,
-        max: 20,
-        getURL: (col, row, level) => {
-          return `https://tiles.traffic.api.here.com/v3/${level}/${col}/${row}/flow/${platform.apikey}`;
-        },
-      })
-    );
-
+  // Handle map instance
+  const handleMapReady = (map) => {
     setMapInstance(map);
-    setTrafficLayer(traffic);
+  };
 
+  // Initialize map
+  useEffect(() => {
+    // Remove HERE Maps initialization
     return () => {
-      if (map) {
-        map.dispose();
+      if (mapInstance) {
+        mapInstance.remove();
       }
     };
   }, []);
@@ -157,7 +151,7 @@ const MapWithShapefiles = () => {
 
     let mounted = true;
     let renderingCancelled = false;
-    const group = new H.map.Group();
+    const featureGroup = L.featureGroup().addTo(mapInstance);
 
     const renderBatch = async (features, startIndex) => {
       if (!mounted || renderingCancelled) return;
@@ -185,14 +179,12 @@ const MapWithShapefiles = () => {
 
                 if (simplified.length > 3) {
                   // Ensure minimum points for polygon
-                  const polygon = new H.map.Polygon(simplified, {
-                    style: {
-                      fillColor: "rgba(0, 128, 255, 0.3)",
-                      strokeColor: "rgba(0, 0, 255, 0.6)",
-                      lineWidth: 1,
-                    },
+                  const polygon = L.polygon(simplified, {
+                    fillColor: "rgba(0, 128, 255, 0.3)",
+                    color: "rgba(0, 0, 255, 0.6)",
+                    weight: 1,
                   });
-                  group.addObject(polygon);
+                  featureGroup.addLayer(polygon);
                 }
               });
             } else if (
@@ -211,45 +203,24 @@ const MapWithShapefiles = () => {
 
               if (simplified.length > 1) {
                 // Ensure minimum points for line
-                const lineString = new H.map.Polyline(simplified, {
-                  style: {
-                    strokeColor: "rgba(255, 0, 0, 0.6)",
-                    lineWidth: 2,
-                  },
+                const polyline = L.polyline(simplified, {
+                  color: "rgba(255, 0, 0, 0.6)",
+                  weight: 2,
                 });
-                group.addObject(lineString);
+                featureGroup.addLayer(polyline);
               }
             } else if (feature.geometry.type === "Point") {
-              // Get current zoom level for responsive sizing
-              const currentZoom = mapInstance.getZoom();
-              const baseSize = 4; // Base size at zoom level 10
-              const zoomFactor = Math.max(0.5, Math.min(2, currentZoom / 10)); // Scale between 0.5x and 2x
-              const dynamicSize = Math.round(baseSize * zoomFactor);
-              const radius = Math.max(1.5, dynamicSize / 2);
-
-              // Zoom-responsive icon that scales with zoom level
-              const icon = new H.map.Icon(
-                `data:image/svg+xml,${encodeURIComponent(`
-                  <svg xmlns="http://www.w3.org/2000/svg" width="${dynamicSize}" height="${dynamicSize}" viewBox="0 0 ${dynamicSize} ${dynamicSize}">
-                    <circle cx="${dynamicSize / 2}" cy="${
-                  dynamicSize / 2
-                }" r="${radius}" fill="rgba(255, 0, 0, 0.8)" stroke="rgba(255, 255, 255, 1)" stroke-width="0.8"/>
-                  </svg>
-                `)}`,
+              const marker = L.circleMarker(
+                [feature.geometry.coordinates[1], feature.geometry.coordinates[0]],
                 {
-                  size: { w: dynamicSize, h: dynamicSize },
-                  anchor: { x: dynamicSize / 2, y: dynamicSize / 2 },
+                  radius: 5,
+                  fillColor: "rgba(255, 0, 0, 0.8)",
+                  color: "white",
+                  weight: 1,
+                  fillOpacity: 0.8,
                 }
               );
-
-              const marker = new H.map.Marker(
-                {
-                  lat: feature.geometry.coordinates[1],
-                  lng: feature.geometry.coordinates[0],
-                },
-                { icon: icon }
-              );
-              group.addObject(marker);
+              featureGroup.addLayer(marker);
             }
           } catch (e) {
             console.warn("Failed to render feature:", e);
@@ -258,8 +229,7 @@ const MapWithShapefiles = () => {
 
         if (startIndex === 0) {
           // Add group to map on first batch
-          mapInstance.addObject(group);
-          setShapefileGroup(group);
+          setShapefileGroup(featureGroup);
         }
 
         // Update loading progress
@@ -283,27 +253,29 @@ const MapWithShapefiles = () => {
           setLoadingProgress(100);
           setTimeout(() => setLoadingProgress(0), 1000);
 
-          const bounds = group.getBoundingBox();
-          if (bounds) {
-            mapInstance.getViewModel().setLookAtData({
-              bounds: bounds,
-            });
+          // Fit bounds
+          const bounds = featureGroup.getBounds();
+          if (bounds.isValid()) {
+            mapInstance.fitBounds(bounds);
           }
         }
       });
     };
 
-    // Clear previous shapefile data
+    // Clear previous features
     if (shapefileGroup) {
-      mapInstance.removeObject(shapefileGroup);
+      shapefileGroup.remove();
     }
 
-    // Start rendering first batch
     renderBatch(shapefileData.features, 0);
+    setShapefileGroup(featureGroup);
 
     return () => {
       mounted = false;
       renderingCancelled = true;
+      if (featureGroup) {
+        featureGroup.remove();
+      }
     };
   }, [shapefileData, mapInstance]);
 
@@ -321,32 +293,20 @@ const MapWithShapefiles = () => {
 
   // Change map style
   const changeMapStyle = (style) => {
-    if (mapInstance) {
-      const platform = new H.service.Platform({
-        apikey: import.meta.env.VITE_HERE_API_KEY,
-      });
-      const layers = platform.createDefaultLayers();
-      const newStyle =
-        style === "satellite"
-          ? layers.raster.satellite.map
-          : layers.vector.normal.map;
-      mapInstance.setBaseLayer(newStyle);
-      setMapStyle(style);
-    }
+    setMapStyle(style);
   };
 
   // Reset map view
   const resetView = () => {
     if (mapInstance) {
-      mapInstance.setCenter({ lat: 1.35, lng: 103.81 });
-      mapInstance.setZoom(12);
+      mapInstance.setView([1.35, 103.81], 12);
     }
   };
 
   // Clear shapefile data
   const clearShapefile = () => {
     if (shapefileGroup && mapInstance) {
-      mapInstance.removeObject(shapefileGroup);
+      shapefileGroup.remove();
     }
     setShapefileData(null);
     setFileNames([]);
@@ -361,7 +321,26 @@ const MapWithShapefiles = () => {
 
   return (
     <div className="relative w-full h-full">
-      <div ref={mapRef} className="absolute inset-0 shadow-inner" />
+      <MapContainer
+        center={[1.35, 103.81]}
+        zoom={12}
+        style={mapContainerStyle}
+        className="z-0"
+      >
+        <MapController onMapReady={handleMapReady} />
+        <TileLayer
+          url={
+            mapStyle === "satellite"
+              ? "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          }
+          attribution={
+            mapStyle === "satellite"
+              ? "&copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+              : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }
+        />
+      </MapContainer>
 
       {/* Loading Overlay with blur background */}
       {(loading || loadingProgress > 0) && (
