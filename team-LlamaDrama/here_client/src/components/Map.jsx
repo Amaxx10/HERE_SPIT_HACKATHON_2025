@@ -23,7 +23,7 @@ const MapWithShapefiles = () => {
   // Constants for shapefile processing
   const BATCH_SIZE = 50; // Reduced batch size
   const MAX_FEATURES = 10000; // Reduced max features
-  const MAX_FILE_SIZE = 200 * 1024 * 1024; // Reduced to 50MB
+  const MAX_FILE_SIZE = 200 * 1024 * 1024; // Reduced to 200MB
 
   // Initialize HERE Map
   useEffect(() => {
