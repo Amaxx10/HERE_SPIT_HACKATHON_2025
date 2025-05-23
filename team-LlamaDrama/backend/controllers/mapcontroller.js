@@ -92,3 +92,21 @@ export const getFeaturesInBounds = async (req, res) => {
     });
   }
 };
+
+export const getAllFeatures = async (req, res) => {
+  try {
+    const features = await Feature.find({}).lean();
+    
+    if (!features || features.length === 0) {
+      return res.status(200).json([]); // Return empty array instead of 404
+    }
+    console.log('Fetched features:', features);
+    return res.status(200).json(features);
+  } catch (error) {
+    console.error('Error fetching features:', error);
+    return res.status(500).json({ 
+      message: 'Internal server error',
+      error: error.message 
+    });
+  }
+};
