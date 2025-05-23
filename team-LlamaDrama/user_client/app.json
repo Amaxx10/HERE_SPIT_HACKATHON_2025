@@ -33,6 +33,24 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow app to use your location for reviewing places."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow app to access your photos to add images to reviews."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow app to access camera to take photos for reviews."
+        }
       ]
     ],
     "experiments": {
