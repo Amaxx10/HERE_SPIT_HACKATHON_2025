@@ -1,0 +1,1637 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Andheri Area Map with Roads and Restaurants</title>
+        <meta
+            name="viewport"
+            content="initial-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <link
+            href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css"
+            rel="stylesheet"
+        />
+        <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+            }
+            #map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }
+            #controls {
+                position: absolute;
+                top: 24px;
+                left: 24px;
+                background: rgba(255, 255, 255, 0.95);
+                padding: 15px;
+                border-radius: 8px;
+                z-index: 1100;
+                max-width: 370px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            #legend {
+                position: static;
+                margin-top: 24px;
+                background: rgba(255, 255, 255, 0.95);
+                padding: 15px;
+                border-radius: 8px;
+                font-size: 12px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                max-width: 370px;
+                margin-bottom: 24px;
+            }
+            .legend-item {
+                display: flex;
+                align-items: center;
+                margin: 5px 0;
+            }
+            .legend-color {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                margin-right: 8px;
+                border-radius: 50%;
+            }
+            .legend-line {
+                display: inline-block;
+                width: 25px;
+                height: 3px;
+                margin-right: 8px;
+                border-radius: 2px;
+            }
+            button {
+                margin: 3px;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 4px;
+                background-color: #007cbf;
+                color: white;
+                cursor: pointer;
+                font-size: 12px;
+            }
+            button:hover {
+                background-color: #005a87;
+            }
+            button.active {
+                background-color: #005a87;
+            }
+            .toggle-btn {
+                margin: 5px 0;
+            }
+            .filter-section {
+                margin-top: 18px;
+                border-top: 1.5px solid #e0e0e0;
+                padding-top: 12px;
+            }
+            .filter-group {
+                margin: 10px 0;
+            }
+            .filter-title {
+                font-weight: bold;
+                margin-bottom: 6px;
+                font-size: 14px;
+                color: #2c3e50;
+            }
+            select {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 8px;
+                border-radius: 5px;
+                border: 1px solid #cfd8dc;
+                font-size: 14px;
+                background: #f9f9f9;
+            }
+            .popup-content {
+                padding: 10px;
+                min-width: 200px;
+            }
+            .popup-title {
+                font-weight: bold;
+                font-size: 15px;
+                margin-bottom: 8px;
+                border-bottom: 2px solid #eee;
+                padding-bottom: 6px;
+                color: #333;
+            }
+            .popup-detail {
+                font-size: 12px;
+                margin: 5px 0;
+                display: flex;
+                justify-content: space-between;
+            }
+            .popup-detail-label {
+                font-weight: 600;
+                color: #555;
+            }
+            .popup-detail-value {
+                color: #777;
+                text-align: right;
+            }
+            .delivery-time,
+            .speed-limit,
+            .road-type {
+                display: inline-block;
+                background: #f5f5f5;
+                padding: 3px 8px;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 11px;
+            }
+            .road-type.primary {
+                background: #ffebee;
+                color: #c62828;
+            }
+            .road-type.secondary {
+                background: #fff3e0;
+                color: #ef6c00;
+            }
+            .road-type.tertiary {
+                background: #e8f5e8;
+                color: #2e7d32;
+            }
+            .road-type.residential {
+                background: #e3f2fd;
+                color: #1565c0;
+            }
+            .road-type.unclassified {
+                background: #f3e5f5;
+                color: #7b1fa2;
+            }
+
+            .search-box {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 12px;
+                border-radius: 5px;
+                border: 1px solid #cfd8dc;
+                font-size: 14px;
+                background: #f9f9f9;
+            }
+            .layer-toggle {
+                display: flex;
+                justify-content: space-around;
+                margin-bottom: 12px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            .checkbox-container {
+                display: flex;
+                align-items: center;
+                margin-right: 15px;
+            }
+            .checkbox-container input {
+                margin-right: 6px;
+            }
+            .checkbox-container label {
+                font-size: 13px;
+                font-weight: 500;
+            }
+            .road-filters {
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px solid #eee;
+            }
+            #road-info {
+                position: absolute;
+                top: 60px;
+                right: 10px;
+                background: rgba(255, 255, 255, 0.95);
+                padding: 10px;
+                border-radius: 5px;
+                z-index: 1000;
+                font-size: 12px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                display: none;
+                min-width: 200px;
+                border-left: 4px solid #2196F3;
+            }
+            #road-info strong {
+                color: #333;
+                font-size: 13px;
+            }
+
+            #road-info small {
+                color: #666;
+                display: block;
+                margin: 2px 0;
+            }
+
+            /* Weather Panel Styles */
+            #weather-panel {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: rgba(255, 255, 255, 0.98);
+                padding: 22px 28px 18px 28px;
+                border-radius: 16px;
+                z-index: 1200;
+                font-size: 14px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+                min-width: 340px;
+                max-width: 400px;
+                border-left: 6px solid #4CAF50;
+                border-bottom: 2px solid #e0e0e0;
+                transition: box-shadow 0.2s;
+                cursor: pointer;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            #weather-panel:hover {
+                box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+            }
+            .weather-title {
+                font-weight: bold;
+                font-size: 18px;
+                margin-bottom: 14px;
+                color: #222;
+                display: flex;
+                align-items: center;
+            }
+            .weather-info {
+                margin: 10px 0 0 0;
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                padding: 6px 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            .weather-label {
+                font-weight: 600;
+                color: #333;
+                font-size: 15px;
+            }
+            .weather-value {
+                color: #444;
+                font-size: 15px;
+            }
+            .weather-suggestion {
+                margin-top: 18px;
+                padding: 14px 12px;
+                background: #f6faf7;
+                border-radius: 10px;
+                font-size: 14px;
+                color: #2d3a2d;
+                line-height: 1.6;
+                border: 1px solid #e0f2e9;
+                width: 100%;
+            }
+            .weather-icon {
+                font-size: 32px;
+                margin-right: 14px;
+            }
+            .suggestion-category {
+                margin-top: 12px;
+                padding-top: 10px;
+                border-top: 1px dashed #d0e0d0;
+            }
+            .suggestion-category:first-child {
+                margin-top: 0;
+                padding-top: 0;
+                border-top: none;
+            }
+            .suggestion-title {
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 5px;
+                font-size: 15px;
+            }
+            .suggestion-content {
+                color: #444;
+                font-size: 14px;
+            }
+            /* Prevent overlap between controls, legend, and weather */
+            @media (max-width: 900px) {
+                #controls, #legend {
+                    max-width: 95vw;
+                    left: 2vw;
+                    right: 2vw;
+                }
+                #legend {
+                    top: 420px;
+                    left: 2vw;
+                    right: 2vw;
+                }
+                #weather-panel {
+                    min-width: 0;
+                    max-width: 98vw;
+                }
+            }
+            /* Responsive improvements for mobile */
+            @media (max-width: 600px) {
+                #controls, #legend {
+                    left: 0 !important;
+                    right: 0 !important;
+                    max-width: 100vw;
+                    min-width: 0;
+                    border-radius: 0 0 16px 16px;
+                }
+                #legend {
+                    top: 420px;
+                    left: 0 !important;
+                    right: 0 !important;
+                }
+                #weather-panel {
+                    bottom: 0;
+                    padding: 16px 8px 12px 8px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="controls">
+            <div>
+                <strong style="font-size: 16px; color: #333"
+                    >Andheri Explorer</strong
+                >
+                <div class="layer-toggle">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="show-restaurants" checked />
+                        <label for="show-restaurants">Restaurants</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="show-roads" checked />
+                        <label for="show-roads">Roads</label>
+                    </div>
+                </div>
+
+                <input
+                    id="search-box"
+                    class="search-box"
+                    placeholder="Search restaurants or roads..."
+                    type="text"
+                />
+
+                <div class="filter-section">
+                    <div class="filter-title">🍽️ Restaurant Filters:</div>
+                    <div class="filter-group">
+                        <select id="cuisine-filter">
+                            <option value="">All Cuisines</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="North Indian">North Indian</option>
+                            <option value="South Indian">South Indian</option>
+                            <option value="Fast Food">Fast Food</option>
+                            <option value="Italian">Italian</option>
+                            <option value="Thai">Thai</option>
+                            <option value="Indian">Indian</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="rating-filter">
+                            <option value="">All Ratings</option>
+                            <option value="1000">1000+ Reviews</option>
+                            <option value="500">500+ Reviews</option>
+                            <option value="100">100+ Reviews</option>
+                            <option value="50">50+ Reviews</option>
+                            <option value="20">20+ Reviews</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="time-filter">
+                            <option value="">Any Delivery Time</option>
+                            <option value="45">Under 45 min</option>
+                            <option value="50">Under 50 min</option>
+                            <option value="55">Under 55 min</option>
+                            <option value="60">Under 60 min</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="road-filters">
+                    <div class="filter-title">🛣️ Road Filters:</div>
+                    <div class="filter-group">
+                        <select id="highway-filter">
+                            <option value="">All Road Types</option>
+                            <option value="primary">Primary Roads</option>
+                            <option value="secondary">Secondary Roads</option>
+                            <option value="tertiary">Tertiary Roads</option>
+                            <option value="residential">
+                                Residential Roads
+                            </option>
+                            <option value="unclassified">
+                                Unclassified Roads
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="surface-filter">
+                            <option value="">All Surfaces</option>
+                            <option value="asphalt">Asphalt</option>
+                            <option value="concrete">Concrete</option>
+                            <option value="paved">Paved</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="reset-filters">🔄 Reset All Filters</button>
+            </div>
+            <div
+                id="status"
+                style="margin-top: 12px; font-size: 11px; color: #666"
+            >
+                Loading data...
+            </div>
+            <div id="legend">
+                <strong style="color: #333">Map Legend</strong><br />
+                <div class="legend-section" style="margin-top: 8px">
+                    <div class="filter-title">🍽️ Restaurants:</div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-color"
+                            style="background-color: #ff5252"
+                        ></span>
+                        1000+ Reviews
+                    </div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-color"
+                            style="background-color: #ff9800"
+                        ></span>
+                        500+ Reviews
+                    </div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-color"
+                            style="background-color: #ffc107"
+                        ></span>
+                        100+ Reviews
+                    </div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-color"
+                            style="background-color: #4caf50"
+                        ></span>
+                        50+ Reviews
+                    </div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-color"
+                            style="background-color: #2196f3"
+                        ></span>
+                        20+ Reviews
+                    </div>
+                </div>
+                <div class="legend-section" style="margin-top: 12px">
+                    <div class="filter-title">🛣️ Roads:</div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-line"
+                            style="background-color: #d32f2f; height: 4px"
+                        ></span>
+                        Primary Roads
+                    </div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-line"
+                            style="background-color: #f57c00; height: 3px"
+                        ></span>
+                        Secondary Roads
+                    </div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-line"
+                            style="background-color: #388e3c; height: 3px"
+                        ></span>
+                        Tertiary Roads
+                    </div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-line"
+                            style="background-color: #1976d2; height: 2px"
+                        ></span>
+                        Residential Roads
+                    </div>
+                    <div class="legend-item">
+                        <span
+                            class="legend-line"
+                            style="background-color: #7b1fa2; height: 2px"
+                        ></span>
+                        Other Roads
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="weather-panel" tabindex="0" aria-label="Current weather insights" title="Click for more weather details">
+            <div class="weather-title">🌤️ Current Weather</div>
+            <div id="weather-content">
+                <div class="weather-info">
+                    <span class="weather-label">Loading weather data...</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="road-info">
+            <div id="road-info-content"></div>
+        </div>
+
+        <div id="map"></div>
+        <script>
+            // Replace with your HERE API key
+            const apiKey = 'api key here';
+            const googleApiKey = 'google api key here';
+            const GEMINI_API_KEY = 'gemini api key here';
+
+            // Weather functions
+            async function getLatLng(location) {
+                const geoUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location)}&key=${googleApiKey}`;
+                const res = await fetch(geoUrl);
+                const data = await res.json();
+                if (data.results.length === 0) throw new Error("Location not found");
+                return data.results[0].geometry.location;
+            }
+
+            async function getWeather(lat, lon) {
+                const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,precipitation_probability,weathercode`;
+                const res = await fetch(weatherUrl);
+                const data = await res.json();
+                return data;
+            }
+
+            function getWeatherIcon(code) {
+                // WMO Weather interpretation codes (WW)
+                const codes = {
+                    0: '☀️', // Clear sky
+                    1: '🌤️', // Mainly clear
+                    2: '⛅', // Partly cloudy
+                    3: '☁️', // Overcast
+                    45: '🌫️', // Foggy
+                    48: '🌫️', // Depositing rime fog
+                    51: '🌧️', // Light drizzle
+                    53: '🌧️', // Moderate drizzle
+                    55: '🌧️', // Dense drizzle
+                    61: '🌧️', // Slight rain
+                    63: '🌧️', // Moderate rain
+                    65: '🌧️', // Heavy rain
+                    71: '🌨️', // Slight snow
+                    73: '🌨️', // Moderate snow
+                    75: '🌨️', // Heavy snow
+                    77: '🌨️', // Snow grains
+                    80: '🌧️', // Slight rain showers
+                    81: '🌧️', // Moderate rain showers
+                    82: '🌧️', // Violent rain showers
+                    85: '🌨️', // Slight snow showers
+                    86: '🌨️', // Heavy snow showers
+                    95: '⛈️', // Thunderstorm
+                    96: '⛈️', // Thunderstorm with slight hail
+                    99: '⛈️', // Thunderstorm with heavy hail
+                };
+                return codes[code] || '❓';
+            }
+
+            async function getGeminiSuggestions(weatherData) {
+                const prompt = `Given the following weather conditions in Andheri, Mumbai:
+                    Temperature: ${weatherData.current_weather.temperature}°C
+                    Wind Speed: ${weatherData.current_weather.windspeed} km/h
+                    Weather Code: ${weatherData.current_weather.weathercode}
+                    Time: ${new Date().toLocaleTimeString()}
+                    
+                    Please provide detailed, practical suggestions in the following categories:
+                    1. Health and Safety
+                    2. Activities
+                    3. Travel
+                    4. Clothing
+                    
+                    Format the response as a JSON object with these categories as keys and arrays of suggestions as values.
+                    Make the suggestions specific, actionable, and relevant to the local context of Mumbai.`;
+
+                try {
+                    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${GEMINI_API_KEY}`
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{
+                                    text: prompt
+                                }]
+                            }]
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.candidates && data.candidates[0].content.parts[0].text) {
+                        try {
+                            // Parse the JSON response from Gemini
+                            const suggestions = JSON.parse(data.candidates[0].content.parts[0].text);
+                            return suggestions;
+                        } catch (e) {
+                            console.error('Error parsing Gemini response:', e);
+                            return getFallbackSuggestions(weatherData);
+                        }
+                    } else {
+                        throw new Error('Invalid response from Gemini');
+                    }
+                } catch (error) {
+                    console.error('Error fetching Gemini suggestions:', error);
+                    return getFallbackSuggestions(weatherData);
+                }
+            }
+
+            function getFallbackSuggestions(weatherData) {
+                // Fallback suggestions if Gemini API fails
+                const temp = weatherData.current_weather.temperature;
+                const code = weatherData.current_weather.weathercode;
+                const hour = new Date().getHours();
+                
+                return {
+                    health: [
+                        temp > 30 ? "Stay hydrated and use SPF 30+ sunscreen" :
+                        temp < 15 ? "Keep warm and stay active" :
+                        "Stay hydrated and use appropriate sun protection"
+                    ],
+                    activities: [
+                        code >= 51 && code <= 65 ? "Indoor activities recommended due to rain" :
+                        code >= 95 && code <= 99 ? "Stay indoors due to thunderstorm" :
+                        "Good weather for outdoor activities"
+                    ],
+                    travel: [
+                        code >= 45 && code <= 48 ? "Drive carefully in foggy conditions" :
+                        code >= 51 && code <= 65 ? "Carry an umbrella" :
+                        "Normal travel conditions"
+                    ],
+                    clothing: [
+                        temp > 30 ? "Wear light, breathable clothing" :
+                        temp < 15 ? "Layer your clothing and wear warm outerwear" :
+                        "Wear comfortable, weather-appropriate clothing"
+                    ]
+                };
+            }
+
+            async function updateWeather() {
+                try {
+                    const { lat, lng } = await getLatLng("Andheri, Mumbai");
+                    const weather = await getWeather(lat, lng);
+                    const current = weather.current_weather;
+                    const icon = getWeatherIcon(current.weathercode);
+                    
+                    // Get suggestions from Gemini
+                    const suggestions = await getGeminiSuggestions(weather);
+                    
+                    // Format suggestions for display
+                    let formattedSuggestions = '';
+                    for (const [category, items] of Object.entries(suggestions)) {
+                        if (items.length > 0) {
+                            formattedSuggestions += `
+                                <div class="suggestion-category">
+                                    <div class="suggestion-title">${category.charAt(0).toUpperCase() + category.slice(1)}</div>
+                                    <div class="suggestion-content">${items.join(' ')}</div>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    const weatherContent = document.getElementById('weather-content');
+                    weatherContent.innerHTML = `
+                        <div class="weather-info">
+                            <span class="weather-label">Temperature:</span>
+                            <span class="weather-value">${current.temperature}°C</span>
+                        </div>
+                        <div class="weather-info">
+                            <span class="weather-label">Wind Speed:</span>
+                            <span class="weather-value">${current.windspeed} km/h</span>
+                        </div>
+                        <div class="weather-info">
+                            <span class="weather-label">Conditions:</span>
+                            <span class="weather-value">${icon}</span>
+                        </div>
+                        <div class="weather-suggestion">
+                            ${formattedSuggestions}
+                        </div>
+                    `;
+                } catch (err) {
+                    console.error('Weather update error:', err);
+                    document.getElementById('weather-content').innerHTML = `
+                        <div class="weather-info">
+                            <span class="weather-label">Error:</span>
+                            <span class="weather-value">Could not fetch weather data</span>
+                        </div>
+                    `;
+                }
+            }
+
+            // Sample Restaurant GeoJSON data for fallback
+            const sampleRestaurantData = {
+                type: 'FeatureCollection',
+                features: [
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [72.8729633, 19.1138382],
+                        },
+                        properties: {
+                            restaurant: 'Demo Restaurant 1',
+                            total_ratings: 1200,
+                            food_type: 'Chinese, Thai, Asian',
+                            formatted_address:
+                                'Sample Address 1, Andheri East, Mumbai',
+                            delivery_time: 45,
+                        },
+                    },
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [72.8829633, 19.1238382],
+                        },
+                        properties: {
+                            restaurant: 'Demo Restaurant 2',
+                            total_ratings: 500,
+                            food_type: 'North Indian, Mughlai',
+                            formatted_address:
+                                'Sample Address 2, Andheri East, Mumbai',
+                            delivery_time: 60,
+                        },
+                    },
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [72.8629633, 19.1038382],
+                        },
+                        properties: {
+                            restaurant: 'Demo Restaurant 3',
+                            total_ratings: 100,
+                            food_type: 'South Indian, Dosa',
+                            formatted_address:
+                                'Sample Address 3, Andheri West, Mumbai',
+                            delivery_time: 30,
+                        },
+                    },
+                ],
+            };
+
+            // Initialize the map
+            const map = new maplibregl.Map({
+                container: 'map',
+                style: {
+                    version: 8,
+                    sources: {
+                        hereVectorTiles: {
+                            type: 'vector',
+                            tiles: [
+                                `https://vector.hereapi.com/v2/vectortiles/base/mc/{z}/{x}/{y}/omv?apikey=${apiKey}`,
+                            ],
+                            tileSize: 512,
+                        },
+                        restaurants: {
+                            type: 'geojson',
+                            data: {
+                                type: 'FeatureCollection',
+                                features: [],
+                            },
+                        },
+                        roads: {
+                            type: 'geojson',
+                            data: {
+                                type: 'FeatureCollection',
+                                features: [],
+                            },
+                        },
+                    },
+                    layers: [
+                        // HERE Base Layers
+                        {
+                            id: 'landuse_here',
+                            type: 'fill',
+                            source: 'hereVectorTiles',
+                            'source-layer': 'landuse',
+                            paint: {
+                                'fill-color': '#f5f5f5',
+                            },
+                        },
+                        {
+                            id: 'water_here',
+                            type: 'fill',
+                            source: 'hereVectorTiles',
+                            'source-layer': 'water',
+                            paint: {
+                                'fill-color': '#a0c8f0',
+                            },
+                        },
+                        {
+                            id: 'buildings_here',
+                            type: 'fill',
+                            source: 'hereVectorTiles',
+                            'source-layer': 'buildings',
+                            paint: {
+                                'fill-color': '#e0e0e0',
+                                'fill-outline-color': '#d0d0d0',
+                            },
+                        },
+                        // Custom road layers from GeoJSON with enhanced styling
+                        {
+                            id: 'roads-primary',
+                            type: 'line',
+                            source: 'roads',
+                            filter: ['==', ['get', 'highway'], 'primary'],
+                            layout: {
+                                'line-join': 'round',
+                                'line-cap': 'round',
+                                visibility: 'visible',
+                            },
+                            paint: {
+                                'line-color': '#d32f2f',
+                                'line-width': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    10,
+                                    2,
+                                    15,
+                                    4,
+                                    18,
+                                    8,
+                                ],
+                                'line-opacity': 0.8,
+                            },
+                        },
+                        {
+                            id: 'roads-secondary',
+                            type: 'line',
+                            source: 'roads',
+                            filter: ['==', ['get', 'highway'], 'secondary'],
+                            layout: {
+                                'line-join': 'round',
+                                'line-cap': 'round',
+                                visibility: 'visible',
+                            },
+                            paint: {
+                                'line-color': '#f57c00',
+                                'line-width': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    10,
+                                    1.5,
+                                    15,
+                                    3,
+                                    18,
+                                    6,
+                                ],
+                                'line-opacity': 0.8,
+                            },
+                        },
+                        {
+                            id: 'roads-tertiary',
+                            type: 'line',
+                            source: 'roads',
+                            filter: ['==', ['get', 'highway'], 'tertiary'],
+                            layout: {
+                                'line-join': 'round',
+                                'line-cap': 'round',
+                                visibility: 'visible',
+                            },
+                            paint: {
+                                'line-color': '#388e3c',
+                                'line-width': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    10,
+                                    1,
+                                    15,
+                                    2.5,
+                                    18,
+                                    5,
+                                ],
+                                'line-opacity': 0.8,
+                            },
+                        },
+                        {
+                            id: 'roads-residential',
+                            type: 'line',
+                            source: 'roads',
+                            filter: ['==', ['get', 'highway'], 'residential'],
+                            layout: {
+                                'line-join': 'round',
+                                'line-cap': 'round',
+                                visibility: 'visible',
+                            },
+                            paint: {
+                                'line-color': '#1976d2',
+                                'line-width': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    10,
+                                    0.8,
+                                    15,
+                                    2,
+                                    18,
+                                    4,
+                                ],
+                                'line-opacity': 0.7,
+                            },
+                        },
+                        {
+                            id: 'roads-unclassified',
+                            type: 'line',
+                            source: 'roads',
+                            filter: ['==', ['get', 'highway'], 'unclassified'],
+                            layout: {
+                                'line-join': 'round',
+                                'line-cap': 'round',
+                                visibility: 'visible',
+                            },
+                            paint: {
+                                'line-color': '#7b1fa2',
+                                'line-width': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    10,
+                                    0.8,
+                                    15,
+                                    2,
+                                    18,
+                                    4,
+                                ],
+                                'line-opacity': 0.7,
+                            },
+                        },
+                        // FIXED: Corrected filter expression for roads-other
+                        {
+                            id: 'roads-other',
+                            type: 'line',
+                            source: 'roads',
+                            filter: [
+                                'all',
+                                ['has', 'highway'],
+                                ['!', 
+                                    ['any',
+                                        ['==', ['get', 'highway'], 'primary'],
+                                        ['==', ['get', 'highway'], 'secondary'],
+                                        ['==', ['get', 'highway'], 'tertiary'],
+                                        ['==', ['get', 'highway'], 'residential'],
+                                        ['==', ['get', 'highway'], 'unclassified']
+                                    ]
+                                ]
+                            ],
+                            layout: {
+                                'line-join': 'round',
+                                'line-cap': 'round',
+                                visibility: 'visible',
+                            },
+                            paint: {
+                                'line-color': '#999999',
+                                'line-width': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    10,
+                                    0.5,
+                                    15,
+                                    1.5,
+                                    18,
+                                    3,
+                                ],
+                                'line-opacity': 0.6,
+                            },
+                        },
+                        // Restaurant data layer
+                        {
+                            id: 'restaurants-circles',
+                            type: 'circle',
+                            source: 'restaurants',
+                            layout: {
+                                visibility: 'visible',
+                            },
+                            paint: {
+                                'circle-radius': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['get', 'total_ratings'],
+                                    20,
+                                    6,
+                                    50,
+                                    8,
+                                    100,
+                                    10,
+                                    500,
+                                    12,
+                                    1000,
+                                    14,
+                                ],
+                                'circle-color': [
+                                    'match',
+                                    ['get', 'rating_category'],
+                                    '1000+',
+                                    '#FF5252',
+                                    '500+',
+                                    '#FF9800',
+                                    '100+',
+                                    '#FFC107',
+                                    '50+',
+                                    '#4CAF50',
+                                    '20+',
+                                    '#2196F3',
+                                    '#BBBBBB',
+                                ],
+                                'circle-opacity': 0.8,
+                                'circle-stroke-width': 2,
+                                'circle-stroke-color': '#FFFFFF',
+                            },
+                        },
+                    ],
+                },
+                center: [72.8729633, 19.1138382], // Default center (Andheri)
+                zoom: 13,
+            });
+
+            // Add navigation controls
+            map.addControl(new maplibregl.NavigationControl());
+
+            // Function to update status
+            function updateStatus(message) {
+                document.getElementById('status').textContent = message;
+            }
+
+            // Function to show road info on hover
+            // Function to show road info on hover - REPLACE EXISTING
+            function showRoadInfo(props) {
+                const roadInfoDiv = document.getElementById('road-info');
+                const contentDiv = document.getElementById('road-info-content');
+
+                let content = `<strong>${props.name || 'Unnamed Road'}</strong><br>`;
+                content += `<small>Type: ${props.highway || 'Unknown'}</small>`;
+                if (props.maxspeed)
+                    content += `<br><small>Speed: ${props.maxspeed} km/h</small>`;
+                if (props.surface)
+                    content += `<br><small>Surface: ${props.surface}</small>`;
+                if (props.oneway)
+                    content += `<br><small>One-way: ${props.oneway}</small>`;
+
+                contentDiv.innerHTML = content;
+                roadInfoDiv.style.display = 'block';
+            }
+
+            function hideRoadInfo() {
+                document.getElementById('road-info').style.display = 'none';
+            }
+
+            // Function to prepare restaurant data for display
+            function prepareRestaurantData(data) {
+                if (
+                    !data ||
+                    !data.type ||
+                    data.type !== 'FeatureCollection' ||
+                    !Array.isArray(data.features)
+                ) {
+                    console.warn(
+                        'Using fallback restaurant data due to invalid input'
+                    );
+                    return sampleRestaurantData;
+                }
+
+                data.features = data.features.filter(feature => {
+                    if (!feature.geometry || !feature.properties) return false;
+                    if (
+                        !feature.geometry.coordinates ||
+                        feature.geometry.coordinates.length < 2
+                    )
+                        return false;
+
+                    // Add rating category
+                    if (feature.properties.total_ratings) {
+                        const ratings = parseInt(
+                            feature.properties.total_ratings
+                        );
+                        if (ratings >= 1000) {
+                            feature.properties.rating_category = '1000+';
+                        } else if (ratings >= 500) {
+                            feature.properties.rating_category = '500+';
+                        } else if (ratings >= 100) {
+                            feature.properties.rating_category = '100+';
+                        } else if (ratings >= 50) {
+                            feature.properties.rating_category = '50+';
+                        } else {
+                            feature.properties.rating_category = '20+';
+                        }
+                    } else {
+                        feature.properties.rating_category = '20+';
+                        feature.properties.total_ratings = 20;
+                    }
+
+                    // Ensure required fields exist
+                    if (!feature.properties.food_type) {
+                        feature.properties.food_type = 'Unspecified';
+                    } else {
+                        feature.properties.food_type =
+                            feature.properties.food_type
+                                .replace(/,/g, ', ')
+                                .replace(/\s\s+/g, ' ');
+                    }
+
+                    if (!feature.properties.delivery_time) {
+                        feature.properties.delivery_time = 45;
+                    }
+
+                    if (!feature.properties.restaurant) {
+                        feature.properties.restaurant = 'Unnamed Restaurant';
+                    }
+
+                    if (!feature.properties.formatted_address) {
+                        feature.properties.formatted_address =
+                            'Andheri, Mumbai';
+                    }
+
+                    return true;
+                });
+
+                if (data.features.length === 0) {
+                    return sampleRestaurantData;
+                }
+
+                return data;
+            }
+
+            // Function to prepare road data for display
+            function prepareRoadData(data) {
+                if (
+                    !data ||
+                    !data.type ||
+                    data.type !== 'FeatureCollection' ||
+                    !Array.isArray(data.features)
+                ) {
+                    console.warn(
+                        'Using fallback road data due to invalid input'
+                    );
+                    return { type: 'FeatureCollection', features: [] };
+                }
+
+                // Filter and process road features
+                const processedFeatures = data.features
+                    .filter(feature => {
+                        // Must have geometry and properties
+                        if (!feature.geometry || !feature.properties)
+                            return false;
+                        if (
+                            !feature.geometry.coordinates ||
+                            feature.geometry.coordinates.length === 0
+                        )
+                            return false;
+
+                        // Must be a LineString (road)
+                        if (feature.geometry.type !== 'LineString')
+                            return false;
+
+                        return true;
+                    })
+                    .map(feature => {
+                        // Ensure all road properties exist with defaults
+                        const props = feature.properties;
+
+                        // Set default values for missing properties
+                        if (!props.highway) props.highway = 'unclassified';
+                        if (!props.name) props.name = 'Unnamed Road';
+
+                        return feature;
+                    });
+
+                console.log(
+                    `Processed ${processedFeatures.length} road features`
+                );
+
+                return {
+                    type: 'FeatureCollection',
+                    features: processedFeatures,
+                };
+            }
+
+            // Function to load restaurant data
+            function loadRestaurantData() {
+                updateStatus('Loading restaurant data...');
+
+                fetch('./andheri_restaurants.geojson')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(
+                                `HTTP error! status: ${response.status}`
+                            );
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const processedData = prepareRestaurantData(data);
+                        map.getSource('restaurants').setData(processedData);
+                        window.originalRestaurantData = processedData;
+
+                        updateStatus(
+                            `Loaded ${processedData.features.length} restaurants`
+                        );
+                    })
+                    .catch(error => {
+                        console.error('Error loading restaurant data:', error);
+                        map.getSource('restaurants').setData(
+                            sampleRestaurantData
+                        );
+                        window.originalRestaurantData = sampleRestaurantData;
+                        updateStatus(`Using sample restaurant data`);
+                    });
+            }
+
+            // Function to load road data
+            function loadRoadData() {
+                updateStatus('Loading road data...');
+
+                fetch('./export.geojson')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(
+                                `HTTP error! status: ${response.status}`
+                            );
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const processedData = prepareRoadData(data);
+                        map.getSource('roads').setData(processedData);
+                        window.originalRoadData = processedData;
+
+                        updateStatus(
+                            `Loaded ${processedData.features.length} roads and restaurants`
+                        );
+                    })
+                    .catch(error => {
+                        console.error('Error loading road data:', error);
+                        map.getSource('roads').setData({
+                            type: 'FeatureCollection',
+                            features: [],
+                        });
+                        window.originalRoadData = {
+                            type: 'FeatureCollection',
+                            features: [],
+                        };
+                        updateStatus(`Error loading road data`);
+                    });
+            }
+
+            // Filter functions
+            function filterRestaurants() {
+                if (!window.originalRestaurantData) return;
+
+                const cuisineFilter =
+                    document.getElementById('cuisine-filter').value;
+                const ratingFilter =
+                    document.getElementById('rating-filter').value;
+                const timeFilter = document.getElementById('time-filter').value;
+                const searchText = document
+                    .getElementById('search-box')
+                    .value.toLowerCase();
+
+                const filteredData = JSON.parse(
+                    JSON.stringify(window.originalRestaurantData)
+                );
+
+                filteredData.features = filteredData.features.filter(
+                    feature => {
+                        const props = feature.properties;
+
+                        // Check cuisine filter
+                        if (
+                            cuisineFilter &&
+                            !props.food_type
+                                .toLowerCase()
+                                .includes(cuisineFilter.toLowerCase())
+                        ) {
+                            return false;
+                        }
+
+                        // Check rating filter
+                        if (ratingFilter) {
+                            const minRating = parseInt(ratingFilter);
+                            if (props.total_ratings < minRating) {
+                                return false;
+                            }
+                        }
+
+                        // Check delivery time filter
+                        if (timeFilter && props.delivery_time) {
+                            const maxTime = parseInt(timeFilter);
+                            if (props.delivery_time > maxTime) {
+                                return false;
+                            }
+                        }
+
+                        // Check search text filter
+                        if (searchText) {
+                            const matchesName = props.restaurant
+                                .toLowerCase()
+                                .includes(searchText);
+                            const matchesCuisine = props.food_type
+                                .toLowerCase()
+                                .includes(searchText);
+                            if (!matchesName && !matchesCuisine) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    }
+                );
+
+                map.getSource('restaurants').setData(filteredData);
+            }
+
+            function filterRoads() {
+                if (!window.originalRoadData) return;
+
+                const highwayFilter =
+                    document.getElementById('highway-filter').value;
+                const surfaceFilter =
+                    document.getElementById('surface-filter').value;
+                const searchText = document
+                    .getElementById('search-box')
+                    .value.toLowerCase();
+
+                const filteredData = JSON.parse(
+                    JSON.stringify(window.originalRoadData)
+                );
+
+                filteredData.features = filteredData.features.filter(
+                    feature => {
+                        const props = feature.properties;
+
+                        // Check highway type filter
+                        if (highwayFilter && props.highway !== highwayFilter) {
+                            return false;
+                        }
+
+                        // Check surface filter
+                        if (surfaceFilter && props.surface !== surfaceFilter) {
+                            return false;
+                        }
+
+                        // Check search text filter
+                        if (searchText) {
+                            const matchesName =
+                                props.name &&
+                                props.name.toLowerCase().includes(searchText);
+                            const matchesHighway =
+                                props.highway &&
+                                props.highway
+                                    .toLowerCase()
+                                    .includes(searchText);
+                            if (!matchesName && !matchesHighway) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    }
+                );
+
+                map.getSource('roads').setData(filteredData);
+
+                // Update status
+                const totalFeatures =
+                    (document.getElementById('show-restaurants').checked
+                        ? map.querySourceFeatures('restaurants').length
+                        : 0) + filteredData.features.length;
+                updateStatus(`Showing ${totalFeatures} features`);
+            }
+
+            function applyAllFilters() {
+                filterRestaurants();
+                filterRoads();
+            }
+
+            // Enhanced popup functionality for restaurants
+            map.on('click', 'restaurants-circles', function (e) {
+                const feature = e.features[0];
+                const props = feature.properties;
+
+                const cuisineFormatted = props.food_type
+                    .split(',')
+                    .map(cuisine => cuisine.trim())
+                    .filter(cuisine => cuisine)
+                    .join(', ');
+
+                const popupContent = `
+                <div class="popup-content">
+                    <div class="popup-title">🍽️ ${props.restaurant}</div>
+                    <div class="popup-detail">
+                        <span class="popup-detail-label">Cuisine:</span>
+                        <span class="popup-detail-value">${cuisineFormatted}</span>
+                    </div>
+                    <div class="popup-detail">
+                        <span class="popup-detail-label">Ratings:</span>
+                        <span class="popup-detail-value">${props.total_ratings} reviews</span>
+                    </div>
+                    <div class="popup-detail">
+                        <span class="popup-detail-label">Delivery Time:</span>
+                        <span class="delivery-time">${props.delivery_time} mins</span>
+                    </div>
+                    <div class="popup-detail">
+                        <span class="popup-detail-label">Address:</span>
+                        <span class="popup-detail-value">${props.formatted_address}</span>
+                    </div>
+                </div>
+                `;
+
+                new maplibregl.Popup({ closeButton: true, closeOnClick: false })
+                    .setLngLat(feature.geometry.coordinates)
+                    .setHTML(popupContent)
+                    .addTo(map);
+            });
+
+            // Enhanced popup functionality for roads
+            const roadLayers = [
+                'roads-primary',
+                'roads-secondary', 
+                'roads-tertiary',
+                'roads-residential',
+                'roads-unclassified',
+                'roads-other'
+            ];
+
+            // Enhanced popup functionality for roads - REPLACE EXISTING
+            roadLayers.forEach(layerId => {
+                map.on('click', layerId, function (e) {
+                    const feature = e.features[0];
+                    const props = feature.properties;
+
+                    // Determine road type class for styling
+                    const roadTypeClass = props.highway || 'unclassified';
+
+                    let popupContent = `
+                    <div class="popup-content">
+                        <div class="popup-title">🛣️ ${props.name || 'Unnamed Road'}</div>
+                        <div class="popup-detail">
+                            <span class="popup-detail-label">Type:</span>
+                            <span class="road-type ${roadTypeClass}">${(props.highway || 'unclassified').toUpperCase()}</span>
+                        </div>
+                    `;
+
+                    if (props.maxspeed) {
+                        popupContent += `
+                        <div class="popup-detail">
+                            <span class="popup-detail-label">Speed Limit:</span>
+                            <span class="speed-limit">${props.maxspeed} km/h</span>
+                        </div>`;
+                    }
+
+                    if (props.surface) {
+                        popupContent += `
+                        <div class="popup-detail">
+                            <span class="popup-detail-label">Surface:</span>
+                            <span class="popup-detail-value">${props.surface}</span>
+                        </div>`;
+                    }
+
+                    if (props.oneway) {
+                        popupContent += `
+                        <div class="popup-detail">
+                            <span class="popup-detail-label">Direction:</span>
+                            <span class="popup-detail-value">${props.oneway === 'yes' ? 'One-way' : 'Two-way'}</span>
+                        </div>`;
+                    }
+
+                    popupContent += `</div>`;
+
+                    new maplibregl.Popup({ closeButton: true, closeOnClick: false })
+                        .setLngLat(e.lngLat)
+                        .setHTML(popupContent)
+                        .addTo(map);
+                });
+            });
+
+            // Hover effects for roads - REPLACE EXISTING
+            roadLayers.forEach(layerId => {
+                map.on('mouseenter', layerId, function (e) {
+                    map.getCanvas().style.cursor = 'pointer';
+                    const props = e.features[0].properties;
+                    showRoadInfo(props);
+                });
+
+                map.on('mouseleave', layerId, function () {
+                    map.getCanvas().style.cursor = '';
+                    hideRoadInfo();
+                });
+            });
+
+            // Change cursor on hover for restaurants
+            map.on('mouseenter', 'restaurants-circles', function () {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', 'restaurants-circles', function () {
+                map.getCanvas().style.cursor = '';
+            });
+
+            // Set up event listeners for filters
+            document
+                .getElementById('cuisine-filter')
+                .addEventListener('change', applyAllFilters);
+            document
+                .getElementById('rating-filter')
+                .addEventListener('change', applyAllFilters);
+            document
+                .getElementById('time-filter')
+                .addEventListener('change', applyAllFilters);
+            document
+                .getElementById('highway-filter')
+                .addEventListener('change', applyAllFilters);
+            document
+                .getElementById('surface-filter')
+                .addEventListener('change', applyAllFilters);
+            document
+                .getElementById('search-box')
+                .addEventListener('input', applyAllFilters);
+
+            // Reset filters button
+            document
+                .getElementById('reset-filters')
+                .addEventListener('click', function () {
+                    document.getElementById('cuisine-filter').value = '';
+                    document.getElementById('rating-filter').value = '';
+                    document.getElementById('time-filter').value = '';
+                    document.getElementById('highway-filter').value = '';
+                    document.getElementById('surface-filter').value = '';
+                    document.getElementById('search-box').value = '';
+                    applyAllFilters();
+                });
+
+            // Layer toggle functionality
+            document
+                .getElementById('show-restaurants')
+                .addEventListener('change', function (e) {
+                    const visibility = e.target.checked ? 'visible' : 'none';
+                    map.setLayoutProperty(
+                        'restaurants-circles',
+                        'visibility',
+                        visibility
+                    );
+                });
+
+            document
+                .getElementById('show-roads')
+                .addEventListener('change', function (e) {
+                    const visibility = e.target.checked ? 'visible' : 'none';
+                    roadLayers.forEach(layer => {
+                        map.setLayoutProperty(layer, 'visibility', visibility);
+                    });
+                });
+
+            // Load data on map load
+            map.on('load', function () {
+                loadRestaurantData();
+                loadRoadData();
+                updateWeather(); // Add weather update on map load
+
+                // Update weather every 30 minutes
+                setInterval(updateWeather, 30 * 60 * 1000);
+
+                // Fit map to bounds when data is loaded
+                setTimeout(() => {
+                    try {
+                        const bounds = new maplibregl.LngLatBounds();
+                        let hasFeatures = false;
+
+                        // Include restaurant features
+                        const restaurantFeatures =
+                            map.querySourceFeatures('restaurants');
+                        restaurantFeatures.forEach(feature => {
+                            if (
+                                feature.geometry &&
+                                feature.geometry.coordinates
+                            ) {
+                                bounds.extend(feature.geometry.coordinates);
+                                hasFeatures = true;
+                            }
+                        });
+
+                        // Include road features
+                        const roadFeatures = map.querySourceFeatures('roads');
+                        roadFeatures.forEach(feature => {
+                            if (
+                                feature.geometry &&
+                                feature.geometry.coordinates
+                            ) {
+                                feature.geometry.coordinates.forEach(coord => {
+                                    bounds.extend(coord);
+                                    hasFeatures = true;
+                                });
+                            }
+                        });
+
+                        if (hasFeatures && !bounds.isEmpty()) {
+                            map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+                        }
+                    } catch (error) {
+                        console.warn('Could not fit bounds:', error);
+                    }
+                }, 2000);
+            });
+        </script>
+    </body>
+</html>

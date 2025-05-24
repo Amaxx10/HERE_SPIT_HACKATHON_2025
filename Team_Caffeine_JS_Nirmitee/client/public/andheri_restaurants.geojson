@@ -1,0 +1,2351 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88204069999999,
+          19.1169777
+        ]
+      },
+      "properties": {
+        "restaurant": "Kung Fu Panda",
+        "total_ratings": 100,
+        "food_type": "Chinese  Thai  Asian",
+        "formatted_address": "Shop n.3, Abu Asad Premises, opp. Military Road, Sankasth Pada Welfare Society, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.86101699999999,
+          19.1210238
+        ]
+      },
+      "properties": {
+        "restaurant": "Sai Leela",
+        "total_ratings": 20,
+        "food_type": "Mughlai,North Indian,Chinese,Seafood",
+        "formatted_address": "Salsette Parsi Colony, Andheri East, 4VC6+CC2, Warli, Satya Darshan Colony, Gundavali, Andheri East, Mumbai, Maharashtra 400053, India",
+        "delivery_time": 63
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8709738,
+          19.1142659
+        ]
+      },
+      "properties": {
+        "restaurant": "Rj Spice",
+        "total_ratings": 20,
+        "food_type": "Chinese  Thai  Fast Food",
+        "formatted_address": "Shop No.2, Kondivita Andheri Kurla Rd, RK Mandir Rd, near J.B. Nagar, near MIDC, Bhim Nagar, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 55
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8631304,
+          19.1178548
+        ]
+      },
+      "properties": {
+        "restaurant": "99 East",
+        "total_ratings": 80,
+        "food_type": "North Indian  Chinese  Seafood",
+        "formatted_address": "Andheri East, Mumbai, Maharashtra, India",
+        "delivery_time": 57
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8922936,
+          19.1074141
+        ]
+      },
+      "properties": {
+        "restaurant": "Forks And Spoons (Gourmet Chinese & Thai)",
+        "total_ratings": 100,
+        "food_type": "Chinese,Thai,Pan-Asian,Oriental,Beverages,Snacks,Seafood,Mughlai,Tibetan,Combo,European,Turkish,Asian,British,Salads,German",
+        "formatted_address": "Gala No. 3A, Stanny compound, near SJ Studios, Kherani Road, Sakinaka, Yadav Nagar, Chandivali, Andheri East, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 48
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8719349,
+          19.1106062
+        ]
+      },
+      "properties": {
+        "restaurant": "Food Rush",
+        "total_ratings": 500,
+        "food_type": "Mughlai,North Indian,Chinese",
+        "formatted_address": "Marol Pipe Line , Andheri - Kurla Rd, opp .mukund hospital, Andheri, 4V6C+6QV, Mariyyman Nagar, Greater Indra Nagar, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88909939999999,
+          19.1169634
+        ]
+      },
+      "properties": {
+        "restaurant": "Gurukripa",
+        "total_ratings": 100,
+        "food_type": "North Indian  Chinese  Seafood",
+        "formatted_address": "Saki Vihar Rd, opp. 55 Corporate Avenue, Muranjan Wadi, Marol, Powai, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 50
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8629938,
+          19.1108308
+        ]
+      },
+      "properties": {
+        "restaurant": "Cocoon - Dragonfly Hotel",
+        "total_ratings": 20,
+        "food_type": "North Indian  Chinese",
+        "formatted_address": "Cts no - 69 & 72, New, Link Road, near JB Nagar, opposite Solitaire Corporate Park, Shaheed Bhagat Singh Society, Chakala, Andheri East, Mumbai, Maharashtra 400093, India",
+        "delivery_time": 59
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8678865,
+          19.2108882
+        ]
+      },
+      "properties": {
+        "restaurant": "Cafe Coffee Day",
+        "total_ratings": 50,
+        "food_type": "Beverages  Snacks  Desserts",
+        "formatted_address": "GOKUL REGENCY, Asha Nagar Rd, \u0915\u093e\u0902\u0926\u093f\u0935\u0932\u0940, \u0917\u093e\u092f\u0924\u094d\u0930\u0940 \u0928\u0917\u0930, \u0906\u0936\u093e \u0928\u0917\u0930, \u0915\u093e\u0902\u0926\u093f\u0935\u0932\u0940 \u0908\u0938\u094d\u091f, \u092e\u0941\u0902\u092c\u0908, \u092e\u0939\u093e\u0930\u093e\u0937\u094d\u091f\u094d\u0930 400101, India",
+        "delivery_time": 61
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8783864,
+          19.1077516
+        ]
+      },
+      "properties": {
+        "restaurant": "Punjab Depot",
+        "total_ratings": 1000,
+        "food_type": "North Indian,Tandoor,Mughlai,Biryani,Snacks,Desserts,Beverages,Combo",
+        "formatted_address": "Shop No,5, CTS Tayyab Compound, Andheri - Kurla Rd, Chimatpada, Marol Naka, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 48
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.86476739999999,
+          19.1070013
+        ]
+      },
+      "properties": {
+        "restaurant": "Dimsum (Momo) Express",
+        "total_ratings": 100,
+        "food_type": "Asian",
+        "formatted_address": "Shop No. 9, B Wing, Building - C, Prajakta CHS, Ltd, Near, J B Nagar Rd, Akal Society, Kanti Nagar, J B Nagar, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8802652,
+          19.1200124
+        ]
+      },
+      "properties": {
+        "restaurant": "Sai Fast Food & Chinese Corner",
+        "total_ratings": 100,
+        "food_type": "Chinese,Fast Food",
+        "formatted_address": "Shop No 1&2, Daffodil Apartment, Usha Sadan CHS, Marol Maroshi Rd, Bhawani Nagar Society, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8797382,
+          19.116103
+        ]
+      },
+      "properties": {
+        "restaurant": "Uttam Da Dhaba",
+        "total_ratings": 100,
+        "food_type": "North Indian,Chinese,Seafood,Combo",
+        "formatted_address": "Marol Maroshi Rd, near Seven Hills Hospital, Bori Colony, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8686276,
+          19.1065702
+        ]
+      },
+      "properties": {
+        "restaurant": "Apna Dhaba",
+        "total_ratings": 50,
+        "food_type": "Indian",
+        "formatted_address": "Marol Pipeline Rd, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 55
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8800016,
+          19.1169535
+        ]
+      },
+      "properties": {
+        "restaurant": "Minks - The Nagpur Saoji Treat",
+        "total_ratings": 50,
+        "food_type": "Maharashtrian,Indian,Beverages",
+        "formatted_address": "Marol Maroshi Rd, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8856115,
+          19.1157969
+        ]
+      },
+      "properties": {
+        "restaurant": "Littoo - Pure Veg",
+        "total_ratings": 100,
+        "food_type": "Snacks,Fast Food,Bihari,North Eastern,Thalis,Desserts,Beverages",
+        "formatted_address": "A 17 Ground, Raj Industrial Complex, Military Rd, near Sai Mandir, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8740626,
+          19.118749
+        ]
+      },
+      "properties": {
+        "restaurant": "Blossoms - Hotel Suncity",
+        "total_ratings": 20,
+        "food_type": "North Indian  Chinese  Continental  Mughlai  Seafood",
+        "formatted_address": "16th Road, near Akruti Trade Centre, Shree Krishna Nagar, MIDC Marol, Andheri East, Mumbai, Maharashtra 400093, India",
+        "delivery_time": 66
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.880291,
+          19.1201467
+        ]
+      },
+      "properties": {
+        "restaurant": "Benzy'S Restaurant",
+        "total_ratings": 50,
+        "food_type": "North Indian  Chinese  Mughlai  Seafood",
+        "formatted_address": "Vijay Nagar, Marol Maroshi Rd, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 62
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.87949309999999,
+          19.1135898
+        ]
+      },
+      "properties": {
+        "restaurant": "Top China Delight",
+        "total_ratings": 80,
+        "food_type": "Chinese",
+        "formatted_address": "Vemulkar House, Plot No. 273/3, Marol Maroshi Rd, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 57
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.87885399999999,
+          19.1081425
+        ]
+      },
+      "properties": {
+        "restaurant": "New Food Inn",
+        "total_ratings": 100,
+        "food_type": "Indian,Chinese",
+        "formatted_address": "Shop No 5, Star Plus Station, Andheri - Kurla Rd, Chimatpada, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 47
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8582672,
+          19.1097712
+        ]
+      },
+      "properties": {
+        "restaurant": "Ching Asia",
+        "total_ratings": 20,
+        "food_type": "Pan-Asian",
+        "formatted_address": "Chakala, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 64
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8874182,
+          19.1142168
+        ]
+      },
+      "properties": {
+        "restaurant": "Square Pizza",
+        "total_ratings": 50,
+        "food_type": "Pizzas,Desserts,Fast Food",
+        "formatted_address": "Shop 4, Harmony Apartment, near Marwah House, Ashok Nagar Society, Marol, Andheri East, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 51
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.89136119999999,
+          19.1136961
+        ]
+      },
+      "properties": {
+        "restaurant": "The Chinese Spot",
+        "total_ratings": 50,
+        "food_type": "Chinese,Indian,Tandoor,Biryani",
+        "formatted_address": "Shop No.2 D,A, D'Souza Compound Chandivali Sakinaka, near Narayan Plaza, Yadav Nagar, Chandivali, Andheri East, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 59
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8842122,
+          19.1092131
+        ]
+      },
+      "properties": {
+        "restaurant": "Eva'S Pizza",
+        "total_ratings": 100,
+        "food_type": "Pizzas,Italian,Salads",
+        "formatted_address": "Shop No.4, Salim Estate, Co.op Road, Sag Baug, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 50
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8291727,
+          19.1367825
+        ]
+      },
+      "properties": {
+        "restaurant": "Indigo Burger Project",
+        "total_ratings": 100,
+        "food_type": "American",
+        "formatted_address": "Shop No 4, Clifton, Mayfair Apartments, New Link Rd, Shastri Nagar, Andheri West, Mumbai, Maharashtra 400053, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8625435,
+          19.1144009
+        ]
+      },
+      "properties": {
+        "restaurant": "Sangeeta'S Kitchen",
+        "total_ratings": 50,
+        "food_type": "Indian",
+        "formatted_address": "Elite House, Sir Mathuradas Vasanji Rd, next to Bank of Baroda, Chakala, Andheri East, Mumbai, Maharashtra 400093, India",
+        "delivery_time": 66
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8615947,
+          19.1079328
+        ]
+      },
+      "properties": {
+        "restaurant": "Bombay Kitchen",
+        "total_ratings": 80,
+        "food_type": "Indian  Chinese  Pizzas  Pastas  Snacks  Biryani  Continental  Beverages  Desserts",
+        "formatted_address": "101, A Block, OM Nivas Building, Plot No.26, Tarun Bharat, Near Chakala Cigarette Factory, Ekta Nagar, Tarun Bharat, Andheri East, Mumbai, Maharashtra 400099, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8582672,
+          19.1097712
+        ]
+      },
+      "properties": {
+        "restaurant": "Nayak'S Restaurant",
+        "total_ratings": 20,
+        "food_type": "Indian  Chinese",
+        "formatted_address": "Chakala, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.86633429999999,
+          19.1255677
+        ]
+      },
+      "properties": {
+        "restaurant": "Freshmenu",
+        "total_ratings": 500,
+        "food_type": "Chinese,Continental,Italian,Mediterranean,Thai,Lebanese,American,Asian,Beverages,Bakery,Biryani,Desserts,Mexican,North Indian,Salads,Pizzas",
+        "formatted_address": "Gala NL- 05, Ground Floor JK Industrial Estate Opposite to Mahakali Road, 4VG8+566, Mahakali Caves Rd, near Paper Box, Subhash Nagar, Andheri East, Mumbai, Maharashtra 400093, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8685788,
+          19.1129083
+        ]
+      },
+      "properties": {
+        "restaurant": "Mystery Box",
+        "total_ratings": 20,
+        "food_type": "Chinese  Thai  Indonesian  Combo",
+        "formatted_address": "Mystery Box / Shawarma Street (Multi-Kitchen Outlet Shop No. 3, Post office Bldg, Metro Station, Sahar Rd, opp. Sahar Plaza Midas II, near J.B. Nagar, Chakala, J B Nagar, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 57
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8644673,
+          19.1084296
+        ]
+      },
+      "properties": {
+        "restaurant": "Live Bakers",
+        "total_ratings": 20,
+        "food_type": "Desserts",
+        "formatted_address": "shop no 3, Monarch Nagar, near, J B Nagar Rd, opposite Embassy wines shop, Bamanpuri, J.B. Nagar, Tarun Bharat, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.87972189999999,
+          19.116059
+        ]
+      },
+      "properties": {
+        "restaurant": "Frisbees",
+        "total_ratings": 20,
+        "food_type": "American  Fast Food",
+        "formatted_address": "Shop no.4, uttam niwas, next to uttam da dhaba, Bori Colony, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8651546,
+          19.1088734
+        ]
+      },
+      "properties": {
+        "restaurant": "Gluttony",
+        "total_ratings": 100,
+        "food_type": "Bakery,Desserts,Fast Food,Beverages",
+        "formatted_address": "Jb nagar, 4V58+G3R, Bamanpuri, Kanti Nagar, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8797239,
+          19.1159772
+        ]
+      },
+      "properties": {
+        "restaurant": "Afra Mughlai Darbar",
+        "total_ratings": 50,
+        "food_type": "Indian  Chinese  Desserts  Juices",
+        "formatted_address": "Shop No: 4, Uttam Nivas, Marol Maroshi Rd, Bori Colony, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.85108869999999,
+          19.1107955
+        ]
+      },
+      "properties": {
+        "restaurant": "Swad Desi",
+        "total_ratings": 80,
+        "food_type": "Asian  Fast Food  Chinese  Combo",
+        "formatted_address": "Swad Marathi, near, Sahar Rd, Koldongri, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8814046,
+          19.1097604
+        ]
+      },
+      "properties": {
+        "restaurant": "180 Bistro",
+        "total_ratings": 80,
+        "food_type": "Indian,Beverages,Biryani,Fast Food",
+        "formatted_address": "Shop No 5, Thakur House, Antrish Building, Marol Makwana Road, Near, Marol Naka M, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8921045,
+          19.1013745
+        ]
+      },
+      "properties": {
+        "restaurant": "De Goa Kitchen",
+        "total_ratings": 100,
+        "food_type": "Goan  Seafood",
+        "formatted_address": "04, Barnard Market, Pereira Wadi, Saki Naka, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 57
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8798357,
+          19.1234925
+        ]
+      },
+      "properties": {
+        "restaurant": "Spice Of Kerala",
+        "total_ratings": 100,
+        "food_type": "Kerala",
+        "formatted_address": "Shop No.3, Marol Maroshi Rd, near Uttam Dhaba, Vijay Nagar, MIDC, Marol Village, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8667832,
+          19.111757
+        ]
+      },
+      "properties": {
+        "restaurant": "Paa G",
+        "total_ratings": 80,
+        "food_type": "North Indian  Chinese  Italian",
+        "formatted_address": "Shop 195, Shaheed Bhagat Singh Colony, J.B. Nagar Nagar Metro Station, Shaheed Bhagat Singh Society, S B Singh Colony, J B Nagar, Chakala, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 62
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8835543,
+          19.1076499
+        ]
+      },
+      "properties": {
+        "restaurant": "Marol Darbar",
+        "total_ratings": 50,
+        "food_type": "North Indian  Chinese  Mughlai  Fast Food  Desserts  Juices",
+        "formatted_address": "B Wing, Time Square Building, B3, Andheri - Kurla Rd, Gamdevi, Marol, Andheri(E, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88558739999999,
+          19.1193655
+        ]
+      },
+      "properties": {
+        "restaurant": "More'S Family Restaurant & Bar",
+        "total_ratings": 20,
+        "food_type": "North Indian  Chinese",
+        "formatted_address": "Ganeshpada, Vinayak Co-operative Housing Society, Military Rd, Raje Shivaji Nagar, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 59
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8825619,
+          19.0691282
+        ]
+      },
+      "properties": {
+        "restaurant": "Al Hamdan Restaurant",
+        "total_ratings": 100,
+        "food_type": "North Indian  Mughlai  Biryani  Beverages  Afghani  Desserts",
+        "formatted_address": "Bldg no 28, shop, L.I.G COLONY, BUILDING NO 3, opp. lazeez chinise, LIG Colony, Vinobha Bhave Nagar, Kurla West, Kurla, Mumbai, Maharashtra 400070, India",
+        "delivery_time": 50
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.893276,
+          19.0478892
+        ]
+      },
+      "properties": {
+        "restaurant": "Sahara Family Restaurant",
+        "total_ratings": 20,
+        "food_type": "North Indian  Chinese  Biryani  Desserts",
+        "formatted_address": "Ramakrishna Chemburkar Marg, Ashok Nagar, Navajeevan Society, Chembur, Mumbai, Maharashtra 400074, India",
+        "delivery_time": 53
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.86916769999999,
+          19.1113973
+        ]
+      },
+      "properties": {
+        "restaurant": "Shawarma Street",
+        "total_ratings": 100,
+        "food_type": "Fast Food",
+        "formatted_address": "Shawarma Street / Mystery Box (Multi-Kitchen Outlet, Shop No. 3, Post office Bldg Metro Station Sahar Road, opp. Sahar Plaza Midas II, near J.B. Nagar, Chakala, J B Nagar, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.880439,
+          19.1171258
+        ]
+      },
+      "properties": {
+        "restaurant": "Cafe New Ajwa Marol",
+        "total_ratings": 100,
+        "food_type": "North Indian,Mughlai,Chinese,Fast Food,Desserts",
+        "formatted_address": "Military Rd, near Seven Hills Hospital, Bhavani Nagar, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 53
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8786411,
+          19.1114306
+        ]
+      },
+      "properties": {
+        "restaurant": "New Cafe Marol",
+        "total_ratings": 100,
+        "food_type": "North Indian  Chinese  Mughlai  Tandoor  Desserts  Fast Food  Beverages",
+        "formatted_address": "Shop no : 1, 2 ,3, Everjoy Apartments, opp: silver inn, Bori Colony, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 50
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8683921,
+          19.111723
+        ]
+      },
+      "properties": {
+        "restaurant": "Hotel Om Sai",
+        "total_ratings": 80,
+        "food_type": "Chinese  Biryani  Indian",
+        "formatted_address": "Kurla Road, Andheri, Ajit Nagar, J B Nagar, Andheri East, Near J.B.Nagar Metro Station, 4V69+M9J, Ajit Nagar, J B Nagar, Andheri East, Mumbai, Maharashtra 400053, India",
+        "delivery_time": 55
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8793876,
+          19.1104936
+        ]
+      },
+      "properties": {
+        "restaurant": "Al Zaika",
+        "total_ratings": 50,
+        "food_type": "North Indian  Chinese  Fast Food  Desserts",
+        "formatted_address": "Gala #7, Sai baba Industrial Estate, Marol Maroshi Rd, Near State Bank, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8599012,
+          19.1064888
+        ]
+      },
+      "properties": {
+        "restaurant": "Cafe Sahar",
+        "total_ratings": 20,
+        "food_type": "North Indian  Chinese  Mughlai  Desserts  Fast Food",
+        "formatted_address": "Sahar Rd, next to Suba International, Mahatma Kabir Nagar, Chakala, Andheri East, Mumbai, Maharashtra 400069, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8834852,
+          19.1111524
+        ]
+      },
+      "properties": {
+        "restaurant": "Mba In Khichdi",
+        "total_ratings": 20,
+        "food_type": "Home Food,Indian,North Indian",
+        "formatted_address": "9, 4V6M+C8W Bhargava house, Marol Cooperative Industrial Estate Rd, next to shemaroo, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 51
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8834852,
+          19.1111524
+        ]
+      },
+      "properties": {
+        "restaurant": "Bhayankar Burgers",
+        "total_ratings": 100,
+        "food_type": "American",
+        "formatted_address": "Bhargava house, 9, Marol industrial estate, next to shemaroo, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8837324,
+          19.1113248
+        ]
+      },
+      "properties": {
+        "restaurant": "Wakka Makka Chinese",
+        "total_ratings": 500,
+        "food_type": "Chinese  Asian  Oriental  Tibetan  Desserts",
+        "formatted_address": "Bhargava House, 9, Marol Cooperative Industrial Estate Rd, beside Shemaroo, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 51
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8815362,
+          19.1105885
+        ]
+      },
+      "properties": {
+        "restaurant": "The Momo Factory",
+        "total_ratings": 20,
+        "food_type": "Chinese",
+        "formatted_address": "Shop No. B 11, Crescent Landmark Building, Makwana Rd, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 55
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8655205,
+          19.0968179
+        ]
+      },
+      "properties": {
+        "restaurant": "Taste Of Kolkata",
+        "total_ratings": 100,
+        "food_type": "Biryani,North Indian,Fast Food,Juices,Beverages",
+        "formatted_address": "No 497, Sahar Rd, CPWD Colony, Sahar Village, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 50
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8834852,
+          19.1111524
+        ]
+      },
+      "properties": {
+        "restaurant": "Arey O Sambhar",
+        "total_ratings": 20,
+        "food_type": "South Indian",
+        "formatted_address": "Bhargava house, 9, Marol Cooperative Industrial Estate Rd, next to shemaroo, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8631304,
+          19.1178548
+        ]
+      },
+      "properties": {
+        "restaurant": "Oh ! Dum Biryani Taste Bangal",
+        "total_ratings": 20,
+        "food_type": "Biryani",
+        "formatted_address": "Andheri East, Mumbai, Maharashtra, India",
+        "delivery_time": 50
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8903793,
+          19.1191073
+        ]
+      },
+      "properties": {
+        "restaurant": "Only Roti'S",
+        "total_ratings": 50,
+        "food_type": "Fast Food",
+        "formatted_address": "Saki Vihar Rd, Mumbai, Maharashtra, India",
+        "delivery_time": 61
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88774219999999,
+          19.0961829
+        ]
+      },
+      "properties": {
+        "restaurant": "Hybrid Theory Cafe & Bistro (Coffee Pizza Pasta Sandwiches Burgers & More)",
+        "total_ratings": 20,
+        "food_type": "Continental,Pastas,Pizzas,Snacks,Beverages",
+        "formatted_address": "Saki Naka, Mumbai, Maharashtra, India",
+        "delivery_time": 53
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88774219999999,
+          19.0961829
+        ]
+      },
+      "properties": {
+        "restaurant": "Hb Brownies",
+        "total_ratings": 80,
+        "food_type": "Bakery,Desserts,Sweets",
+        "formatted_address": "Saki Naka, Mumbai, Maharashtra, India",
+        "delivery_time": 53
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8901297,
+          19.123648
+        ]
+      },
+      "properties": {
+        "restaurant": "Mother'S Touch Gujrati",
+        "total_ratings": 20,
+        "food_type": "Indian",
+        "formatted_address": "Saptatara Chawl, Vidya Milind Nagar, Raje Shivaji Nagar, Marol, Powai, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8665572,
+          19.1254293
+        ]
+      },
+      "properties": {
+        "restaurant": "Big Biriyani Company",
+        "total_ratings": 80,
+        "food_type": "Biryani,Mughlai",
+        "formatted_address": "Mahakali Caves Rd, Mumbai, Maharashtra, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.9069402,
+          19.082844
+        ]
+      },
+      "properties": {
+        "restaurant": "Instawich",
+        "total_ratings": 100,
+        "food_type": "Fast Food  Snacks  Beverages",
+        "formatted_address": "Shop no. 4, Jayant Villa, Hingwala Ln, Pant Nagar, Ghatkopar West, Mumbai, Maharashtra 400077, India",
+        "delivery_time": 49
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8810812,
+          19.1095866
+        ]
+      },
+      "properties": {
+        "restaurant": "Punjab Heritage",
+        "total_ratings": 80,
+        "food_type": "North Indian",
+        "formatted_address": "Nirma Plaza, Makwana Rd, opp. Antriksh Thakur, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88774219999999,
+          19.0961829
+        ]
+      },
+      "properties": {
+        "restaurant": "Ching Chong Asian",
+        "total_ratings": 100,
+        "food_type": "Chinese,Asian",
+        "formatted_address": "Saki Naka, Mumbai, Maharashtra, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8729633,
+          19.1198382
+        ]
+      },
+      "properties": {
+        "restaurant": "Momoguy",
+        "total_ratings": 100,
+        "food_type": "Tibetan,Chinese",
+        "formatted_address": "Marol MIDC Industry Estate, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8867947,
+          19.1041982
+        ]
+      },
+      "properties": {
+        "restaurant": "Zoodles",
+        "total_ratings": 80,
+        "food_type": "Fast Food,Pan-Asian,Chinese,Seafood,Thai,Asian,Desserts",
+        "formatted_address": "Sakinaka Junction, Sag Baug, Marol, Saki Naka, Mumbai, Maharashtra 400072",
+        "delivery_time": 51
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.883309,
+          19.1151445
+        ]
+      },
+      "properties": {
+        "restaurant": "Bokchoy Bowl",
+        "total_ratings": 20,
+        "food_type": "Pan-Asian  Chinese  Asian  Thai  Malaysian  Tibetan",
+        "formatted_address": "shop no 3A,Shetty tea house,makhwana road, Military Rd, opp. Vasant Oasis, Sankasth Pada Welfare Society, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 57
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8854338,
+          19.1186302
+        ]
+      },
+      "properties": {
+        "restaurant": "Bombay Tandoori",
+        "total_ratings": 500,
+        "food_type": "Indian  Tandoor  Chinese  Mughlai",
+        "formatted_address": "Gala no. 3, Santosh compound, Military Rd, near Ashok nagar building number D-4 D-4, opp. Alpine industrial estate, Raje Shivaji Nagar, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8729633,
+          19.1198382
+        ]
+      },
+      "properties": {
+        "restaurant": "Badmash Biryani",
+        "total_ratings": 50,
+        "food_type": "Biryani,Mughlai",
+        "formatted_address": "Marol MIDC Industry Estate, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 49
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8729633,
+          19.1198382
+        ]
+      },
+      "properties": {
+        "restaurant": "Bolo Tara Rara",
+        "total_ratings": 50,
+        "food_type": "North Indian,Punjabi",
+        "formatted_address": "Marol MIDC Industry Estate, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8729633,
+          19.1198382
+        ]
+      },
+      "properties": {
+        "restaurant": "Biryani Hazir Ho",
+        "total_ratings": 20,
+        "food_type": "Biryani,Mughlai",
+        "formatted_address": "Marol MIDC Industry Estate, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 50
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8846265,
+          19.1069627
+        ]
+      },
+      "properties": {
+        "restaurant": "The Bigg Small Cafe",
+        "total_ratings": 80,
+        "food_type": "Continental  Italian  Indian  Chinese",
+        "formatted_address": "Andheri Kurla Road Andheri East, above Mahesh Lunch Home, Sag Baug, Marol, Saki Naka, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8786411,
+          19.1114306
+        ]
+      },
+      "properties": {
+        "restaurant": "Cafe Marol",
+        "total_ratings": 1000,
+        "food_type": "Indian  Chinese  Tandoor",
+        "formatted_address": "Shop no : 1, 2 ,3, Everjoy Apartments, opp: silver inn, Bori Colony, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8879987,
+          19.107857
+        ]
+      },
+      "properties": {
+        "restaurant": "Foodpost",
+        "total_ratings": 100,
+        "food_type": "Chinese,Indian",
+        "formatted_address": "Jalaram Commercial Center, Shop No, 7, Saki Vihar Rd, Ansa Industrial Estate, Chandivali, Saki Naka, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 46
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8767884,
+          19.1049421
+        ]
+      },
+      "properties": {
+        "restaurant": "The White Barn",
+        "total_ratings": 20,
+        "food_type": "American,Fast Food,Indian,Pastas,Chinese,Kebabs,Biryani,Desserts",
+        "formatted_address": "Waterstones Club International, Approach Road, off International Airport, Navpada, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88884589999999,
+          19.1163937
+        ]
+      },
+      "properties": {
+        "restaurant": "Welcome Restaurant",
+        "total_ratings": 80,
+        "food_type": "Chinese,Indian,Mughlai,Tandoor",
+        "formatted_address": "Parijat Tower, Saki Vihar Rd, opp. sun srishti complex, near PMC Bank, Muranjan Wadi, Marol, Andheri East, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88277719999999,
+          19.0922501
+        ]
+      },
+      "properties": {
+        "restaurant": "Al Baik.Com",
+        "total_ratings": 100,
+        "food_type": "Snacks  Pizzas",
+        "formatted_address": "Magan Nathuram Rd, Jarimari, Saki Naka, Mumbai, Maharashtra 400047, Jarimari, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 59
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8803966,
+          19.1126251
+        ]
+      },
+      "properties": {
+        "restaurant": "Chinesezilla",
+        "total_ratings": 100,
+        "food_type": "Chinese,Combo,Snacks,Indian,North Indian",
+        "formatted_address": "Nand Dham Industrial Estate, B-4, Marol Maroshi Rd, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 41
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.880535,
+          19.117429
+        ]
+      },
+      "properties": {
+        "restaurant": "Hamdan Restaurant",
+        "total_ratings": 100,
+        "food_type": "North Indian  Chinese  Biryani  Fast Food  Desserts  Beverages",
+        "formatted_address": "Shop No B6, 7, Marol Maroshi Rd, Bhavani Nagar, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 51
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.880391,
+          19.112583
+        ]
+      },
+      "properties": {
+        "restaurant": "The Meal Factory",
+        "total_ratings": 20,
+        "food_type": "Indian,Chinese,Biryani,Beverages",
+        "formatted_address": "B-4, Industrial Estate, Nand Dham, Marol Maroshi Rd, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 44
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.87783809999999,
+          19.1103849
+        ]
+      },
+      "properties": {
+        "restaurant": "Foodie Dineout",
+        "total_ratings": 80,
+        "food_type": "Chinese,Indian,Tandoor,Italian,Continental,Pizzas",
+        "formatted_address": "Ground Floor, Fire Brigade, Golden Nest CHS Ltd, Shop No.2/B4, near Marol, Mapkhan Nagar, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88774219999999,
+          19.0961829
+        ]
+      },
+      "properties": {
+        "restaurant": "Alfaham Grill Corner",
+        "total_ratings": 80,
+        "food_type": "American  Chinese  Indian",
+        "formatted_address": "Saki Naka, Mumbai, Maharashtra, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.9059747,
+          19.1175993
+        ]
+      },
+      "properties": {
+        "restaurant": "Itc Hotels - Biryani & Pulao Collection",
+        "total_ratings": 20,
+        "food_type": "Biryani  North Indian  Desserts",
+        "formatted_address": "Powai, Mumbai, Maharashtra, India",
+        "delivery_time": 59
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88774219999999,
+          19.0961829
+        ]
+      },
+      "properties": {
+        "restaurant": "Kebab Flare",
+        "total_ratings": 80,
+        "food_type": "Kebabs",
+        "formatted_address": "Saki Naka, Mumbai, Maharashtra, India",
+        "delivery_time": 63
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8869452,
+          19.1049381
+        ]
+      },
+      "properties": {
+        "restaurant": "Ribbons And Balloons",
+        "total_ratings": 20,
+        "food_type": "Bakery",
+        "formatted_address": "Shop No 14, Neelkanth Udhyog Bhavan, Metro inn hotel, Sakinaka Juction mumbai metro hotel, Sag Baug, Marol, Saki Naka, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 40
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8868037,
+          19.1002678
+        ]
+      },
+      "properties": {
+        "restaurant": "Parab'S Sampoorna Kitchen",
+        "total_ratings": 80,
+        "food_type": "South Indian  Indian  Chinese  Combo  Punjabi  Biryani",
+        "formatted_address": "Holiday Inn, Kajupada Pipeline Rd, Safed Pul, Saki Naka, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 48
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.861874,
+          19.1054128
+        ]
+      },
+      "properties": {
+        "restaurant": "Lazeez",
+        "total_ratings": 50,
+        "food_type": "North Indian  Mughlai",
+        "formatted_address": "Bombay Cambridge International School, beside bombay, AAI Colony, J B Nagar, Andheri East, Mumbai, Maharashtra 400099, India",
+        "delivery_time": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88774219999999,
+          19.0961829
+        ]
+      },
+      "properties": {
+        "restaurant": "Kappa Diner",
+        "total_ratings": 100,
+        "food_type": "South Indian,Kerala",
+        "formatted_address": "Saki Naka, Mumbai, Maharashtra, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8919584,
+          19.1228281
+        ]
+      },
+      "properties": {
+        "restaurant": "Itc Hotels- Nutmeg The Cake Shop",
+        "total_ratings": 80,
+        "food_type": "Desserts",
+        "formatted_address": "4, Saki Vihar Rd, Saki Vihar, Budhia Jadhav Wadi, Marol, Andheri East, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 63
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88203779999999,
+          19.1169634
+        ]
+      },
+      "properties": {
+        "restaurant": "Flame Game",
+        "total_ratings": 50,
+        "food_type": "Asian  Chinese  Seafood",
+        "formatted_address": "Shop no 03, abi asad premises, Sankasth Pada Welfare Society, Marol, naka, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 57
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.868606,
+          19.106714
+        ]
+      },
+      "properties": {
+        "restaurant": "Clever Chinese",
+        "total_ratings": 50,
+        "food_type": "Indian,Chinese",
+        "formatted_address": "75, 1, Marol Pipeline Rd, opposite Awaas apartment, Anand Nagar, Kanti Nagar, J B Nagar, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 53
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8704711,
+          19.1184329
+        ]
+      },
+      "properties": {
+        "restaurant": "Caravan Serai",
+        "total_ratings": 80,
+        "food_type": "Indian  Fast Food",
+        "formatted_address": "1, Ground Floor, Akruti Star, Central Road, Western Suburbs, M.I.D.C, Kondivita, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 63
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88069229999999,
+          19.1060098
+        ]
+      },
+      "properties": {
+        "restaurant": "Nosh & Beyond",
+        "total_ratings": 20,
+        "food_type": "Cafe  Italian  Pizzas  Fast Food  Combo  Beverages  Desserts",
+        "formatted_address": "Shop No.2, Wellington business Park-2, opp. Skyline Icon, Chimatpada, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 51
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8844721,
+          19.0726295
+        ]
+      },
+      "properties": {
+        "restaurant": "Kakori House",
+        "total_ratings": 80,
+        "food_type": "Indian",
+        "formatted_address": "Kurla, Mumbai, Maharashtra, India",
+        "delivery_time": 47
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88774219999999,
+          19.0961829
+        ]
+      },
+      "properties": {
+        "restaurant": "Pizza Mania",
+        "total_ratings": 50,
+        "food_type": "Pizzas",
+        "formatted_address": "Saki Naka, Mumbai, Maharashtra, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8853932,
+          19.1161793
+        ]
+      },
+      "properties": {
+        "restaurant": "The Blue Tiffin",
+        "total_ratings": 20,
+        "food_type": "North Indian",
+        "formatted_address": "C/28, Ground Floor, Raj Industrial Estate, Moral, Military Rd, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 59
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8786221,
+          19.1102222
+        ]
+      },
+      "properties": {
+        "restaurant": "Roasters By Radisson Blu",
+        "total_ratings": 80,
+        "food_type": "Indian,Chinese,Continental,Pizzas,Biryani,Bakery",
+        "formatted_address": "Off Marol Maroshi Rd, near Metro Station Marol Naka, Bori Colony, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 62
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8846306,
+          19.1084818
+        ]
+      },
+      "properties": {
+        "restaurant": "Kusum Rolls",
+        "total_ratings": 50,
+        "food_type": "Indian",
+        "formatted_address": "shop no 16, Kanakia Sevens, opposite Times square, Sag Baug, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 46
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8529156,
+          19.103567
+        ]
+      },
+      "properties": {
+        "restaurant": "Chine Dine",
+        "total_ratings": 100,
+        "food_type": "Chinese,Thai,North Indian,Biryani,South Indian,Maharashtrian,Snacks,Combo",
+        "formatted_address": "Yadav Niwas, Hanuman Rd, opposite Datta Mandir, Navpada, Vile Parle East, Vile Parle, Mumbai, Maharashtra 400057, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8631304,
+          19.1178548
+        ]
+      },
+      "properties": {
+        "restaurant": "Dooodly Meals",
+        "total_ratings": 80,
+        "food_type": "North Indian",
+        "formatted_address": "Andheri East, Mumbai, Maharashtra, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8633923,
+          19.1079527
+        ]
+      },
+      "properties": {
+        "restaurant": "Nagpal Fish Fry",
+        "total_ratings": 20,
+        "food_type": "Chinese  North Indian  Seafood",
+        "formatted_address": "Shop No. A1, 1, Dr Karanjia Marg, Akal Society, J.B. Nagar, Tarun Bharat, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.86139899999999,
+          19.1205157
+        ]
+      },
+      "properties": {
+        "restaurant": "Mad Momos",
+        "total_ratings": 500,
+        "food_type": "Chinese  Tibetan  Nepalese  Pizzas  Snacks  Beverages  Combo",
+        "formatted_address": "Unit 001, Steel House, Off Mahakali Caves Rd, Satya Darshan Colony, Gundavali, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8708604,
+          19.1074644
+        ]
+      },
+      "properties": {
+        "restaurant": "Hotel Sunita",
+        "total_ratings": 80,
+        "food_type": "Chinese,Tandoor,Indian,Biryani,South Indian",
+        "formatted_address": "Shop no 3, Sanjay Nagar, Technical Area, Marol Pipeline Rd, opposite \u0905\u092f\u092a\u094d\u092a\u093e \u092e\u0902\u0926\u093f\u0930, Sai Nagar, Ashok Nagar, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 59
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8727394,
+          19.1252743
+        ]
+      },
+      "properties": {
+        "restaurant": "Radhakrishna Pav Bhaji Centre",
+        "total_ratings": 80,
+        "food_type": "Fast Food",
+        "formatted_address": "No.7, MIDC Central Rd, Seepz, Andheri East, Mumbai, Maharashtra 400093, India",
+        "delivery_time": 64
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8860583,
+          19.1186395
+        ]
+      },
+      "properties": {
+        "restaurant": "Delhi King",
+        "total_ratings": 80,
+        "food_type": "Fast Food,Pizzas,Snacks",
+        "formatted_address": "A 203, Military Rd, Raje Shivaji Nagar, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.86141889999999,
+          19.1142826
+        ]
+      },
+      "properties": {
+        "restaurant": "Konkan Chilly",
+        "total_ratings": 80,
+        "food_type": "North Indian  Seafood  Chinese",
+        "formatted_address": "Shop no.1, Plot-150, opposite Apple Heritage, Chakala, Andheri(E, Mumbai, Maharashtra 400093, India",
+        "delivery_time": 62
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.9044241,
+          19.0912711
+        ]
+      },
+      "properties": {
+        "restaurant": "Sai Krupa Fast Food",
+        "total_ratings": 80,
+        "food_type": "Biryani,Chinese,Indian",
+        "formatted_address": "Shop No 1&2 Sai krupa chinese & biryani corner 2nd budha vihar, Bhim Nagar, Jivdaya Lane, Ghatkopar West, Mumbai, Maharashtra 400086, India",
+        "delivery_time": 58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8937066,
+          19.1027587
+        ]
+      },
+      "properties": {
+        "restaurant": "The Masterpiece",
+        "total_ratings": 80,
+        "food_type": "Chinese",
+        "formatted_address": "Shop No. 2, Sitaram Kunj, Lakshmi Narayan Mandir Rd, near Sapna Hospital, Laxmi, Pereira Wadi, Saki Naka, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 51
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8879262,
+          19.1079468
+        ]
+      },
+      "properties": {
+        "restaurant": "Nivala Apka Apna",
+        "total_ratings": 20,
+        "food_type": "North Indian,Chinese,Indian",
+        "formatted_address": "Apka Apna, Saki Vihar Rd, Sag Baug, Marol, Andheri East, Nivala, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 48
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8296252,
+          19.1364016
+        ]
+      },
+      "properties": {
+        "restaurant": "Jkc",
+        "total_ratings": 80,
+        "food_type": "Chinese,Biryani",
+        "formatted_address": "Andheri West, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 59
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8631304,
+          19.1178548
+        ]
+      },
+      "properties": {
+        "restaurant": "The Asian Place",
+        "total_ratings": 20,
+        "food_type": "Indian",
+        "formatted_address": "Andheri East, Mumbai, Maharashtra, India",
+        "delivery_time": 59
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8835999,
+          19.1175759
+        ]
+      },
+      "properties": {
+        "restaurant": "The Curry Story",
+        "total_ratings": 80,
+        "food_type": "Indian,Biryani,Beverages",
+        "formatted_address": "A - Wing Unit No 3 , Raj Industrial Estate, Military Rd, Sankara Nagar, Bhavani Nagar, Marol, Andheri(E, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 63
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8845666,
+          19.117706
+        ]
+      },
+      "properties": {
+        "restaurant": "The Pepper Wok",
+        "total_ratings": 80,
+        "food_type": "Chinese",
+        "formatted_address": "A3, Raj Industrial Estate, Military Rd, Sankara Nagar, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 57
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8884497,
+          19.0538061
+        ]
+      },
+      "properties": {
+        "restaurant": "Filo Bakes",
+        "total_ratings": 80,
+        "food_type": "Bakery  Desserts",
+        "formatted_address": "Sion - Trombay Rd, opp. CORPORATE PARK, Sindhi Society, Chembur, Mumbai, Maharashtra 400071, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8877897,
+          19.1084421
+        ]
+      },
+      "properties": {
+        "restaurant": "Shivsagar Sakinaka",
+        "total_ratings": 50,
+        "food_type": "North Indian,South Indian,Chinese",
+        "formatted_address": "K-16, Saki Vihar Rd, Ansa Industrial Estate, Chandivali, Saki Naka, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 46
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88012239999999,
+          19.1170618
+        ]
+      },
+      "properties": {
+        "restaurant": "Narayan Sandwich House",
+        "total_ratings": 500,
+        "food_type": "Healthy Food,Fast Food,Snacks",
+        "formatted_address": "Marol, Andheri East, Mumbai, Maharashtra, India",
+        "delivery_time": 47
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.86427379999999,
+          19.1070396
+        ]
+      },
+      "properties": {
+        "restaurant": "Amar Juice Centre",
+        "total_ratings": 500,
+        "food_type": "Street Food  Juices  South Indian",
+        "formatted_address": "Sahar Airport Rd, Akal Society, Kanti Nagar, J B Nagar, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 50
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88235499999999,
+          19.117253
+        ]
+      },
+      "properties": {
+        "restaurant": "Havmor Havfunn",
+        "total_ratings": 20,
+        "food_type": "Ice Cream  Ice Cream Cakes  Desserts",
+        "formatted_address": "Mona Bhavan, Military Rd, Sankara Nagar, Bhavani Nagar, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 46
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.86719430000001,
+          19.11098
+        ]
+      },
+      "properties": {
+        "restaurant": "Crrave N Eat",
+        "total_ratings": 80,
+        "food_type": "Desserts  Pizzas",
+        "formatted_address": "shop no.2, chitrakoot society, j b nagar andheri east mumbai 400059, Ajit Nagar, J B Nagar, Andheri East, Mumbai, Maharashtra 400099, India",
+        "delivery_time": 62
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8921,
+          19.1232574
+        ]
+      },
+      "properties": {
+        "restaurant": "Sanjeevani Foods - Real Maharastrian Food",
+        "total_ratings": 80,
+        "food_type": "Maharashtrian",
+        "formatted_address": "Vidya Milind Nagar, Savarkar Nagar, Chandivali, Powai, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 65
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8898312,
+          19.1214685
+        ]
+      },
+      "properties": {
+        "restaurant": "Cake Walk 72",
+        "total_ratings": 50,
+        "food_type": "Desserts",
+        "formatted_address": "Shop no 3 opp shanti smruti Shiv Shakti Nagar, Tunga, Raje Shivaji Nagar, Chandivali, Powai, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 57
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8826145,
+          19.116987
+        ]
+      },
+      "properties": {
+        "restaurant": "Shubham Greens",
+        "total_ratings": 50,
+        "food_type": "South Indian,North Indian,Maharashtrian,Chinese",
+        "formatted_address": "Twin Arcade, No.B1 & 2, Military Rd, Sankasth Pada Welfare Society, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8821099,
+          19.1072195
+        ]
+      },
+      "properties": {
+        "restaurant": "Amar Juice Centre",
+        "total_ratings": 500,
+        "food_type": "Indian,Chinese",
+        "formatted_address": "Building No 1 Unit No 9, Metro Station Andheri, Andheri - Kurla Rd, near Marol, Mittal Industrial Estate, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 43
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.881495,
+          19.1098024
+        ]
+      },
+      "properties": {
+        "restaurant": "99 Pancakes",
+        "total_ratings": 50,
+        "food_type": "Desserts,Beverages",
+        "formatted_address": "Shop No 5, Antariksh Thakur House Premises, Makwana Rd, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 45
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8617477,
+          19.1141057
+        ]
+      },
+      "properties": {
+        "restaurant": "Munna Bhel Puri House",
+        "total_ratings": 100,
+        "food_type": "Chaat",
+        "formatted_address": "Opposite Apple heritage Andheri Kurla Road Mumbai East Andheri, 4V76+JMX, East Road, Dr. Charatsingh Colony, S B Singh Colony, J B Nagar, andheri (E, Mumbai, Maharashtra 400093, India",
+        "delivery_time": 58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8729993,
+          19.1168584
+        ]
+      },
+      "properties": {
+        "restaurant": "Dessert Junction",
+        "total_ratings": 20,
+        "food_type": "Desserts",
+        "formatted_address": "Shop No.6, J Wing, Maheshwari Nagar Society Ln, M.I.D.C, Kondivita, Andheri (E, Mumbai, Maharashtra 400093, India",
+        "delivery_time": 54
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8367976,
+          19.17002
+        ]
+      },
+      "properties": {
+        "restaurant": "The Mother'S Touch Rajasthani",
+        "total_ratings": 20,
+        "food_type": "Indian  Rajasthani",
+        "formatted_address": "7, Prem Nagar Rd, Prem Nagar Slums, Prem Nagar, Powai, Mumbai, Maharashtra 400076, India",
+        "delivery_time": 62
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8903793,
+          19.1191073
+        ]
+      },
+      "properties": {
+        "restaurant": "Just Rice",
+        "total_ratings": 80,
+        "food_type": "Indian",
+        "formatted_address": "Saki Vihar Rd, Mumbai, Maharashtra, India",
+        "delivery_time": 68
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8776559,
+          19.0759837
+        ]
+      },
+      "properties": {
+        "restaurant": "Havmour Ice Cream",
+        "total_ratings": 80,
+        "food_type": "Ice Cream",
+        "formatted_address": "Mumbai, Maharashtra, India",
+        "delivery_time": 48
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.9059747,
+          19.1175993
+        ]
+      },
+      "properties": {
+        "restaurant": "Smoodies",
+        "total_ratings": 50,
+        "food_type": "Snacks,Healthy Food,Juices,Beverages,Desserts",
+        "formatted_address": "Powai, Mumbai, Maharashtra, India",
+        "delivery_time": 52
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8834852,
+          19.1111524
+        ]
+      },
+      "properties": {
+        "restaurant": "Khichdi Paradise",
+        "total_ratings": 50,
+        "food_type": "Home Food,Indian,North Indian,Beverages",
+        "formatted_address": "Bhargava house, 9, Marol industrial estate, next to shemaroo, Gamdevi, Marol, Andheri East, Mumbai, Maharashtra 400059, India",
+        "delivery_time": 51
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8729633,
+          19.1198382
+        ]
+      },
+      "properties": {
+        "restaurant": "Maa Ki Khichdi",
+        "total_ratings": 20,
+        "food_type": "Home Food,Indian,North Indian",
+        "formatted_address": "Marol MIDC Industry Estate, Andheri East, Mumbai, Maharashtra 400047, India",
+        "delivery_time": 51
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88774219999999,
+          19.0961829
+        ]
+      },
+      "properties": {
+        "restaurant": "Desi Desserts",
+        "total_ratings": 80,
+        "food_type": "Desserts",
+        "formatted_address": "Saki Naka, Mumbai, Maharashtra, India",
+        "delivery_time": 58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8903793,
+          19.1191073
+        ]
+      },
+      "properties": {
+        "restaurant": "Dil Se Dalia",
+        "total_ratings": 80,
+        "food_type": "Fast Food  North Indian",
+        "formatted_address": "Saki Vihar Rd, Mumbai, Maharashtra, India",
+        "delivery_time": 60
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8880372,
+          19.1119318
+        ]
+      },
+      "properties": {
+        "restaurant": "Fast Food Corner - Tejal'S Kitchen",
+        "total_ratings": 80,
+        "food_type": "Fast Food,Continental",
+        "formatted_address": "Gala No 6, Haria shree guppy industrial estate, Saki Vihar Rd, Ganesh Nagar, Chandivali, Andheri East, Mumbai, Maharashtra 400072, India",
+        "delivery_time": 56
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8903793,
+          19.1191073
+        ]
+      },
+      "properties": {
+        "restaurant": "Sweet Bengal",
+        "total_ratings": 100,
+        "food_type": "Sweets  Indian  Snacks  Desserts",
+        "formatted_address": "Saki Vihar Rd, Powai, Mumbai, Maharashtra, India",
+        "delivery_time": 42
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8631304,
+          19.1178548
+        ]
+      },
+      "properties": {
+        "restaurant": "Havmor Icecream",
+        "total_ratings": 20,
+        "food_type": "Desserts  Bakery  Ice Cream",
+        "formatted_address": "Andheri East, Mumbai, Maharashtra, India",
+        "delivery_time": 46
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.88774219999999,
+          19.0961829
+        ]
+      },
+      "properties": {
+        "restaurant": "Greens Pure Veg Restaurant",
+        "total_ratings": 80,
+        "food_type": "North Indian,South Indian,Chinese,Fast Food",
+        "formatted_address": "Saki Naka, Mumbai, Maharashtra, India",
+        "delivery_time": 60
+      }
+    }
+  ]
+}

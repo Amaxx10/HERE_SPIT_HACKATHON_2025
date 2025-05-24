@@ -1,0 +1,37 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sample Road"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [72.8347, 18.9218],
+          [72.8355, 18.9220],
+          [72.8360, 18.9225]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sample Area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [72.8330, 18.9200],
+            [72.8370, 18.9200],
+            [72.8370, 18.9240],
+            [72.8330, 18.9240],
+            [72.8330, 18.9200]
+          ]
+        ]
+      }
+    }
+  ]
+}

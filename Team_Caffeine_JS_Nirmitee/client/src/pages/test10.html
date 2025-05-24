@@ -1,0 +1,960 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Andheri Area Map with Roads and Restaurants</title>
+        <meta
+            name="viewport"
+            content="initial-scale=1,maximum-scale=1,user-scalable=no"
+        />
+
+        <!-- Leaflet CSS and JS -->
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+        <!-- Leaflet MarkerCluster for handling many markers -->
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+        />
+        <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+            }
+            #map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }
+            #controls {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background: rgba(255, 255, 255, 0.95);
+                padding: 15px;
+                border-radius: 8px;
+                z-index: 1;
+                max-width: 350px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            #legend {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                background: rgba(255, 255, 255, 0.95);
+                padding: 15px;
+                border-radius: 8px;
+                z-index: 1;
+                font-size: 12px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .legend-item {
+                display: flex;
+                align-items: center;
+                margin: 5px 0;
+            }
+            .legend-color {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                margin-right: 8px;
+                border-radius: 50%;
+            }
+            .legend-line {
+                display: inline-block;
+                width: 25px;
+                height: 3px;
+                margin-right: 8px;
+                border-radius: 2px;
+            }
+            button {
+                margin: 3px;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 4px;
+                background-color: #007cbf;
+                color: white;
+                cursor: pointer;
+                font-size: 12px;
+            }
+            button:hover {
+                background-color: #005a87;
+            }
+            button.active {
+                background-color: #005a87;
+            }
+            .toggle-btn {
+                margin: 5px 0;
+            }
+            .filter-section {
+                margin-top: 12px;
+                border-top: 1px solid #ddd;
+                padding-top: 10px;
+            }
+            .filter-group {
+                margin: 8px 0;
+            }
+            .filter-title {
+                font-weight: bold;
+                margin-bottom: 4px;
+                font-size: 13px;
+            }
+            select {
+                width: 100%;
+                padding: 6px;
+                margin-bottom: 6px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 12px;
+            }
+            .popup-content {
+                padding: 10px;
+                min-width: 200px;
+            }
+            .popup-title {
+                font-weight: bold;
+                font-size: 15px;
+                margin-bottom: 8px;
+                border-bottom: 2px solid #eee;
+                padding-bottom: 6px;
+                color: #333;
+            }
+            .popup-detail {
+                font-size: 12px;
+                margin: 5px 0;
+                display: flex;
+                justify-content: space-between;
+            }
+            .popup-detail-label {
+                font-weight: 600;
+                color: #555;
+            }
+            .popup-detail-value {
+                color: #777;
+                text-align: right;
+            }
+            .delivery-time,
+            .speed-limit,
+            .road-type {
+                display: inline-block;
+                background: #f5f5f5;
+                padding: 3px 8px;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 11px;
+            }
+            .road-type.primary {
+                background: #ffebee;
+                color: #c62828;
+            }
+            .road-type.secondary {
+                background: #fff3e0;
+                color: #ef6c00;
+            }
+            .road-type.tertiary {
+                background: #e8f5e8;
+                color: #2e7d32;
+            }
+            .road-type.residential {
+                background: #e3f2fd;
+                color: #1565c0;
+            }
+            .road-type.unclassified {
+                background: #f3e5f5;
+                color: #7b1fa2;
+            }
+
+            .search-box {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 8px;
+                border-radius: 4px;
+                border: 1px solid #ddd;
+                font-size: 13px;
+            }
+            .layer-toggle {
+                display: flex;
+                justify-content: space-around;
+                margin-bottom: 12px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            .checkbox-container {
+                display: flex;
+                align-items: center;
+                margin-right: 15px;
+            }
+            .checkbox-container input {
+                margin-right: 6px;
+            }
+            .checkbox-container label {
+                font-size: 13px;
+                font-weight: 500;
+            }
+            .road-filters {
+                margin-top: 10px;
+                padding-top: 10px;
+                border-top: 1px solid #eee;
+            }
+            /* Leaflet marker cluster styles */
+            .marker-cluster-small {
+                background-color: rgba(181, 226, 140, 0.6);
+            }
+            .marker-cluster-small div {
+                background-color: rgba(110, 204, 57, 0.6);
+            }
+            .marker-cluster-medium {
+                background-color: rgba(241, 211, 87, 0.6);
+            }
+            .marker-cluster-medium div {
+                background-color: rgba(240, 194, 12, 0.6);
+            }
+            .marker-cluster-large {
+                background-color: rgba(253, 156, 115, 0.6);
+            }
+            .marker-cluster-large div {
+                background-color: rgba(241, 128, 23, 0.6);
+            }
+            .marker-cluster {
+                background-clip: padding-box;
+                border-radius: 20px;
+            }
+            .marker-cluster div {
+                width: 30px;
+                height: 30px;
+                margin-left: 5px;
+                margin-top: 5px;
+                text-align: center;
+                border-radius: 15px;
+                font:
+                    12px 'Helvetica Neue',
+                    Arial,
+                    Helvetica,
+                    sans-serif;
+            }
+            .marker-cluster span {
+                line-height: 30px;
+            }
+            #road-info {
+                position: absolute;
+                top: 60px;
+                right: 10px;
+                background: rgba(255, 255, 255, 0.95);
+                padding: 10px;
+                border-radius: 5px;
+                z-index: 1000;
+                font-size: 12px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                display: none;
+                min-width: 200px;
+                border-left: 4px solid #2196f3;
+            }
+            #road-info strong {
+                color: #333;
+                font-size: 13px;
+            }
+
+            #road-info small {
+                color: #666;
+                display: block;
+                margin: 2px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="controls">
+            <div>
+                <strong style="font-size: 16px; color: #333"
+                    >Andheri Explorer</strong
+                >
+                <div class="layer-toggle">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="show-restaurants" checked />
+                        <label for="show-restaurants">Restaurants</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="show-roads" checked />
+                        <label for="show-roads">Roads</label>
+                    </div>
+                </div>
+
+                <input
+                    id="search-box"
+                    class="search-box"
+                    placeholder="Search restaurants or roads..."
+                    type="text"
+                />
+
+                <div class="filter-section">
+                    <div class="filter-title">🍽️ Restaurant Filters:</div>
+                    <div class="filter-group">
+                        <select id="cuisine-filter">
+                            <option value="">All Cuisines</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="North Indian">North Indian</option>
+                            <option value="South Indian">South Indian</option>
+                            <option value="Fast Food">Fast Food</option>
+                            <option value="Italian">Italian</option>
+                            <option value="Thai">Thai</option>
+                            <option value="Indian">Indian</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="rating-filter">
+                            <option value="">All Ratings</option>
+                            <option value="1000">1000+ Reviews</option>
+                            <option value="500">500+ Reviews</option>
+                            <option value="100">100+ Reviews</option>
+                            <option value="50">50+ Reviews</option>
+                            <option value="20">20+ Reviews</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="time-filter">
+                            <option value="">Any Delivery Time</option>
+                            <option value="45">Under 45 min</option>
+                            <option value="50">Under 50 min</option>
+                            <option value="55">Under 55 min</option>
+                            <option value="60">Under 60 min</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="road-filters">
+                    <div class="filter-title">🛣️ Road Filters:</div>
+                    <div class="filter-group">
+                        <select id="highway-filter">
+                            <option value="">All Road Types</option>
+                            <option value="primary">Primary Roads</option>
+                            <option value="secondary">Secondary Roads</option>
+                            <option value="tertiary">Tertiary Roads</option>
+                            <option value="residential">
+                                Residential Roads
+                            </option>
+                            <option value="unclassified">
+                                Unclassified Roads
+                            </option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="surface-filter">
+                            <option value="">All Surfaces</option>
+                            <option value="asphalt">Asphalt</option>
+                            <option value="concrete">Concrete</option>
+                            <option value="paved">Paved</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="reset-filters">🔄 Reset All Filters</button>
+            </div>
+            <div
+                id="status"
+                style="margin-top: 12px; font-size: 11px; color: #666"
+            >
+                Loading data...
+            </div>
+        </div>
+
+        <div id="road-info">
+            <div id="road-info-content"></div>
+        </div>
+
+        <div id="legend">
+            <strong style="color: #333">Map Legend</strong><br />
+            <div class="legend-section" style="margin-top: 8px">
+                <div class="filter-title">🍽️ Restaurants:</div>
+                <div class="legend-item">
+                    <span
+                        class="legend-color"
+                        style="background-color: #ff5252"
+                    ></span>
+                    1000+ Reviews
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="legend-color"
+                        style="background-color: #ff9800"
+                    ></span>
+                    500+ Reviews
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="legend-color"
+                        style="background-color: #ffc107"
+                    ></span>
+                    100+ Reviews
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="legend-color"
+                        style="background-color: #4caf50"
+                    ></span>
+                    50+ Reviews
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="legend-color"
+                        style="background-color: #2196f3"
+                    ></span>
+                    20+ Reviews
+                </div>
+            </div>
+            <div class="legend-section" style="margin-top: 12px">
+                <div class="filter-title">🛣️ Roads:</div>
+                <div class="legend-item">
+                    <span
+                        class="legend-line"
+                        style="background-color: #d32f2f; height: 4px"
+                    ></span>
+                    Primary Roads
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="legend-line"
+                        style="background-color: #f57c00; height: 3px"
+                    ></span>
+                    Secondary Roads
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="legend-line"
+                        style="background-color: #388e3c; height: 3px"
+                    ></span>
+                    Tertiary Roads
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="legend-line"
+                        style="background-color: #1976d2; height: 2px"
+                    ></span>
+                    Residential Roads
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="legend-line"
+                        style="background-color: #7b1fa2; height: 2px"
+                    ></span>
+                    Other Roads
+                </div>
+            </div>
+        </div>
+
+        <div id="map"></div>
+                <script>
+            // Replace with your HERE API key
+            const apiKey = 'api key here';
+
+            // Sample Restaurant GeoJSON data for fallback
+            const sampleRestaurantData = {
+                type: 'FeatureCollection',
+                features: [
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [72.8729633, 19.1138382],
+                        },
+                        properties: {
+                            restaurant: 'Demo Restaurant 1',
+                            total_ratings: 1200,
+                            food_type: 'Chinese, Thai, Asian',
+                            formatted_address: 'Sample Address 1, Andheri East, Mumbai',
+                            delivery_time: 45,
+                        },
+                    },
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [72.8829633, 19.1238382],
+                        },
+                        properties: {
+                            restaurant: 'Demo Restaurant 2',
+                            total_ratings: 500,
+                            food_type: 'North Indian, Mughlai',
+                            formatted_address: 'Sample Address 2, Andheri East, Mumbai',
+                            delivery_time: 60,
+                        },
+                    },
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [72.8629633, 19.1038382],
+                        },
+                        properties: {
+                            restaurant: 'Demo Restaurant 3',
+                            total_ratings: 100,
+                            food_type: 'South Indian, Dosa',
+                            formatted_address: 'Sample Address 3, Andheri West, Mumbai',
+                            delivery_time: 30,
+                        },
+                    },
+                ],
+            };
+
+            // Sample Road GeoJSON data for fallback
+            const sampleRoadData = {
+                type: 'FeatureCollection',
+                features: [
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: [
+                                [72.8629633, 19.1038382],
+                                [72.8729633, 19.1138382]
+                            ]
+                        },
+                        properties: {
+                            id: 'road1',
+                            road_type: 'primary',
+                            name: 'Sample Primary Road',
+                            maxspeed: '60'
+                        }
+                    },
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: [
+                                [72.8729633, 19.1138382],
+                                [72.8829633, 19.1238382]
+                            ]
+                        },
+                        properties: {
+                            id: 'road2',
+                            road_type: 'secondary',
+                            name: 'Sample Secondary Road',
+                            maxspeed: '40'
+                        }
+                    }
+                ]
+            };
+
+            // Initialize the Leaflet map with HERE basemap
+            const map = L.map('map').setView([19.1138382, 72.8729633], 13);
+            
+            // Add HERE basemap tiles
+            const hereBasemap = L.tileLayer('https://{s}.base.maps.ls.hereapi.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?apiKey={apiKey}', {
+                attribution: '© HERE',
+                subdomains: '1234',
+                apiKey: apiKey
+            }).addTo(map);
+
+            // Initialize marker cluster group for restaurants
+            let markerClusterGroup = L.markerClusterGroup({
+                disableClusteringAtZoom: 16,
+                spiderfyOnMaxZoom: true,
+                showCoverageOnHover: false,
+                iconCreateFunction: function(cluster) {
+                    const childCount = cluster.getChildCount();
+                    
+                    let c = ' marker-cluster-';
+                    if (childCount < 10) {
+                        c += 'small';
+                    } else if (childCount < 50) {
+                        c += 'medium';
+                    } else {
+                        c += 'large';
+                    }
+                    
+                    return new L.DivIcon({ 
+                        html: '<div><span>' + childCount + '</span></div>', 
+                        className: 'marker-cluster' + c, 
+                        iconSize: new L.Point(40, 40) 
+                    });
+                }
+            });
+            
+            map.addLayer(markerClusterGroup);
+
+            // Global variables
+            let allMarkers = [];
+            let roadLayers = L.layerGroup().addTo(map);
+            let showRoads = true;
+            let showRestaurants = true;
+
+            // Function to update status
+            function updateStatus(message) {
+                document.getElementById('status').textContent = message;
+            }
+
+            // Function to get marker icon based on rating category
+            function getMarkerIcon(category) {
+                const colors = {
+                    '1000+': '#FF5252',
+                    '500+': '#FF9800',
+                    '100+': '#FFC107',
+                    '50+': '#4CAF50',
+                    '20+': '#2196F3'
+                };
+                
+                const color = colors[category] || '#BBBBBB';
+                
+                return L.divIcon({
+                    html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>`,
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                });
+            }
+
+            // Function to get road style based on type
+            function getRoadStyle(roadType) {
+                const styles = {
+                    'primary': { color: '#f44336', weight: 4 },
+                    'secondary': { color: '#ff9800', weight: 3 },
+                    'other': { color: '#787878', weight: 2 }
+                };
+                
+                return styles[roadType] || styles['other'];
+            }
+
+            // Function to prepare restaurant data
+            function prepareRestaurantData(data) {
+                if (!data || !data.type || data.type !== 'FeatureCollection' || !Array.isArray(data.features)) {
+                    console.warn('Using fallback restaurant data');
+                    return sampleRestaurantData;
+                }
+
+                data.features = data.features.filter(feature => {
+                    if (!feature.geometry || !feature.properties) return false;
+                    if (!feature.geometry.coordinates || feature.geometry.coordinates.length < 2) return false;
+
+                    // Add rating category
+                    if (feature.properties.total_ratings) {
+                        const ratings = parseInt(feature.properties.total_ratings);
+                        if (ratings >= 1000) {
+                            feature.properties.rating_category = '1000+';
+                        } else if (ratings >= 500) {
+                            feature.properties.rating_category = '500+';
+                        } else if (ratings >= 100) {
+                            feature.properties.rating_category = '100+';
+                        } else if (ratings >= 50) {
+                            feature.properties.rating_category = '50+';
+                        } else {
+                            feature.properties.rating_category = '20+';
+                        }
+                    } else {
+                        feature.properties.rating_category = '20+';
+                        feature.properties.total_ratings = 20;
+                    }
+
+                    // Ensure required fields exist
+                    if (!feature.properties.food_type) {
+                        feature.properties.food_type = 'Unspecified';
+                    }
+                    if (!feature.properties.delivery_time) {
+                        feature.properties.delivery_time = 45;
+                    }
+                    if (!feature.properties.restaurant) {
+                        feature.properties.restaurant = 'Unnamed Restaurant';
+                    }
+                    if (!feature.properties.formatted_address) {
+                        feature.properties.formatted_address = 'Andheri, Mumbai';
+                    }
+
+                    return true;
+                });
+
+                if (data.features.length === 0) {
+                    return sampleRestaurantData;
+                }
+
+                return data;
+            }
+
+            // Function to prepare road data
+            function prepareRoadData(data) {
+                if (!data || !data.type || data.type !== 'FeatureCollection' || !Array.isArray(data.features)) {
+                    console.warn('Using fallback road data');
+                    return sampleRoadData;
+                }
+
+                const processedFeatures = [];
+                
+                data.features.forEach(feature => {
+                    if (!feature || !feature.geometry) return;
+                    
+                    let roadType = 'other';
+                    let roadName = 'Unnamed Road';
+                    let maxSpeed = null;
+                    
+                    if (feature.properties) {
+                        // Determine road type
+                        if (feature.properties.highway) {
+                            switch (feature.properties.highway) {
+                                case 'primary':
+                                case 'trunk':
+                                    roadType = 'primary';
+                                    break;
+                                case 'secondary':
+                                case 'tertiary':
+                                    roadType = 'secondary';
+                                    break;
+                                default:
+                                    roadType = 'other';
+                            }
+                        }
+                        
+                        roadName = feature.properties.name || roadName;
+                        maxSpeed = feature.properties.maxspeed || null;
+                    }
+                    
+                    if (feature.geometry.coordinates && feature.geometry.coordinates.length > 0) {
+                        processedFeatures.push({
+                            type: 'Feature',
+                            geometry: feature.geometry,
+                            properties: {
+                                road_type: roadType,
+                                name: roadName,
+                                maxspeed: maxSpeed
+                            }
+                        });
+                    }
+                });
+
+                if (processedFeatures.length === 0) {
+                    return sampleRoadData;
+                }
+
+                return {
+                    type: 'FeatureCollection',
+                    features: processedFeatures
+                };
+            }
+
+            // Function to create restaurant markers
+            function createRestaurantMarkers(data) {
+                markerClusterGroup.clearLayers();
+                allMarkers = [];
+                
+                data.features.forEach(feature => {
+                    if (feature.geometry && feature.geometry.type === 'Point') {
+                        const coords = feature.geometry.coordinates;
+                        const props = feature.properties;
+                        
+                        // Leaflet uses [lat, lng] while GeoJSON uses [lng, lat]
+                        const marker = L.marker([coords[1], coords[0]], {
+                            icon: getMarkerIcon(props.rating_category)
+                        });
+                        
+                        // Create popup content
+                        const cuisineFormatted = props.food_type
+                            .split(',')
+                            .map(cuisine => cuisine.trim())
+                            .filter(cuisine => cuisine)
+                            .join(', ');
+
+                        const popupContent = `
+                            <div class="popup-content">
+                                <div class="popup-title">${props.restaurant}</div>
+                                <div class="popup-detail"><strong>Cuisine:</strong> ${cuisineFormatted}</div>
+                                <div class="popup-detail"><strong>Ratings:</strong> ${props.total_ratings} reviews</div>
+                                <div class="popup-detail"><strong>Delivery Time:</strong> <span class="delivery-time">${props.delivery_time} mins</span></div>
+                                <div class="popup-detail"><strong>Address:</strong> ${props.formatted_address}</div>
+                            </div>
+                        `;
+                        
+                        marker.bindPopup(popupContent);
+                        marker.restaurant = props;
+                        
+                        if (showRestaurants) {
+                            markerClusterGroup.addLayer(marker);
+                        }
+                        allMarkers.push(marker);
+                    }
+                });
+                
+                if (allMarkers.length > 0) {
+                    const group = L.featureGroup(allMarkers);
+                    map.fitBounds(group.getBounds(), { padding: [50, 50] });
+                }
+            }
+
+            // Function to create road layers
+            function createRoadLayers(data) {
+                roadLayers.clearLayers();
+                
+                data.features.forEach(feature => {
+                    if (feature.geometry && feature.geometry.type === 'LineString') {
+                        const coords = feature.geometry.coordinates.map(coord => [coord[1], coord[0]]);
+                        const props = feature.properties;
+                        const style = getRoadStyle(props.road_type);
+                        
+                        const polyline = L.polyline(coords, style);
+                        
+                        // Add popup for road info including speed
+                        const roadType = props.road_type.charAt(0).toUpperCase() + props.road_type.slice(1);
+                        const popupContent = `
+                            <div class="popup-content">
+                                <div class="popup-title">${props.name || 'Unnamed Road'}</div>
+                                <div class="popup-detail"><strong>Type:</strong> ${roadType} Road</div>
+                                ${props.maxspeed ? `<div class="popup-detail"><strong>Speed Limit:</strong> ${props.maxspeed} km/h</div>` : '<div class="popup-detail"><strong>Speed Limit:</strong> Not specified</div>'}
+                            </div>
+                        `;
+                        
+                        polyline.bindPopup(popupContent);
+                        
+                        if (showRoads) {
+                            roadLayers.addLayer(polyline);
+                        }
+                    }
+                });
+            }
+
+            // Function to load restaurant data
+            function loadRestaurantData() {
+                updateStatus('Loading restaurant data...');
+
+                fetch('./andheri_restaurants.geojson')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const processedData = prepareRestaurantData(data);
+                        createRestaurantMarkers(processedData);
+                        window.originalRestaurantData = processedData;
+                        updateStatus(`Loaded ${processedData.features.length} restaurants`);
+                    })
+                    .catch(error => {
+                        console.error("Error loading restaurant data:", error);
+                        const fallbackData = prepareRestaurantData(sampleRestaurantData);
+                        createRestaurantMarkers(fallbackData);
+                        window.originalRestaurantData = fallbackData;
+                        updateStatus(`Using sample data (${fallbackData.features.length} restaurants)`);
+                    });
+            }
+
+            // Function to load road data
+            function loadRoadData() {
+                updateStatus('Loading road data...');
+
+                fetch('./export.geojson')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const processedData = prepareRoadData(data);
+                        createRoadLayers(processedData);
+                        updateStatus('Loaded road data');
+                    })
+                    .catch(error => {
+                        console.error("Error loading road data:", error);
+                        const fallbackData = prepareRoadData(sampleRoadData);
+                        createRoadLayers(fallbackData);
+                        updateStatus('Using sample road data');
+                    });
+            }
+
+            // Filter restaurants function
+            function filterRestaurants() {
+                if (!window.originalRestaurantData) return;
+
+                const cuisineFilter = document.getElementById('cuisine-filter').value.toLowerCase();
+                const ratingFilter = document.getElementById('rating-filter').value;
+                const timeFilter = document.getElementById('time-filter').value;
+                const searchText = document.getElementById('search-box').value.toLowerCase();
+                
+                markerClusterGroup.clearLayers();
+                let visibleCount = 0;
+                
+                allMarkers.forEach(marker => {
+                    const props = marker.restaurant;
+                    let shouldShow = true;
+                    
+                    if (cuisineFilter && !props.food_type.toLowerCase().includes(cuisineFilter)) {
+                        shouldShow = false;
+                    }
+                    
+                    if (shouldShow && ratingFilter) {
+                        const minRating = parseInt(ratingFilter);
+                        if (props.total_ratings < minRating) {
+                            shouldShow = false;
+                        }
+                    }
+                    
+                    if (shouldShow && timeFilter && props.delivery_time) {
+                        const maxTime = parseInt(timeFilter);
+                        if (props.delivery_time > maxTime) {
+                            shouldShow = false;
+                        }
+                    }
+                    
+                    if (shouldShow && searchText) {
+                        const matchesName = props.restaurant.toLowerCase().includes(searchText);
+                        const matchesCuisine = props.food_type.toLowerCase().includes(searchText);
+                        if (!matchesName && !matchesCuisine) {
+                            shouldShow = false;
+                        }
+                    }
+                    
+                    if (shouldShow && showRestaurants) {
+                        markerClusterGroup.addLayer(marker);
+                        visibleCount++;
+                    }
+                });
+                
+                updateStatus(`Showing ${visibleCount} restaurants`);
+            }
+
+            // Event listeners
+            document.getElementById('cuisine-filter').addEventListener('change', filterRestaurants);
+            document.getElementById('rating-filter').addEventListener('change', filterRestaurants);
+            document.getElementById('time-filter').addEventListener('change', filterRestaurants);
+            document.getElementById('search-box').addEventListener('input', filterRestaurants);
+
+            document.getElementById('reset-filters').addEventListener('click', function() {
+                document.getElementById('cuisine-filter').value = '';
+                document.getElementById('rating-filter').value = '';
+                document.getElementById('time-filter').value = '';
+                document.getElementById('search-box').value = '';
+                filterRestaurants();
+            });
+
+            // Layer toggle functionality
+            document.getElementById('show-restaurants').addEventListener('change', function(e) {
+                showRestaurants = e.target.checked;
+                if (showRestaurants) {
+                    filterRestaurants();
+                } else {
+                    markerClusterGroup.clearLayers();
+                    updateStatus('Restaurants hidden');
+                }
+            });
+            
+            document.getElementById('show-roads').addEventListener('change', function(e) {
+                showRoads = e.target.checked;
+                if (showRoads) {
+                    map.addLayer(roadLayers);
+                } else {
+                    map.removeLayer(roadLayers);
+                }
+            });
+
+            // Load data when page loads
+            document.addEventListener('DOMContentLoaded', function() {
+                loadRestaurantData();
+                loadRoadData();
+            });
+        </script>
+    </body>
+</html>
