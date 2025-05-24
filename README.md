@@ -1,6 +1,8 @@
 # Team LlamaDrama - POI Validation & Spatial Analysis Platform
 
 **"Revolutionizing Location Data Quality with AI-Powered Analytics"**
+### ▶️ [Click here to watch the video](https://drive.google.com/file/d/1uSDWrFhGlMGeJV-s0Rf-54QVChs9CVdN/view)
+
 
 Our comprehensive geospatial intelligence solution addresses critical challenges in Point of Interest (POI) data accuracy and validation. The platform combines advanced machine learning algorithms with sophisticated spatial analysis techniques to automatically detect, analyze, and classify incorrectly placed POIs across Singapore's urban landscape. Through our innovative multi-platform approach, we're transforming how businesses and municipalities ensure location data integrity and make informed decisions based on reliable geospatial information.
 
