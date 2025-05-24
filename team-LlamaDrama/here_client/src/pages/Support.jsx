@@ -15,9 +15,9 @@ const Support = () => {
           className="relative mb-12"
         >
           <div className="absolute inset-0 bg-blue-400/10 blur-3xl rounded-full"></div>
-          <h1 className="relative text-5xl font-bold text-slate-100 mb-2">
+          <h1 className="relative text-5xl font-bold text-blue-900 mb-2">
             Support Center
-            <span className="block text-lg font-normal text-blue-300/80 mt-2">
+            <span className="block text-lg font-normal text-blue-800 mt-2">
               Get help and resources
             </span>
           </h1>
@@ -26,7 +26,7 @@ const Support = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <motion.div
             whileHover={{ y: -5 }}
-            className="bg-slate-800/40 backdrop-blur-lg rounded-2xl p-8 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+            className="bg-blue-900 backdrop-blur-lg rounded-2xl p-8 border border-slate-700/50 shadow-lg shadow-blue-500/5"
           >
             <h2 className="text-2xl font-semibold text-slate-100 mb-6 flex items-center">
               <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
@@ -61,7 +61,7 @@ const Support = () => {
 
           <motion.div
             whileHover={{ y: -5 }}
-            className="bg-slate-800/40 backdrop-blur-lg rounded-2xl p-8 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+            className="bg-blue-900 backdrop-blur-lg rounded-2xl p-8 border border-slate-700/50 shadow-lg shadow-blue-500/5"
           >
             <h2 className="text-2xl font-semibold text-slate-200 mb-6 flex items-center">
               <svg className="w-6 h-6 mr-2 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
