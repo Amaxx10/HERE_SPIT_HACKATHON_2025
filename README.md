@@ -11,10 +11,11 @@ Our solution has successfully analyzed over 3,000 POIs, achieving intelligent cl
 
 ## 🏗️ Data Processing Pipeline
 
-<div style="text-align: center; margin: 100px 100;">
-  <img src="https://drive.google.com/uc?export=view&id=1AOspbDvbgWp03MvsHS8e_nzC6Zmrp16w" alt="Image" width="400" />
-</div>
-
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=1AOspbDvbgWp03MvsHS8e_nzC6Zmrp16w" width="400" />
+  <br>
+  <em>Caption text here</em>
+</p>
 
 Our modular validation pipeline processes POI data through the following stages:
 
@@ -28,10 +29,11 @@ Our modular validation pipeline processes POI data through the following stages:
   - Coordinate Extraction
   - Feature Normalization
   - Spatial Indexing
-<div style="text-align: center;">
-  <img src="https://drive.google.com/uc?export=view&id=1yt8uzK0xtrqCTBfLnQvEKVxWuFOoSevx" alt="Image" width="400" />
-  <p style="font-style: italic; color: gray;">Black Points are the orignal dataset provided green points are pre processed point.</p>
-</div>
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=1yt8uzK0xtrqCTBfLnQvEKVxWuFOoSevx" width="400" />
+  <br>
+  <em>Black Points are the orignal dataset provided green points are pre processed point.</em>
+</p>
 
 ---
 
@@ -45,10 +47,11 @@ Our modular validation pipeline processes POI data through the following stages:
     - Interquartile Range (IQR)
     - DBSCAN clustering
     - Local Outlier Factor (LOF)
-<div style="text-align: center;">
-  <img src="https://drive.google.com/uc?export=view&id=1sfBe1MoXHgZwJOejKylsOPXMZlagDiL0" alt="Image" width="400" />
-  <p style="font-style: italic; color: gray;">Black points are misplaced points and green points are the display points</p>
-</div>
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=1sfBe1MoXHgZwJOejKylsOPXMZlagDiL0" width="400" />
+  <br>
+  <em>Black points are misplaced points and green points are the display points.</em>
+</p>
 
 ---
 
@@ -78,10 +81,12 @@ Our modular validation pipeline processes POI data through the following stages:
   5. Output:
      - CSV with original and corrected POI coordinates
      - Before/after visualizations showing POI movements
-<div style="text-align: center;">
-  <img src="https://drive.google.com/uc?export=view&id=1_g6-PJD230gy7ENX_xEtCJgQlzWCupEI" alt="Image" width="400" />
-  <p style="font-style: italic; color: gray;">These pointsa are refined by Computer vision</p>
-</div>
+
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=1_g6-PJD230gy7ENX_xEtCJgQlzWCupEI" width="400" />
+  <br>
+  <em>These pointsa are refined by Computer vision.</em>
+</p>
 
 ---
 
@@ -126,15 +131,16 @@ Our modular validation pipeline processes POI data through the following stages:
 
 
 
-<div style="display: flex; gap: 50px;">
-  <img src="https://drive.google.com/uc?export=view&id=1O_babfSFXkpNnd0XKjT_xdmGpeMyoduH"  width="150" />
-  <img src="https://drive.google.com/uc?export=view&id=14MJLH2kB4FgH0YVKxaIKXDIG0gsKW5Ek" width="150" />
-</div>
-<div style="display: flex; gap: 50px;">
-  <img src="https://drive.google.com/uc?export=view&id=1uhVJYyTcmLnha6L8ujiXPhJRIjmaqJES" width="150" />
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=1O_babfSFXkpNnd0XKjT_xdmGpeMyoduH" width="150" style="margin-right: 30px;" />
+  <img src="https://drive.google.com/uc?export=view&id=14MJLH2kB4FgH0YVKxaIKXDIG0gsKW5Ek" width="150" style="margin-right: 30px;" />
+  <img src="https://drive.google.com/uc?export=view&id=1uhVJYyTcmLnha6L8ujiXPhJRIjmaqJES" width="150" style="margin-right: 30px;" />
   <img src="https://drive.google.com/uc?export=view&id=1Y9i9MxqqNtNqypaa_USXTgIREVn2pqAj" width="150" />
-</div>
+  <br/>
+  <em>Mobile Application UI</em>
+</p>
 
+<br/>
 
 ## 🛠️ Technical Stack
 
