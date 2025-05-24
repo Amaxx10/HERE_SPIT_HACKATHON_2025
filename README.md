@@ -28,6 +28,10 @@ Our modular validation pipeline processes POI data through the following stages:
   - Coordinate Extraction
   - Feature Normalization
   - Spatial Indexing
+<div style="text-align: center;">
+  <img src="https://drive.google.com/uc?export=view&id=1yt8uzK0xtrqCTBfLnQvEKVxWuFOoSevx" alt="Image" width="400" />
+  <p style="font-style: italic; color: gray;">Black Points are the orignal dataset provided green points are pre processed point.</p>
+</div>
 
 ---
 
@@ -41,6 +45,10 @@ Our modular validation pipeline processes POI data through the following stages:
     - Interquartile Range (IQR)
     - DBSCAN clustering
     - Local Outlier Factor (LOF)
+<div style="text-align: center;">
+  <img src="https://drive.google.com/uc?export=view&id=1sfBe1MoXHgZwJOejKylsOPXMZlagDiL0" alt="Image" width="400" />
+  <p style="font-style: italic; color: gray;">Black points are misplaced points and green points are the display points</p>
+</div>
 
 ---
 
@@ -70,6 +78,10 @@ Our modular validation pipeline processes POI data through the following stages:
   5. Output:
      - CSV with original and corrected POI coordinates
      - Before/after visualizations showing POI movements
+<div style="text-align: center;">
+  <img src="https://drive.google.com/uc?export=view&id=1_g6-PJD230gy7ENX_xEtCJgQlzWCupEI" alt="Image" width="400" />
+  <p style="font-style: italic; color: gray;">These pointsa are refined by Computer vision</p>
+</div>
 
 ---
 
