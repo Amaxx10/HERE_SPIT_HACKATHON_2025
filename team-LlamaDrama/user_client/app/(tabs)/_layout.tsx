@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
@@ -20,50 +20,97 @@ export default function TabLayout() {
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
-            // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
+            height: 88,
+            paddingBottom: 34,
+            borderTopWidth: 0,
+            backgroundColor: colorScheme === 'dark' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)',
+            backdropFilter: 'blur(10px)',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: -4 },
+            shadowOpacity: 0.1,
+            shadowRadius: 8,
           },
-          default: {},
+          default: {
+            height: 65,
+            paddingBottom: 10,
+            backgroundColor: colorScheme === 'dark' ? '#1A1A1A' : '#FFFFFF',
+            elevation: 8,
+          },
         }),
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
           title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <IconSymbol
+                size={focused ? 32 : 28}
+                name={focused ? 'map.fill' : 'map'}
+                color={color}
+              />
+              {focused && (
+                <View style={{
+                  width: 4,
+                  height: 4,
+                  borderRadius: 2,
+                  backgroundColor: Colors[colorScheme ?? 'light'].tint,
+                  marginTop: 4,
+                }}/>
+              )}
+            </View>
+          ),
         }}
       />
       <Tabs.Screen
-        name="map"
+        name="form"
         options={{
-          title: 'Map',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="location.fill" color={color} />,
+          title: 'Add Review',
+          tabBarIcon: ({ color, focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <IconSymbol 
+                size={focused ? 32 : 28} 
+                name={focused ? 'plus.circle.fill' : 'plus.circle'} 
+                color={color}
+              />
+              {focused && (
+                <View style={{
+                  width: 4,
+                  height: 4,
+                  borderRadius: 2,
+                  backgroundColor: Colors[colorScheme ?? 'light'].tint,
+                  marginTop: 4,
+                }}/>
+              )}
+            </View>
+          ),
         }}
       />
-
-       <Tabs.Screen
+      <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <View style={{ alignItems: 'center' }}>
+              <IconSymbol 
+                size={focused ? 32 : 28} 
+                name={focused ? 'person.crop.circle.fill' : 'person.crop.circle'} 
+                color={color} 
+              />
+              {focused && (
+                <View style={{
+                  width: 4,
+                  height: 4,
+                  borderRadius: 2,
+                  backgroundColor: Colors[colorScheme ?? 'light'].tint,
+                  marginTop: 4,
+                }}/>
+              )}
+            </View>
+          ),
         }}
       />
-
-       <Tabs.Screen
-        name="form"
-        options={{
-          title: 'Form',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
-        }}
-      />
-
     </Tabs>
   );
 }

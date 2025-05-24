@@ -284,18 +284,66 @@ const MapWithShapefiles = () => {
         const response3 = await axios.post(`http://localhost:5000/allFeatures`);
         setCorrected(response3.data);
 
-        useEffect(() => {
-          if (corrected.length > 0) {
-            corrected.forEach((feature) => {
-              const marker = L.marker([feature.coordinates[1], feature.coordinates[0]], {
-                icon: L.divIcon({
-                  className: 'custom-marker',
-                  html: `<div class="marker-content">${feature.address}</div>`,
-                }),
-              }).addTo(mapInstance);
-            });
-          }
-        }, [corrected]);
+        // Create a new feature group for corrected markers
+        const correctedGroup = L.featureGroup().addTo(mapInstance);
+
+        corrected.forEach((feature) => {
+          const marker = L.marker([feature.coordinates[1], feature.coordinates[0]], {
+            icon: L.divIcon({
+              className: 'custom-marker',
+              html: `
+                <div class="marker-content" style="
+                  background-color: rgba(0, 255, 0, 0.8);
+                  border: 2px solid #004d00;
+                  padding: 8px;
+                  border-radius: 50%;
+                  width: 20px;
+                  height: 20px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+                  transform: scale(1.2);
+                  z-index: 1000;
+                ">
+                </div>
+              `,
+              iconSize: [20, 20],
+              iconAnchor: [10, 10]
+            }),
+          });
+
+          // Add hover effect
+          marker.on('mouseover', (e) => {
+            e.target.getElement().style.transform = 'scale(1.5)';
+            // Show tooltip with address
+            const tooltip = L.tooltip({
+              permanent: false,
+              direction: 'top',
+              offset: [0, -10],
+              className: 'custom-tooltip'
+            })
+            .setContent(`<div style="
+              background-color: rgba(0, 77, 0, 0.9);
+              color: white;
+              padding: 5px 10px;
+              border-radius: 4px;
+              font-weight: bold;
+            ">${feature.address}</div>`);
+            
+            marker.bindTooltip(tooltip).openTooltip();
+          });
+
+          marker.on('mouseout', (e) => {
+            e.target.getElement().style.transform = 'scale(1.2)';
+            marker.unbindTooltip();
+          });
+
+          correctedGroup.addLayer(marker);
+        });
+
+        // Bring corrected markers to front
+        correctedGroup.bringToFront();
       }
   };
 }
@@ -710,7 +758,7 @@ const MapWithShapefiles = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-gray-800">
+          <h2 className="text-lg font-semibold text-white">
             Map Controls
           </h2>
         </div>
@@ -953,6 +1001,20 @@ const MapWithShapefiles = () => {
           </svg>
         </motion.button>
       </div>
+
+      <style>
+        {`
+          .custom-marker {
+            transition: transform 0.3s ease;
+          }
+          
+          .custom-tooltip {
+            border: none;
+            background: transparent;
+            box-shadow: none;
+          }
+        `}
+      </style>
     </div>
   );
 };
