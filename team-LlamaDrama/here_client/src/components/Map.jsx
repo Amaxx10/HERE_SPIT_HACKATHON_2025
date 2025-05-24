@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from 'react-router-dom';
 import * as shp from "shpjs";
 import { MapContainer, TileLayer, useMap, Rectangle } from "react-leaflet";
 import L from "leaflet";
@@ -125,6 +126,7 @@ const formatValue = (value) => {
 };
 
 const MapWithShapefiles = () => {
+  const [searchParams] = useSearchParams();
   // Map references and state
   const mapRef = useRef(null);
   const [mapInstance, setMapInstance] = useState(null);
@@ -281,7 +283,7 @@ const MapWithShapefiles = () => {
       console.log("Validation response:", response2.data);
 
       if (response2.data=='OK') {
-        const response3 = await axios.post(`http://localhost:5000/allFeatures`);
+        const response3 = await axios.post(`http://localhost:5000/api/mapview/allFeatures`);
         setCorrected(response3.data);
 
         // Create a new feature group for corrected markers
@@ -666,6 +668,58 @@ const MapWithShapefiles = () => {
     setShowMetadata(true);
   };
 
+  // Add new useEffect for handling URL parameters
+  useEffect(() => {
+    if (mapInstance) {
+      const lat = searchParams.get('lat');
+      const lng = searchParams.get('lng');
+      
+      if (lat && lng) {
+        mapInstance.setView([parseFloat(lat), parseFloat(lng)], 18);
+        
+        // Add a marker at the specified location
+        const marker = L.marker([parseFloat(lat), parseFloat(lng)], {
+          icon: L.divIcon({
+            className: 'custom-marker',
+            html: `
+              <div class="marker-content" style="
+                background-color: rgba(0, 0, 255, 0.8);
+                border: 2px solid #000066;
+                padding: 8px;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+                transform: scale(1.2);
+                z-index: 1000;
+              ">
+              </div>
+            `,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+          })
+        }).addTo(mapInstance);
+
+        // Add a pulsing animation effect
+        marker.getElement().innerHTML += `
+          <style>
+            @keyframes pulse {
+              0% { transform: scale(1.2); opacity: 1; }
+              50% { transform: scale(1.5); opacity: 0.5; }
+              100% { transform: scale(1.2); opacity: 1; }
+            }
+            .marker-content {
+              animation: pulse 2s infinite;
+            }
+          </style>
+        `;
+      }
+    }
+  }, [mapInstance, searchParams]);
+
   return (
     <div className="relative w-full h-full">
       <MapContainer
@@ -766,9 +820,9 @@ const MapWithShapefiles = () => {
         <div className="space-y-6">
           {/* Map Style Selector */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Map Style</label>
+            <label className="text-sm font-medium text-white">Map Style</label>
             <select
-              className="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+              className="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 text-white focus:ring-blue-500 focus:border-blue-500 transition-shadow"
               onChange={(e) => changeMapStyle(e.target.value)}
               value={mapStyle}
             >
@@ -779,7 +833,7 @@ const MapWithShapefiles = () => {
 
           {/* File Upload Section */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Upload Shapefile</label>
+            <label className="text-sm font-medium text-white">Upload Shapefile</label>
             <div className="bg-blue-50 rounded-lg p-3">
               <div className="text-xs text-gray-600 mb-2 flex flex-wrap gap-1">
                 {Object.entries(SUPPORTED_FORMATS).map(([ext, desc]) => (
@@ -846,7 +900,7 @@ const MapWithShapefiles = () => {
           <div className="space-y-3">
             <button
               onClick={toggleTraffic}
-              className={`w-full px-4 py-2 text-sm font-medium rounded-lg transition-all focus:ring-2 focus:ring-offset-2 ${
+              className={`w-full px-4 py-2 text-sm font-medium rounded-lg transition-all focus:ring-2 focus:ring-offset-2 hover:cursor-pointer ${
                 showTraffic
                   ? "bg-green-500 text-white hover:bg-green-600 focus:ring-green-500"
                   : "bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-500"
@@ -858,7 +912,7 @@ const MapWithShapefiles = () => {
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={() => mapInstance?.setZoom(mapInstance.getZoom() + 1)}
-                className="flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
+                className="flex items-center justify-center px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -867,7 +921,7 @@ const MapWithShapefiles = () => {
               </button>
               <button
                 onClick={() => mapInstance?.setZoom(mapInstance.getZoom() - 1)}
-                className="flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
+                className="flex items-center justify-center px-4 py-2 text-sm font-medium hover:cursor-pointer text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
@@ -878,7 +932,7 @@ const MapWithShapefiles = () => {
 
             <button
               onClick={resetView}
-              className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
+              className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 hover:cursor-pointer focus:ring-blue-500 focus:ring-offset-2 transition-all"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
@@ -891,8 +945,8 @@ const MapWithShapefiles = () => {
               onClick={handleCaptureClick}
               className={`w-full px-3 py-2 text-sm mb-2 rounded transition-colors ${
                 isSelecting
-                  ? "bg-blue-600 text-white"
-                  : "border border-slate-300 hover:bg-slate-50"
+                  ? "text-white"
+                  : "border border-slate-300 bg-white  hover:bg-slate-50 hover:text-slate-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:cursor-pointer"
               }`}
             >
               {isSelecting ? "Selecting..." : "Capture Region"}

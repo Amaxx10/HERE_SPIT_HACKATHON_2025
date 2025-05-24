@@ -2,6 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import CountUp from 'react-countup';
+import { useState, useEffect } from 'react';
+import { use } from 'chai';
+import { useNavigate } from 'react-router-dom';
 
 const data = [
   { name: 'Mon', value: 87 },
@@ -13,23 +16,136 @@ const data = [
   { name: 'Sun', value: 91 }
 ];
 
-const Dashboard = () => {
+const LogEntry = ({ log }) => {
+  const navigate = useNavigate();
+
+  const handleCoordinateClick = (lat, lng) => {
+    navigate(`/?lat=${lat}&lng=${lng}`);
+  };
+
   return (
+    <motion.div
+      initial={{ x: -20, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      className="bg-slate-800/30 p-4 rounded-lg border border-slate-700/50 mb-3"
+    >
+      <div className="flex justify-between items-start">
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <h4 className="text-blue-400 font-semibold truncate">{log.address}</h4>
+            <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">
+              {log.poi_type}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-4 mt-3">
+            <div>
+              <p className="text-slate-400 text-xs mb-1">Location Status</p>
+              <span className={`text-sm ${
+                log.algorithmic_analysis.location_accuracy === 'accurate' 
+                  ? 'text-emerald-400' 
+                  : 'text-yellow-400'
+              }`}>
+                {log.algorithmic_analysis.location_accuracy}
+              </span>
+            </div>
+            <div>
+              <p className="text-slate-400 text-xs mb-1">Confidence Score</p>
+              <span className="text-sm text-blue-400">
+                {log.algorithmic_analysis.confidence_score * 100}%
+              </span>
+            </div>
+            <div>
+              <p className="text-slate-400 text-xs mb-1">Recommended Action</p>
+              <span className={`text-sm ${
+                log.algorithmic_analysis.recommended_action === 'keep_current'
+                  ? 'text-emerald-400'
+                  : 'text-yellow-400'
+              }`}>
+                {log.algorithmic_analysis.recommended_action.replace('_', ' ')}
+              </span>
+            </div>
+            <div>
+              <p className="text-slate-400 text-xs mb-1">Coordinates</p>
+              <button 
+                onClick={() => handleCoordinateClick(log.coordinates[0], log.coordinates[1])}
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors cursor-pointer underline"
+              >
+                {log.coordinates[0].toFixed(5)}, {log.coordinates[1].toFixed(5)}
+              </button>
+            </div>
+          </div>
+          {log.algorithmic_analysis.observations && (
+            <div className="mt-3 text-sm text-slate-300">
+              <p className="text-slate-400 text-xs mb-1">Observations</p>
+              {log.algorithmic_analysis.observations}
+            </div>
+          )}
+        </div>
+        <span className="text-xs text-slate-400 bg-slate-800/50 px-2 py-1 rounded ml-4 whitespace-nowrap">
+          ID: {log._id.slice(-6)}
+        </span>
+      </div>
+    </motion.div>
+  );
+};
+
+const Dashboard = () => {
+
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/mapview/allFeatures`, {
+          method: 'GET',
+        });
+        const result = await response.json();
+        console.log('Fetched logs:', result);
+        setList(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
+  return (
+    
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-blue-900 to-slate-900 p-8"
     >
-      <div className="max-w-7xl mx-auto space-y-8">
+      {/* Logs Section */}
+        <motion.div 
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-blue-900 backdrop-blur-lg rounded-2xl mx-20 max-w-8xl p-6 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+        >
+          <h3 className="text-xl font-semibold text-slate-100 mb-6 flex items-center">
+            <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+            Feature Correction Logs
+          </h3>
+          <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+            {list.map((log, index) => (
+              <LogEntry key={index} log={log} className="" />
+            ))}
+            {list.length === 0 && (
+              <p className="text-slate-400 text-center py-4">No logs available</p>
+            )}
+          </div>
+        </motion.div>
+      <div className="max-w-7xl mx-auto my-8 space-y-8">
         <motion.div
           initial={{ y: -20 }}
           animate={{ y: 0 }}
           className="relative"
         >
           <div className="absolute inset-0 bg-blue-400/10 blur-3xl rounded-full"></div>
-          <h1 className="relative text-5xl font-bold text-slate-100 mb-2">
+          <h1 className="relative text-5xl font-bold text-black mb-2">
             Fleet Dashboard
-            <span className="block text-lg font-normal text-blue-300/80 mt-2">
+            <span className="block text-lg font-normal text-blue-900 mt-2">
               Real-time monitoring and analytics
             </span>
           </h1>
@@ -40,7 +156,7 @@ const Dashboard = () => {
           {/* Replace existing cards with enhanced versions */}
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-slate-800/40 backdrop-blur-lg rounded-2xl p-6 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+            className="bg-blue-900 backdrop-blur-lg rounded-2xl p-6 border border-slate-700/50 shadow-lg shadow-blue-500/5"
           >
             <div className="flex items-center space-x-4">
               <div className="p-3 bg-blue-500/20 rounded-xl">
@@ -65,7 +181,7 @@ const Dashboard = () => {
 
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-slate-800/40 backdrop-blur-lg rounded-2xl p-6 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+            className="bg-blue-900 backdrop-blur-lg rounded-2xl p-6 border border-slate-700/50 shadow-lg shadow-blue-500/5"
           >
             <div className="flex items-center space-x-4">
               <div className="p-3 bg-emerald-500/20 rounded-xl">
@@ -90,7 +206,7 @@ const Dashboard = () => {
 
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-slate-800/40 backdrop-blur-lg rounded-2xl p-6 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+            className="bg-blue-900 backdrop-blur-lg rounded-2xl p-6 border border-slate-700/50 shadow-lg shadow-blue-500/5"
           >
             <div className="flex items-center space-x-4">
               <div className="p-3 bg-purple-500/20 rounded-xl">
@@ -116,7 +232,7 @@ const Dashboard = () => {
         <motion.div 
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="bg-slate-800/40 backdrop-blur-lg rounded-2xl p-6 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+          className="bg-blue-900 backdrop-blur-lg rounded-2xl p-6 border border-slate-700/50 shadow-lg shadow-blue-500/5"
         >
           <h3 className="text-xl font-semibold text-slate-100 mb-6 flex items-center">
             <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
