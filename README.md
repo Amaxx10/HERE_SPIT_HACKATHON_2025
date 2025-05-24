@@ -4,7 +4,7 @@
 
 Our comprehensive geospatial intelligence solution addresses critical challenges in Point of Interest (POI) data accuracy and validation. The platform combines advanced machine learning algorithms with sophisticated spatial analysis techniques to automatically detect, analyze, and classify incorrectly placed POIs across Singapore's urban landscape. Through our innovative multi-platform approach, we're transforming how businesses and municipalities ensure location data integrity and make informed decisions based on reliable geospatial information.
 
-Our solution has successfully analyzed over 3,000 POIs, achieving intelligent classification with confidence scoring and providing actionable insights through spatial pattern analysis. The platform features advanced analytics using Z-score, IQR, DBSCAN clustering, and Local Outlier Factor algorithms to detect spatial anomalies with 87% accuracy rate. By implementing a comprehensive data pipeline that processes raw shapefile data through multiple validation layers, we provide businesses with the tools they need to maintain high-quality location databases and improve their mapping services.
+Our solution has successfully analyzed over 3,000 POIs, achieving intelligent classification with confidence scoring and providing actionable insights through spatial pattern analysis. The platform features advanced analytics using Z-score, IQR, DBSCAN clustering. By implementing a comprehensive data pipeline that processes raw shapefile data through multiple validation layers, we provide businesses with the tools they need to maintain high-quality location databases and improve their mapping services.
 
 ![POI Map](https://drive.google.com/uc?export=view&id=14zaohAwcx3-pLaaR62Kf_csdEGZqhGQR)
 
@@ -15,9 +15,6 @@ Our solution has successfully analyzed over 3,000 POIs, achieving intelligent cl
   <img src="https://drive.google.com/uc?export=view&id=1AOspbDvbgWp03MvsHS8e_nzC6Zmrp16w" alt="Image" width="400" />
 </div>
 
-## 🏗 Data Processing Pipeline
-
-[Placeholder for Complete Data Pipeline Flow Diagram]
 
 Our modular validation pipeline processes POI data through the following stages:
 
@@ -117,11 +114,11 @@ Our modular validation pipeline processes POI data through the following stages:
 
 
 
-<div style="display: flex; gap: 10px;">
+<div style="display: flex; gap: 50px;">
   <img src="https://drive.google.com/uc?export=view&id=1O_babfSFXkpNnd0XKjT_xdmGpeMyoduH"  width="150" />
   <img src="https://drive.google.com/uc?export=view&id=14MJLH2kB4FgH0YVKxaIKXDIG0gsKW5Ek" width="150" />
 </div>
-<div style="display: flex; gap: 10px;">
+<div style="display: flex; gap: 50px;">
   <img src="https://drive.google.com/uc?export=view&id=1uhVJYyTcmLnha6L8ujiXPhJRIjmaqJES" width="150" />
   <img src="https://drive.google.com/uc?export=view&id=1Y9i9MxqqNtNqypaa_USXTgIREVn2pqAj" width="150" />
 </div>
@@ -241,9 +238,7 @@ curl http://localhost:5001/analyze-poi
 # Scan QR code with Expo Go app
 ```
 
-```
-[Placeholder for Installation Verification Screenshots]
-```
+
 
 ### 🔧 Development Commands
 ```bash
@@ -269,31 +264,19 @@ npx expo build       # Production build
 ## 📊 Project Results
 
 - **✅ POIs Analyzed**: 3,000+ Singapore locations
-- **🎯 Classification Accuracy**: 87% correct identification rate
 - **⚡ Processing Speed**: Real-time analysis capabilities
 - **📱 Cross-Platform**: Mobile + Web + Analytics integration
 - **🔄 Live Sync**: Real-time data synchronization
 
-## 🎥 Demo & Presentation
 
-```
-[Placeholder for Demo Video]
-[Placeholder for Live Demo Link]
-[Placeholder for Presentation Slides]
-```
-
-## 👥 Team LlamaDrama
-
-```
-[Placeholder for Team Photos/Profiles]
-```
 
 **Developed for HERE SPIT Hackathon 2025**
 
 ### Contact:
-- 📧 Email: team-llamadrama@hackathon.com
-- 🔗 GitHub: [Repository Link]
-- 📋 Presentation: [Slide Deck Link]
+- 📧 Email: team-lamadrama@hackathon.com
+- 🔗 GitHub: [[Repository Link](https://github.com/Amaxx10/HERE_SPIT_HACKATHON_2025.git)]
+- 📋 Presentation: [View PDF](https://drive.google.com/file/d/1srKUuS7BgzQhd2P3rO8kNLz43o8Jddi5/view)
+
 
 ---
 
