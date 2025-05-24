@@ -5,6 +5,8 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 import { motion, AnimatePresence } from 'framer-motion';
+// import { set } from "mongoose";
+// import { use } from "chai";
 
 // Update map container styles
 const mapContainerStyle = {
@@ -129,6 +131,7 @@ const MapWithShapefiles = () => {
   const [trafficLayer, setTrafficLayer] = useState(null);
   const [showTraffic, setShowTraffic] = useState(false);
   const [mapStyle, setMapStyle] = useState("normal");
+  const [corrected, setCorrected] = useState([]);
 
   // Shapefile state
   const [shapefileData, setShapefileData] = useState(null);
@@ -276,8 +279,26 @@ const MapWithShapefiles = () => {
 
       const response2 = await axios.post(`${import.meta.env.VITE_FLASK_URL}/validate-poi`);
       console.log("Validation response:", response2.data);
-    }
+
+      if (response2.data=='OK') {
+        const response3 = await axios.post(`http://localhost:5000/allFeatures`);
+        setCorrected(response3.data);
+
+        useEffect(() => {
+          if (corrected.length > 0) {
+            corrected.forEach((feature) => {
+              const marker = L.marker([feature.coordinates[1], feature.coordinates[0]], {
+                icon: L.divIcon({
+                  className: 'custom-marker',
+                  html: `<div class="marker-content">${feature.address}</div>`,
+                }),
+              }).addTo(mapInstance);
+            });
+          }
+        }, [corrected]);
+      }
   };
+}
 
   // Remove specific file
   const removeFile = (indexToRemove) => {
