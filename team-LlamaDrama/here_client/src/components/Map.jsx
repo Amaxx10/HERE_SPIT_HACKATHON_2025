@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, useMap, Rectangle } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Update map container styles
 const mapContainerStyle = {
@@ -272,6 +273,9 @@ const MapWithShapefiles = () => {
         // You can use response data to update UI or show results
         console.log(`Analysis complete. Found ${response.data.incorrect_pois} incorrect POIs`);
       }
+
+      const response2 = await axios.post(`${import.meta.env.VITE_FLASK_URL}/validate-poi`);
+      console.log("Validation response:", response2.data);
     }
   };
 
@@ -624,64 +628,78 @@ const MapWithShapefiles = () => {
         )}
       </MapContainer>
 
-      {/* Loading Overlay with blur background */}
-      {(loading || loadingProgress > 0) && (
-        <div className="absolute inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center z-30">
-          <div className="bg-white/90 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-sm w-full mx-4 border border-white/50">
-            <div className="flex items-center space-x-3 mb-4">
-              <svg
-                className="animate-spin h-6 w-6 text-blue-600"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              <span className="text-lg font-medium text-gray-700">
-                Processing shapefile...
-              </span>
-            </div>
-            {loadingProgress > 0 && (
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${loadingProgress}%` }}
-                ></div>
+      <AnimatePresence>
+        {(loading || loadingProgress > 0) && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-30"
+          >
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              className="bg-slate-900/90 backdrop-blur-md p-8 rounded-2xl shadow-2xl max-w-sm w-full mx-4 border border-slate-700/50"
+            >
+              <div className="flex items-center space-x-4 mb-6">
+                <div className="relative">
+                  <div className="w-12 h-12 border-4 border-blue-500/30 rounded-full animate-spin border-t-blue-500"></div>
+                  <div className="absolute inset-0 w-12 h-12 border-4 border-blue-500/10 rounded-full"></div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium text-slate-200">Processing</h3>
+                  <p className="text-sm text-slate-400">
+                    {loadingProgress < 80 ? "Analyzing data..." : "Rendering features..."}
+                  </p>
+                </div>
               </div>
-            )}
-            <p className="text-sm text-gray-500 mt-2">
-              {loadingProgress < 80
-                ? "Parsing files..."
-                : "Rendering features..."}
-            </p>
+              {loadingProgress > 0 && (
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm text-slate-400">
+                    <span>Progress</span>
+                    <span>{Math.round(loadingProgress)}%</span>
+                  </div>
+                  <div className="h-2 bg-slate-700/50 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-blue-500 to-teal-500 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${loadingProgress}%` }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Enhanced Map Controls Panel */}
+      <motion.div
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="absolute top-4 right-4 bg-slate-900/90 backdrop-blur-xl p-6 rounded-2xl shadow-2xl z-10 min-w-[280px] max-w-[320px] border border-slate-700/50"
+      >
+        <div className="flex items-center space-x-3 mb-6">
+          <div className="h-8 w-8 bg-blue-500 rounded-lg flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
           </div>
+          <h2 className="text-lg font-semibold text-gray-800">
+            Map Controls
+          </h2>
         </div>
-      )}
 
-      {/* Map Controls Panel */}
-      <div className="absolute top-4 right-4 bg-white p-4 rounded-lg shadow-lg z-10 min-w-[200px] max-w-[300px]">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">
-          Map Controls
-        </h2>
-
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Map Style Selector */}
           <div className="space-y-2">
-            <label className="text-sm text-gray-600">Map Style</label>
+            <label className="text-sm font-medium text-gray-700">Map Style</label>
             <select
-              className="w-full px-3 py-2 text-sm border border-slate-300 rounded"
+              className="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
               onChange={(e) => changeMapStyle(e.target.value)}
               value={mapStyle}
             >
@@ -690,65 +708,63 @@ const MapWithShapefiles = () => {
             </select>
           </div>
 
-          {/* Shapefile Upload Section */}
+          {/* File Upload Section */}
           <div className="space-y-2">
-            <label className="text-sm text-gray-600">Upload Shapefile</label>
-            <div className="text-xs text-gray-500 mb-2">
-              Supported formats:
-              {Object.entries(SUPPORTED_FORMATS).map(([ext, desc]) => (
-                <span
-                  key={ext}
-                  className="inline-flex items-center m-1 px-2 py-1 bg-gray-100 rounded"
-                >
-                  .{ext}
-                  <span
-                    className="ml-1 text-gray-400"
-                    title={desc}
-                  >
-                    ℹ️
+            <label className="text-sm font-medium text-gray-700">Upload Shapefile</label>
+            <div className="bg-blue-50 rounded-lg p-3">
+              <div className="text-xs text-gray-600 mb-2 flex flex-wrap gap-1">
+                {Object.entries(SUPPORTED_FORMATS).map(([ext, desc]) => (
+                  <span key={ext} className="inline-flex items-center px-2 py-1 bg-white/80 rounded-md shadow-sm">
+                    .{ext}
+                    <span className="ml-1 text-blue-500 cursor-help" title={desc}>ℹ️</span>
                   </span>
-                </span>
-              ))}
+                ))}
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                onChange={handleFileUpload}
+                accept={Object.keys(SUPPORTED_FORMATS).map((ext) => `.${ext}`).join(",")}
+                className="w-full text-sm file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600 transition-all"
+                disabled={loading}
+              />
             </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              onChange={handleFileUpload}
-              accept={Object.keys(SUPPORTED_FORMATS)
-                .map((ext) => `.${ext}`)
-                .join(",")}
-              className="w-full text-sm border border-gray-300 rounded p-1 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              disabled={loading}
-            />
 
+            {/* Error Display */}
             {error && (
-              <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
-                {error}
+              <div className="flex items-center space-x-2 text-sm text-red-600 bg-red-50 p-3 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{error}</span>
               </div>
             )}
 
+            {/* Loaded Files List */}
             {fileNames.length > 0 && (
-              <div className="text-xs text-gray-500 mt-2 p-2 bg-gray-50 rounded">
+              <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="font-medium">Loaded files:</span>
+                  <span className="text-sm font-medium text-gray-700">Loaded files</span>
                   <button
                     onClick={clearShapefile}
-                    className="text-red-600 hover:text-red-800 text-xs font-medium"
+                    className="text-red-500 hover:text-red-600 text-sm font-medium transition-colors"
                   >
                     Clear All
                   </button>
                 </div>
                 <ul className="space-y-1">
                   {fileNames.map((name, i) => (
-                    <li key={i} className="flex justify-between items-center">
-                      <span className="truncate flex-1">{name}</span>
+                    <li key={i} className="flex justify-between items-center py-1 px-2 rounded hover:bg-gray-100">
+                      <span className="truncate text-sm text-gray-600">{name}</span>
                       <button
                         onClick={() => removeFile(i)}
-                        className="ml-2 text-red-500 hover:text-red-700 text-xs"
+                        className="ml-2 text-gray-400 hover:text-red-500 transition-colors"
                         title="Remove file"
                       >
-                        ×
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                       </button>
                     </li>
                   ))}
@@ -757,173 +773,164 @@ const MapWithShapefiles = () => {
             )}
           </div>
 
-          {/* Traffic Toggle */}
-          <button
-            onClick={toggleTraffic}
-            className={`w-full px-3 py-2 text-sm rounded transition-colors ${
-              showTraffic
-                ? "bg-green-600 text-white hover:bg-green-700"
-                : "bg-slate-800 text-white hover:bg-slate-700"
-            }`}
-          >
-            {showTraffic ? "Hide Traffic" : "Show Traffic"}
-          </button>
-
-          {/* Zoom Controls */}
-          <div className="grid grid-cols-2 gap-2">
+          {/* Control Buttons */}
+          <div className="space-y-3">
             <button
-              onClick={() => mapInstance?.setZoom(mapInstance.getZoom() + 1)}
-              className="px-3 py-2 text-sm border border-slate-300 rounded hover:bg-slate-50 flex items-center justify-center"
+              onClick={toggleTraffic}
+              className={`w-full px-4 py-2 text-sm font-medium rounded-lg transition-all focus:ring-2 focus:ring-offset-2 ${
+                showTraffic
+                  ? "bg-green-500 text-white hover:bg-green-600 focus:ring-green-500"
+                  : "bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-500"
+              }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              Zoom In
+              {showTraffic ? "Hide Traffic" : "Show Traffic"}
             </button>
-            <button
-              onClick={() => mapInstance?.setZoom(mapInstance.getZoom() - 1)}
-              className="px-3 py-2 text-sm border border-slate-300 rounded hover:bg-slate-50 flex items-center justify-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M20 12H4"
-                />
-              </svg>
-              Zoom Out
-            </button>
-          </div>
 
-          {/* Reset View */}
-          <button
-            onClick={resetView}
-            className="w-full px-3 py-2 text-sm border border-slate-300 rounded hover:bg-slate-50 flex items-center justify-center"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-              />
-            </svg>
-            Reset View
-          </button>
-
-          {/* Capture Region Button */}
-          <button
-            onClick={handleCaptureClick}
-            className={`w-full px-3 py-2 text-sm mb-2 rounded transition-colors ${
-              isSelecting
-                ? "bg-blue-600 text-white"
-                : "border border-slate-300 hover:bg-slate-50"
-            }`}
-          >
-            {isSelecting ? "Selecting..." : "Capture Region"}
-          </button>
-
-          {/* Selected features info */}
-          {selectedFeatures.length > 0 && (
-            <div className="mt-2 p-2 bg-gray-50 rounded text-sm">
-              <div className="font-medium">Selected Features: {selectedFeatures.length}</div>
-              <div className="mt-1 text-xs text-gray-600">
-                {Object.entries(
-                  selectedFeatures.reduce((acc, f) => ({
-                    ...acc,
-                    [f.type]: (acc[f.type] || 0) + 1
-                  }), {})
-                ).map(([type, count]) => (
-                  <div key={type} className="flex justify-between">
-                    <span>{type}:</span>
-                    <span>{count}</span>
-                  </div>
-                ))}
-              </div>
+            <div className="grid grid-cols-2 gap-3">
               <button
-                onClick={handleViewMetadata}
-                className="mt-2 w-full px-3 py-1 text-xs bg-blue-50 text-blue-600 rounded hover:bg-blue-100"
+                onClick={() => mapInstance?.setZoom(mapInstance.getZoom() + 1)}
+                className="flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
               >
-                View Metadata
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Zoom In
+              </button>
+              <button
+                onClick={() => mapInstance?.setZoom(mapInstance.getZoom() - 1)}
+                className="flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                </svg>
+                Zoom Out
               </button>
             </div>
-          )}
 
-          {/* Metadata Dialog */}
-          {showMetadata && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden">
-                <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                  <h3 className="text-lg font-medium">Selected Features Metadata</h3>
-                  <button
-                    onClick={() => setShowMetadata(false)}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <div className="p-4 overflow-auto max-h-[calc(80vh-8rem)]">
-                  {selectedFeatures.map((feature, index) => (
-                    <div key={index} className="mb-4 last:mb-0">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded text-sm">
-                          {feature.type || 'Unknown Type'}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          Feature #{index + 1}
-                        </span>
-                      </div>
-                      <div className="bg-gray-50 rounded p-3">
-                        <table className="w-full text-sm">
-                          <tbody>
-                            {Object.entries(feature.properties || {}).map(([key, value]) => (
-                              <tr key={key} className="border-b last:border-0">
-                                <td className="py-1 px-2 text-gray-600 font-medium align-top">{key}</td>
-                                <td className="py-1 px-2 text-gray-800 whitespace-pre-wrap">{formatValue(value)}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
+            <button
+              onClick={resetView}
+              className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              </svg>
+              Reset View
+            </button>
+
+            {/* Capture Region Button */}
+            <button
+              onClick={handleCaptureClick}
+              className={`w-full px-3 py-2 text-sm mb-2 rounded transition-colors ${
+                isSelecting
+                  ? "bg-blue-600 text-white"
+                  : "border border-slate-300 hover:bg-slate-50"
+              }`}
+            >
+              {isSelecting ? "Selecting..." : "Capture Region"}
+            </button>
+
+            {/* Selected features info */}
+            {selectedFeatures.length > 0 && (
+              <div className="mt-2 p-2 bg-gray-50 rounded text-sm">
+                <div className="font-medium">Selected Features: {selectedFeatures.length}</div>
+                <div className="mt-1 text-xs text-gray-600">
+                  {Object.entries(
+                    selectedFeatures.reduce((acc, f) => ({
+                      ...acc,
+                      [f.type]: (acc[f.type] || 0) + 1
+                    }), {})
+                  ).map(([type, count]) => (
+                    <div key={type} className="flex justify-between">
+                      <span>{type}:</span>
+                      <span>{count}</span>
                     </div>
                   ))}
                 </div>
-                <div className="p-4 border-t border-gray-200">
-                  <button
-                    onClick={() => setShowMetadata(false)}
-                    className="w-full px-4 py-2 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
-                  >
-                    Close
-                  </button>
+                <button
+                  onClick={handleViewMetadata}
+                  className="mt-2 w-full px-3 py-1 text-xs bg-blue-50 text-blue-600 rounded hover:bg-blue-100"
+                >
+                  View Metadata
+                </button>
+              </div>
+            )}
+
+            {/* Metadata Dialog */}
+            {showMetadata && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden">
+                  <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 className="text-lg font-medium">Selected Features Metadata</h3>
+                    <button
+                      onClick={() => setShowMetadata(false)}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div className="p-4 overflow-auto max-h-[calc(80vh-8rem)]">
+                    {selectedFeatures.map((feature, index) => (
+                      <div key={index} className="mb-4 last:mb-0">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded text-sm">
+                            {feature.type || 'Unknown Type'}
+                          </span>
+                          <span className="text-sm text-gray-500">
+                            Feature #{index + 1}
+                          </span>
+                        </div>
+                        <div className="bg-gray-50 rounded p-3">
+                          <table className="w-full text-sm">
+                            <tbody>
+                              {Object.entries(feature.properties || {}).map(([key, value]) => (
+                                <tr key={key} className="border-b last:border-0">
+                                  <td className="py-1 px-2 text-gray-600 font-medium align-top">{key}</td>
+                                  <td className="py-1 px-2 text-gray-800 whitespace-pre-wrap">{formatValue(value)}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="p-4 border-t border-gray-200">
+                    <button
+                      onClick={() => setShowMetadata(false)}
+                      className="w-full px-4 py-2 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
+      </motion.div>
+
+      {/* Add floating action buttons */}
+      <div className="absolute bottom-8 right-8 flex flex-col space-y-4">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="w-12 h-12 bg-blue-500 rounded-full shadow-lg flex items-center justify-center text-white"
+          onClick={() => mapInstance?.setZoom(mapInstance.getZoom() + 1)}
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="w-12 h-12 bg-blue-500 rounded-full shadow-lg flex items-center justify-center text-white"
+          onClick={() => mapInstance?.setZoom(mapInstance.getZoom() - 1)}
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+          </svg>
+        </motion.button>
       </div>
     </div>
   );

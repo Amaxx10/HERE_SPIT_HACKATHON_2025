@@ -21,8 +21,7 @@ class SingaporePOIAnalyzer:
 
     def create_results_directory(self):
         """Create a new directory for storing results"""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.results_dir = f"singapore_poi_analysis_results_{timestamp}"
+        self.results_dir = f"analysis_results"
         os.makedirs(self.results_dir, exist_ok=True)
         print(f"Created results directory: {self.results_dir}")
         return self.results_dir
@@ -276,7 +275,7 @@ class SingaporePOIAnalyzer:
             # Format data for CSV
             formatted_data = self.format_csv_data()
             
-            csv_filename = f'singapore_poi_sample_{sample_size}_all_results.csv'
+            csv_filename = f'{sample_size}_all_results.csv'
             csv_path = os.path.join(self.results_dir, csv_filename)
             formatted_data.to_csv(csv_path, index=False, encoding='utf-8')
             print(f"\nCSV (All POIs) Results saved to: {csv_path}")
@@ -286,7 +285,7 @@ class SingaporePOIAnalyzer:
                 if col not in results_gdf.columns:
                     results_gdf[col] = self.results[col]
 
-            shp_filename = f'singapore_poi_sample_{sample_size}_all_results.shp'
+            shp_filename = f'{sample_size}_all_results.shp'
             shp_path = os.path.join(self.results_dir, shp_filename)
             results_gdf.to_file(shp_path)
             print(f"Shapefile (All POIs) Results saved to: {shp_path}")
@@ -306,7 +305,7 @@ class SingaporePOIAnalyzer:
                 # Format data for CSV
                 formatted_incorrect = self.format_csv_data().loc[incorrect_pois_df.index]
                 
-                csv_filename = f'singapore_poi_sample_{sample_size}_incorrect_only.csv'
+                csv_filename = f'{sample_size}_incorrect_only.csv'
                 csv_path = os.path.join(self.results_dir, csv_filename)
                 formatted_incorrect.to_csv(csv_path, index=False, encoding='utf-8')
                 print(f"\nCSV (Incorrect POIs Only) saved to: {csv_path}")

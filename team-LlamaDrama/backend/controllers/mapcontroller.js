@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Feature } from '../models/features.js';
+import { Corrected } from '../models/corrected.js';
 
 export const storeFeatures = async (req, res) => {
   try {
@@ -95,13 +96,13 @@ export const getFeaturesInBounds = async (req, res) => {
 
 export const getAllFeatures = async (req, res) => {
   try {
-    const features = await Feature.find({}).lean();
-    
-    if (!features || features.length === 0) {
+    const corrected = await Corrected.find({}).lean();
+
+    if (!corrected || corrected.length === 0) {
       return res.status(200).json([]); // Return empty array instead of 404
     }
-    console.log('Fetched features:', features);
-    return res.status(200).json(features);
+    console.log('Fetched features:', corrected);
+    return res.status(200).json(corrected);
   } catch (error) {
     console.error('Error fetching features:', error);
     return res.status(500).json({ 

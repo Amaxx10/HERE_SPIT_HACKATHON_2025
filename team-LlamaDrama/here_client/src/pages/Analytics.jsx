@@ -1,35 +1,130 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+
+const pieData = [
+  { name: 'On Time', value: 85 },
+  { name: 'Delayed', value: 10 },
+  { name: 'Cancelled', value: 5 },
+];
+
+const COLORS = ['#38bdf8', '#fb923c', '#f87171'];
 
 const Analytics = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Route Analytics</h1>
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">Performance Metrics</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <div className="border-b pb-4">
-              <h3 className="text-sm font-medium text-gray-500">Route Efficiency</h3>
-              <div className="flex items-center mt-2">
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div className="bg-green-600 h-2.5 rounded-full" style={{width: '85%'}}></div>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-blue-900 to-slate-900 p-8"
+    >
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
+          className="relative mb-12"
+        >
+          <div className="absolute inset-0 bg-blue-400/10 blur-3xl rounded-full"></div>
+          <h1 className="relative text-5xl font-bold text-slate-100 mb-2">
+            Route Analytics
+            <span className="block text-lg font-normal text-blue-300/80 mt-2">
+              Performance insights and metrics
+            </span>
+          </h1>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <motion.div 
+            whileHover={{ y: -5 }}
+            className="bg-slate-800/40 backdrop-blur-lg rounded-2xl p-8 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+          >
+            <h2 className="text-2xl font-semibold text-slate-100 mb-8 flex items-center">
+              <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+              Performance Metrics
+            </h2>
+            <div className="space-y-8">
+              <div className="relative">
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm font-medium text-slate-400">Route Efficiency</span>
+                  <span className="text-sm font-semibold text-emerald-400">85%</span>
                 </div>
-                <span className="ml-2 text-sm font-medium text-gray-700">85%</span>
+                <div className="h-2 bg-slate-700/50 rounded-full overflow-hidden">
+                  <div className="h-2 bg-gradient-to-r from-emerald-500 to-emerald-400 w-[85%] transition-all duration-500"></div>
+                </div>
+                <div className="absolute -right-2 top-0 w-4 h-4 bg-emerald-400 rounded-full transform -translate-y-1/2 glow-effect"></div>
+              </div>
+
+              <div className="relative">
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm font-medium text-slate-400">On-Time Delivery</span>
+                  <span className="text-sm font-semibold text-blue-400">92%</span>
+                </div>
+                <div className="h-2 bg-slate-700/50 rounded-full overflow-hidden">
+                  <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-400 w-[92%] transition-all duration-500"></div>
+                </div>
+                <div className="absolute -right-2 top-0 w-4 h-4 bg-blue-400 rounded-full transform -translate-y-1/2 glow-effect"></div>
               </div>
             </div>
-            <div className="border-b pb-4">
-              <h3 className="text-sm font-medium text-gray-500">On-Time Delivery</h3>
-              <div className="flex items-center mt-2">
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div className="bg-blue-600 h-2.5 rounded-full" style={{width: '92%'}}></div>
-                </div>
-                <span className="ml-2 text-sm font-medium text-gray-700">92%</span>
+          </motion.div>
+
+          <motion.div 
+            whileHover={{ y: -5 }}
+            className="bg-slate-800/40 backdrop-blur-lg rounded-2xl p-8 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+          >
+            <h2 className="text-2xl font-semibold text-slate-200 mb-6">Delivery Stats</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 bg-slate-700/30 rounded-xl border border-slate-600/50">
+                <div className="text-sm text-slate-400 mb-1">Total Deliveries</div>
+                <div className="text-2xl font-bold text-blue-400">2,547</div>
+              </div>
+              <div className="p-4 bg-slate-700/30 rounded-xl border border-slate-600/50">
+                <div className="text-sm text-slate-400 mb-1">Success Rate</div>
+                <div className="text-2xl font-bold text-emerald-400">98.3%</div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
+
+        {/* Enhanced Pie Chart Section */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="mt-8 bg-slate-800/40 backdrop-blur-lg rounded-2xl p-8 border border-slate-700/50 shadow-lg shadow-blue-500/5"
+        >
+          <h3 className="text-xl font-semibold text-slate-200 mb-4">Delivery Status Distribution</h3>
+          <div className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
       </div>
-    </div>
+      <style jsx>{`
+        .glow-effect {
+          box-shadow: 0 0 15px currentColor;
+          animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+          0% { opacity: 0.5; }
+          50% { opacity: 1; }
+          100% { opacity: 0.5; }
+        }
+      `}</style>
+    </motion.div>
   );
 };
 

@@ -10,8 +10,10 @@ import geopandas as gpd
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from analyzer import SingaporePOIAnalyzer  # Import the analyzer class
-import warnings  # Add this import at the top with other imports
+from analyzer import SingaporePOIAnalyzer
+from validator import CSVPOILoader, EnhancedPOIValidator, EnhancedSingaporePOICorrectionSystem  # Fixed class names
+import warnings
+import json
 
 load_dotenv()
 
@@ -23,6 +25,9 @@ MONGO_URI = os.getenv('MONGODB_URI')
 client = MongoClient(MONGO_URI)
 db = client['test']
 poi_results = db['rule-based']
+
+# Add new collection for corrected POIs
+corrected_pois = db['corrected']
 
 # Add file path configurations
 POI_SHAPEFILE_PATH = os.path.join(os.path.dirname(__file__), 'data', 'Singapore_Prime_LAT.shp')
@@ -113,6 +118,49 @@ def analyze_poi():
     except FileNotFoundError as e:
         print(f"File not found: {str(e)}")
         return jsonify({"error": "File not found", "details": str(e)}), 404
+
+@app.route('/validate-poi', methods=['POST'])
+def validate_poi():
+    try:
+        file_path = os.path.join(os.path.dirname(__file__), 'analysis_results', '3000_incorrect_only.csv')
+        print(f"Starting POI validation using file: {file_path}")
+
+        # Initialize the enhanced correction system
+        correction_system = EnhancedSingaporePOICorrectionSystem()
         
+        # Process addresses and get results
+        results = correction_system.process_singapore_addresses(file_path)
+        
+        if 'error' in results:
+            return jsonify({"error": results['error']}), 400
+
+        # Store validation results in MongoDB
+        if results.get('validation_results'):
+            print("💾 Storing validation results in MongoDB...")
+            insert_result = corrected_pois.insert_many(results['validation_results'])
+            print(f"✅ Stored {len(insert_result.inserted_ids)} records in database")
+
+        # Generate response data
+        response_data = {
+            "message": "POI validation complete",
+            "total_processed": results['total_addresses'],
+            "summary": results['summary'],
+            "corrections_needed": len(results.get('corrections_needed', [])),
+            "visual_verification": {
+                "attempted": results['summary'].get('visual_verification_attempted', 0),
+                "successful": results['summary'].get('visual_verification_successful', 0)
+            },
+            "stored_in_db": len(results.get('validation_results', []))
+        }
+
+        return jsonify(response_data)
+
+    except FileNotFoundError as e:
+        print(f"❌ File not found: {str(e)}")
+        return jsonify({"error": "File not found", "details": str(e)}), 404
+    except Exception as e:
+        print(f"❌ Error during validation: {str(e)}")
+        return jsonify({"error": "Validation failed", "details": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)

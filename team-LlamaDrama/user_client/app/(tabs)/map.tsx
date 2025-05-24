@@ -13,18 +13,22 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 type Feature = {
-  objectId?: string | number;
-  display: {
-    latitude: number;
-    longitude: number;
+  id?: string;
+  address: string;
+  coordinates: number[];  // Changed from tuple to array
+  poi_type: string;
+  suspicion_score: number;
+  algorithmic_analysis: {
+    location_accuracy: string;
+    confidence_score: number;
+    observations: string;
   };
-  address: {
-    buildingName: string;
-    streetName: string;
-    houseNumber: string;
+  visual_verification: {
+    visual_verification_attempted: boolean;
+    images_found: number;
+    overall_visual_confidence: number;
+    visual_analysis_summary: string;
   };
-  postalArea?: string;
-  fullPostal?: string;
 };
 
 export default function MapScreen() {
@@ -41,20 +45,15 @@ export default function MapScreen() {
       try {
         const response = await axios.get(`http://10.10.112.161:5000/api/mapview/allfeatures`);
         const transformedFeatures = response.data
-          .filter(f => f.display?.latitude && f.display?.longitude) // Only include features with valid coordinates
+          .filter(f => f.coordinates && f.coordinates.length === 2)
           .map(f => ({
-            objectId: f.objectId,
-            display: {
-              latitude: parseFloat(f.display.latitude) || 0,
-              longitude: parseFloat(f.display.longitude) || 0
-            },
-            address: {
-              buildingName: f.address?.buildingName || '',
-              streetName: f.address?.streetName || '',
-              houseNumber: f.address?.houseNumber || ''
-            },
-            postalArea: f.postalArea,
-            fullPostal: f.fullPostal
+            id: f._id,
+            address: f.address,
+            coordinates: f.coordinates,
+            poi_type: f.poi_type,
+            suspicion_score: f.suspicion_score,
+            algorithmic_analysis: f.algorithmic_analysis || {},
+            visual_verification: f.visual_verification || {}
           }));
 
         setFeatures(transformedFeatures);
@@ -82,29 +81,37 @@ export default function MapScreen() {
     setShowMetadata(true);
   }, []);
 
+  // Update the marker rendering section
   return (
     <ThemedView style={styles.container}>
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 1.35,  // Updated to Singapore coordinates
+          latitude: 1.35,
           longitude: 103.81,
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         }}
         onPress={handleMapPress}
       >
-        {/* Map features from database */}
-        {features.map((feature, index) => (
-          <Marker
-            key={`feature-${feature.objectId || index}`}
-            coordinate={{
-              latitude: feature.display.latitude,
-              longitude: feature.display.longitude,
-            }}
-            onPress={() => handleMarkerPress(feature)}
-          />
-        ))}
+        {features.map((feature, index) => {
+          // Add null check and coordinate validation
+          if (!feature.coordinates || feature.coordinates.length < 2) {
+            return null;
+          }
+          
+          return (
+            <Marker
+              key={`feature-${feature.id || index}`}
+              coordinate={{
+                latitude: Number(feature.coordinates[0]) || 0,
+                longitude: Number(feature.coordinates[1]) || 0
+              }}
+              onPress={() => handleMarkerPress(feature)}
+              pinColor={feature.suspicion_score > 0.5 ? 'red' : 'green'}
+            />
+          );
+        })}
 
         {/* Existing review markers */}
         {reviews.map((review) => (
@@ -132,23 +139,21 @@ export default function MapScreen() {
                 <Text style={styles.closeButton}>✕</Text>
               </TouchableOpacity>
             </View>
-            {selectedFeature && (
+            {selectedFeature && selectedFeature.coordinates && selectedFeature.coordinates.length >= 2 && (
               <View style={styles.modalBody}>
-                {selectedFeature.address.buildingName && (
-                  <Text style={styles.detailTitle}>{selectedFeature.address.buildingName}</Text>
-                )}
-                <Text style={styles.detailText}>
-                  {[
-                    selectedFeature.address.houseNumber,
-                    selectedFeature.address.streetName
-                  ].filter(Boolean).join(' ')}
-                </Text>
-                {selectedFeature.fullPostal && (
-                  <Text style={styles.detailSubtext}>{selectedFeature.fullPostal}</Text>
-                )}
+                <Text style={styles.detailTitle}>{selectedFeature.poi_type}</Text>
+                <Text style={styles.detailText}>{selectedFeature.address}</Text>
                 <Text style={styles.coordinates}>
-                  {`${selectedFeature.display.latitude.toFixed(6)}, ${selectedFeature.display.longitude.toFixed(6)}`}
+                  {`${Number(selectedFeature.coordinates[0]).toFixed(6)}, ${Number(selectedFeature.coordinates[1]).toFixed(6)}`}
                 </Text>
+                <Text style={styles.confidenceScore}>
+                  Confidence: {(selectedFeature.algorithmic_analysis?.confidence_score * 100 || 0).toFixed(1)}%
+                </Text>
+                {selectedFeature.visual_verification?.visual_verification_attempted && (
+                  <Text style={styles.visualVerification}>
+                    Visual Confidence: {(selectedFeature.visual_verification.overall_visual_confidence * 100).toFixed(1)}%
+                  </Text>
+                )}
               </View>
             )}
           </View>
@@ -205,14 +210,20 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 5,
   },
-  detailSubtext: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
-  },
   coordinates: {
     fontSize: 12,
     color: '#888',
     marginTop: 10,
+  },
+  confidenceScore: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 5,
+  },
+  visualVerification: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 5,
+    fontStyle: 'italic',
   },
 });
